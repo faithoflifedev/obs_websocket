@@ -5,5 +5,5 @@ environment:
 
 dependencies:
   args: ^1.6.0
-  obsWebsocket:
+  obs_websocket:
     path: ../

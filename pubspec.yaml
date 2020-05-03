@@ -1,7 +1,7 @@
-name: obsWebsocket
+name: obs_websocket
 version: 0.0.1
 author: Faithoflifedev <faithoflifedev@gmail.com>
-description: obsWebsocket allows dart-based connections to the Open Broadcaster plugin obs-websocket.
+description: obs_websocket allows dart-based connections to the Open Broadcaster plugin obs-websocket.
 homepage: https://github.com/faithoflifedev/obsWebsocket
 
 environment:

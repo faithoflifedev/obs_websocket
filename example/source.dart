@@ -1,6 +1,6 @@
 import 'package:args/args.dart';
-import 'package:obsWebsocket/obsWebsocket.dart';
-import 'package:obsWebsocket/response.dart';
+import 'package:obs_websocket/obs_websocket.dart';
+import 'package:obs_websocket/response.dart';
 
 void main(List<String> args) async {
   final ArgParser parser = ArgParser();

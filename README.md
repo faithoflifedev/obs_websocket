@@ -1,4 +1,4 @@
-# obsWebsocket
+# obs_websocket
 Some background, I needed a way to automate the start and stop streaming actions for [OBS](https://obsproject.com/) with [cron](https://en.wikipedia.org/wiki/Cron) on OSX.  This package will aloow you to do that with [dart](https://dart.dev/) and in the future on the command line.
 
 ## Getting Started
@@ -7,7 +7,7 @@ In your flutter project add the dependency:
 ```yml
 dependencies:
   ...
-  obsWebsocket: ^0.0.1
+  obs_websocket: ^0.0.1
 ```
 
 For help getting started with dart, check out these [guides](https://dart.dev/guides).
@@ -16,8 +16,8 @@ For help getting started with dart, check out these [guides](https://dart.dev/gu
 Import the websocket connection library and the response library.
 
 ```dart
-import 'package:obsWebsocket/obsWebsocket.dart';
-import 'package:obsWebsocket/response.dart';
+import 'package:obs_websocket/obs_websocket.dart';
+import 'package:obs_websocket/response.dart';
 ```
 
 ## Opening a websocket Connection
