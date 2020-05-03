@@ -20,7 +20,7 @@ import 'package:obsWebsocket/obsWebsocket.dart';
 import 'package:obsWebsocket/response.dart';
 ```
 
-##Opening a websocket Connection
+## Opening a websocket Connection
 The WebSocket protocol, described in the specification [RFC 6455](https://tools.ietf.org/html/rfc6455) provides a way to exchange data between client and server via a persistent connection. The data can be passed in both directions as “packets”.
 
 Before a websocket connection can be made to a running instance of [OBS](https://obsproject.com/), you will need to have the [obs-websocket](https://obsproject.com/forum/resources/obs-websocket-remote-control-obs-studio-from-websockets.466/) plugin installed and configured.
@@ -33,7 +33,7 @@ ObsWebSocket obsWebSocket = ObsWebSocket(connectUrl: "ws://[obs-studio host ip]:
 
 obs-studio host ip - is the ip address or host name of the computer running [OBS](https://obsproject.com/) that wou would like to send remote control commands to.
 
-##Authenticating to [OBS](https://obsproject.com/)
+## Authenticating to [OBS](https://obsproject.com/)
 [OBS](https://obsproject.com/) has an optional, but highly recommended password security feature, the `getAuthRequired` method will check if the password security has been enabled.  The  `AuthRequired` object that the method call returns is used as part of the authentication process.  The [protocol](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md) documentation provided on the [obs-websocket](https://github.com/Palakis/obs-websocket) github pages covers this in detail.
 
 ```dart
@@ -43,7 +43,7 @@ if (authRequired.status)
 	await obsWebSocket.authenticate(authRequired, "mySecretDontTell");
 ```
 
-##Sending Commands to [OBS](https://obsproject.com/)
+## Sending Commands to [OBS](https://obsproject.com/)
 The available commands are documented on the [protocol](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md) page of the [obs-websocket](https://github.com/Palakis/obs-websocket) github page
 
 ```dart
@@ -76,15 +76,15 @@ response = await obsWebSocket.command("SetSourceSettings", newSettings);
 print(response.map);
 ```
 
-##Closing the websocket
+## Closing the websocket
 Finally before your code completes, you will need to close the websocket connection
 
 ```dart
 obsWebSocket.close();
 ```
 
-##More documentation
-The [api](doc/index.html) does have some notes
+## More documentation
+The [api] docs will become available when I figure out how to publish them :-)
 
-##Known bugs
+## Known bugs
 I've submitted a [bug](https://github.com/Palakis/obs-websocket/issues/486) to the [obs-websocket](https://github.com/Palakis/obs-websocket) team for a bug that I am seeing when executing a websocket connecting program multiple times in sequence, which causes [OBS](https://obsproject.com/) to crash. 
