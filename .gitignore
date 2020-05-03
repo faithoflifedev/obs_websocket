@@ -1,0 +1,5 @@
+.gitconfig
+.dart_tool
+.packages
+pubspec.lock
+doc/api
