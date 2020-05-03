@@ -1,5 +1,5 @@
-## 1.6.0
+## 0.0.1
+* initial commit, no support for responses to commands
 
-* Remove `help` from the list of commands in usage.
-* Remove the blank lines in usage which separated the help for options that
-  happened to span multiple lines.
+## 0.0.2
+* initial simplified support for responses
