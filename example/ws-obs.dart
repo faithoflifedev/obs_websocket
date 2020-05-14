@@ -8,22 +8,12 @@ import 'package:obs_websocket/response.dart';
 void main(List<String> args) async {
   final Config config = Config();
 
-  Map<String, dynamic> params;
-
   config.initialize(args);
 
   await config.check();
 
-  if (config.commandParams != null)
-    try {
-      params = jsonDecode(config.commandParams);
-    } on FormatException catch (fe) {
-      print(fe);
-      exit(99);
-    }
-
   final SimpleResponse simpleResponse =
-      await config.obsWebSocket.command(config.command, params);
+      await config.obsWebSocket.command(config.command, config.params);
 
   print(jsonEncode(simpleResponse.map));
 
@@ -38,6 +28,7 @@ class Config {
   ObsWebSocket obsWebSocket;
   String command;
   String commandParams;
+  Map<String, dynamic> params;
 
   Config() {
     parser = ArgParser();
@@ -95,7 +86,7 @@ class Config {
 
   void check() async {
     AuthRequired authRequired;
-
+    
     if (showHelp || command == null) {
       print(parser.usage);
       exit(99);
@@ -113,6 +104,14 @@ class Config {
     else if (passwd == null) {
       print(
           "OBS authentication has been enabled. A password is required for a successful connection, use --help for more options");
+      exit(99);
+    }
+
+  if (commandParams != null)
+    try {
+      params = jsonDecode(commandParams);
+    } on FormatException catch (fe) {
+      print(fe);
       exit(99);
     }
   }
