@@ -1,5 +1,6 @@
 .gitconfig
 .dart_tool
 .packages
+.vscode
 pubspec.lock
 doc/api
