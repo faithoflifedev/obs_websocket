@@ -29,7 +29,7 @@ class ObsWebSocket {
     channel.sink.close(status.goingAway);
   }
 
-  ///Returns an AuthRequired object that can be used to determine if authentication is 
+  ///Returns an AuthRequired object that can be used to determine if authentication is
   ///required to connect to the server.  The AuthRequired object hods the 'salt' and
   ///'secret' that will be required for authentication in the case that it is required
   ///Throws an [Exception] if there is a problem or error returned by the server.
@@ -80,10 +80,11 @@ class ObsWebSocket {
   }
 
   ///This is a helper method for sending commands over the websocket.  A SimpleResponse
-  ///is returned.  The function requires a [command] from the documented list of 
-  ///websocket and optionally [args] can be provided if rquired by the command.  If OBS 
+  ///is returned.  The function requires a [command] from the documented list of
+  ///websocket and optionally [args] can be provided if rquired by the command.  If OBS
   ///returns an error in the response, then an [Exception] will be thrown.
-  Future<SimpleResponse> command(String command, [Map<String,dynamic> args]) async {
+  Future<SimpleResponse> command(String command,
+      [Map<String, dynamic> args]) async {
     SimpleResponse response;
 
     int messageId = sendCommand({"request-type": command}, args);
@@ -102,18 +103,19 @@ class ObsWebSocket {
     return response;
   }
 
-  ///This is the lower level send that transmits the command supplied on the websocket,  
-  ///It requires a [payload], the command as a Map that will be json encoded in the 
+  ///This is the lower level send that transmits the command supplied on the websocket,
+  ///It requires a [payload], the command as a Map that will be json encoded in the
   ///format required by OBS, and the [args].  Both are combined into a single Map that
   ///is json encoded and transmitted over the websocket.
-  int sendCommand(Map<String, dynamic> payload,[Map<String,dynamic> args]) {
+  int sendCommand(Map<String, dynamic> payload, [Map<String, dynamic> args]) {
     message_id++;
 
     payload["message-id"] = message_id.toString();
 
-    if (args != null)
-    payload.addAll(args);
-
+    if (args != null) {
+      payload.addAll(args);
+    }
+    
     final String requestPayload = jsonEncode(payload);
 
     channel.sink.add(requestPayload);

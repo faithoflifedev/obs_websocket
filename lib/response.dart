@@ -36,19 +36,19 @@ class SimpleResponse {
 
   ///Constructor for responses from the websocket server, the full response is avalible through
   ///the [raw] attribute, but if the goal is to use the response as an argument for another ,
-  ///command then the [map] attribute can be used, which removes the [error], [messageId] and 
+  ///command then the [map] attribute can be used, which removes the [error], [messageId] and
   ///[status] fields.
   SimpleResponse(
       {this.error,
       @required this.messageId,
       @required this.status,
-      @required this.raw}){
-        map = Map<String,dynamic>.from(this.raw);
-        
-        map.remove("message-id");
-        map.remove("error");
-        map.remove("status");
-      }
+      @required this.raw}) {
+    map = Map<String, dynamic>.from(this.raw);
+
+    map.remove("message-id");
+    map.remove("error");
+    map.remove("status");
+  }
 
   factory SimpleResponse.fromJson(Map<String, dynamic> json) {
     return SimpleResponse(
