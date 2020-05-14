@@ -1,5 +1,6 @@
 # obs_websocket
-Some background, I needed a way to automate the start and stop streaming actions for [OBS](https://obsproject.com/) (Open Broadcast Software) with [cron](https://en.wikipedia.org/wiki/Cron) on OSX.  This package will allow you to do that with [dart](https://dart.dev/) and [flutter](https://flutter.dev/).
+Some background, I needed a way to automate the start and stop streaming actions for [OBS](https://obsproject.com/) (Open Broadcast Software) with [cron](https://en.wikipedia.org/wiki/Cron) on OSX.  This package will allow you to do that with [dart](https://dart.dev/) or can be used with [flutter](https://flutter.dev/) to control 
+OBS with a platform independent mbile app.
 
 ## Getting Started
 In your flutter project add the dependency:
