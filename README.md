@@ -8,7 +8,7 @@ In your flutter project add the dependency:
 ```yml
 dependencies:
   ...
-  obs_websocket: ^0.0.2
+  obs_websocket: ^1.0.0
 ```
 
 For help getting started with dart, check out these [guides](https://dart.dev/guides).
