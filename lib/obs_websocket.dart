@@ -36,7 +36,7 @@ class ObsWebSocket {
   Future<AuthRequired> getAuthRequired() async {
     AuthRequired authRequired;
 
-    int messageId = sendCommand({'request-type': 'GetAuthRequired'});
+    String messageId = sendCommand({'request-type': 'GetAuthRequired'});
 
     await for (String message in broadcast) {
       authRequired = AuthRequired.fromJson(jsonDecode(message));
@@ -62,7 +62,7 @@ class ObsWebSocket {
 
     SimpleResponse response;
 
-    int messageId =
+    String messageId =
         sendCommand({"request-type": "Authenticate", "auth": auth_reponse});
 
     await for (String message in broadcast) {
@@ -87,7 +87,7 @@ class ObsWebSocket {
       [Map<String, dynamic> args]) async {
     SimpleResponse response;
 
-    int messageId = sendCommand({"request-type": command}, args);
+    String messageId = sendCommand({"request-type": command}, args);
 
     await for (String message in broadcast) {
       response = SimpleResponse.fromJson(jsonDecode(message));
@@ -107,7 +107,7 @@ class ObsWebSocket {
   ///It requires a [payload], the command as a Map that will be json encoded in the
   ///format required by OBS, and the [args].  Both are combined into a single Map that
   ///is json encoded and transmitted over the websocket.
-  int sendCommand(Map<String, dynamic> payload, [Map<String, dynamic> args]) {
+  String sendCommand(Map<String, dynamic> payload, [Map<String, dynamic> args]) {
     message_id++;
 
     payload["message-id"] = message_id.toString();
@@ -120,7 +120,7 @@ class ObsWebSocket {
 
     channel.sink.add(requestPayload);
 
-    return message_id;
+    return message_id.toString();
   }
 
   ///A helper function that encrypts authentication info [data] for the purpose of

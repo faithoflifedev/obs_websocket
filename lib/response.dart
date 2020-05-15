@@ -3,7 +3,7 @@ import 'package:meta/meta.dart';
 class AuthRequired {
   bool authRequired;
   String challenge;
-  int messageId;
+  String messageId;
   String salt;
   bool status;
 
@@ -13,14 +13,14 @@ class AuthRequired {
   AuthRequired.fromJson(Map<String, dynamic> json)
       : authRequired = json['authRequired'],
         challenge = json['challenge'],
-        messageId = int.parse(json['message-id']),
+        messageId = json['message-id'],
         salt = json['salt'],
         status = json['status'] == "ok";
 
   Map<String, dynamic> toJson() => {
         'authRequired': authRequired,
         'challenge': challenge,
-        'message-id': messageId.toString(),
+        'message-id': messageId,
         'salt': salt,
         'status': status ? "ok" : ""
       };
@@ -28,7 +28,7 @@ class AuthRequired {
 
 class SimpleResponse {
   final String error;
-  final int messageId;
+  final String messageId;
   final bool status;
   final Map<String, dynamic> raw;
 
@@ -53,7 +53,7 @@ class SimpleResponse {
   factory SimpleResponse.fromJson(Map<String, dynamic> json) {
     return SimpleResponse(
         error: json.containsKey("error") ? json["error"] : "",
-        messageId: int.parse(json['message-id']),
+        messageId: json['message-id'],
         status: json['status'] == "ok",
         raw: json);
   }

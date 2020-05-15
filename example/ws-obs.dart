@@ -64,7 +64,10 @@ class Config {
           "GetStreamingStatus",
           "GetStreamSettings",
           "SetStreamSettings",
-          "SaveStreamSettings"
+          "SaveStreamSettings",
+          "GetSourcesList",
+          "GetVolume",
+          "SetVolume"
         ], callback: (cmd) {
       this.command = cmd;
     });
