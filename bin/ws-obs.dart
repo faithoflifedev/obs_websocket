@@ -18,7 +18,7 @@ void main(List<String> args) async {
     print('${baseResponse.rawResponse}');
   }
 
-  config.obsWebSocket.close();
+  await config.obsWebSocket.close();
 }
 
 class Config {
@@ -51,9 +51,9 @@ class Config {
         // defaultsTo: "ws://127.0.0.1:4444",
         valueHelp: 'ws://[host]:[port]',
         help: "The url and port for OBS websocket", callback: (url) {
-      if (url != null)
+      if (url != null) {
         this.obsWebSocket = ObsWebSocket(connectUrl: url);
-      else {
+      } else {
         print(
             "You need to supply a url for this to work, use --help for more options");
       }
