@@ -1,38 +1,35 @@
-import 'package:obs_websocket/obs_websocket.dart';
-import 'package:obs_websocket/response.dart';
+import 'package:obs_websocket/obsWebsocket.dart';
 
 void main(List<String> args) async {
-  ObsWebSocket obsWebSocket = ObsWebSocket(connectUrl: "ws://localhost:4444");
+  ObsWebSocket obsWebSocket = ObsWebSocket(
+      connectUrl: "ws://192.168.1.84:4444",
+      onEvent: (BaseEvent event) {
+        print('streaming: ${event.rawEvent}');
+      });
 
-  final AuthRequired authRequired = await obsWebSocket.getAuthRequired();
-
-  SimpleResponse response;
+  var authRequired = await obsWebSocket.getAuthRequired();
 
   if (authRequired.status) {
-    await obsWebSocket.authenticate(authRequired, "mySecretDontTell");
+    await obsWebSocket.authenticate(authRequired, "test");
   }
 
-  response = await obsWebSocket.command("StartStreaming");
+  var status = await obsWebSocket.getStreamStatus();
 
-  print(response.status);
+  if (!status.streaming) {
+    final setting = StreamSetting.fromJson({
+      'type': 'rtmp_custom',
+      'settings': {
+        'server': 'rtmp://localhost/live',
+        'key': 'e799f8a080cd11ea8ab98d27449157a9'
+      }
+    });
 
-  response = await obsWebSocket.command("GetSourcesList");
+    await obsWebSocket.setStreamSettings(setting);
+  }
 
-  List sources = response.map["sources"];
+  var streamSettings = await obsWebSocket.getStreamSettings();
 
-  sources.forEach((source) => print(source["name"] + " - " + source["type"]));
-
-  response = await obsWebSocket
-      .command("GetSourceSettings", {"sourceName": "slide-top"});
-
-  Map newSettings = Map<String, dynamic>.from(response.map);
-
-  newSettings["sourceSettings"]["height"] = 1080;
-  newSettings["sourceSettings"]["width"] = 1920;
-
-  response = await obsWebSocket.command("SetSourceSettings", newSettings);
-
-  print(response.map);
+  print(streamSettings.settings.toString());
 
   obsWebSocket.close();
 }
