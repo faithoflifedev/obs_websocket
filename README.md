@@ -140,8 +140,5 @@ dart bin/ws-obs.dart --command GetStreamingStatus --url=ws://192.168.1.84:4444  
 
 You can use [dart compile](https://dart.dev/tools/dart-compile) to create the cli executable.
 
-## More documentation
-The [api] docs will become available when I figure out how to publish them :-)
-
 ## Known bugs
 ~~I've submitted a [bug](https://github.com/Palakis/obs-websocket/issues/486) to the [obs-websocket](https://github.com/Palakis/obs-websocket) team for a bug that I am seeing when executing a websocket connecting program multiple times in sequence to start and stop steaming causes [OBS](https://obsproject.com/) to crash. For my use case I am able to work around this by stopping and restarting OBS itself before restarting streaming.~~
