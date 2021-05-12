@@ -136,8 +136,9 @@ dart bin/ws-obs.dart --command GetStreamingStatus --url=ws://192.168.1.84:4444  
 -c, --command                     Required. The OBS command to send
                                   [StartStopStreaming, StartStreaming, StopStreaming, GetStreamingStatus, GetStreamSettings, SetStreamSettings, SaveStreamSettings, GetSourcesList, GetVolume, SetVolume]
 -a, --args                        Optional. The json encoded arguments for the supplied command if required
-
 ```
+
+You can use [dart compile](https://dart.dev/tools/dart-compile) to create the cli executable.
 
 ## More documentation
 The [api] docs will become available when I figure out how to publish them :-)
