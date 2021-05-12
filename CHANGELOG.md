@@ -1,3 +1,6 @@
+## 2.0.1
+* static analysis improvements
+
 ## 2.0.0
 * null safety, method based commands and event handling
 
