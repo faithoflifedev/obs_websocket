@@ -1,3 +1,6 @@
+## 2.0.3
+* universal_io package replaces dart:io to maybe support web
+
 ## 2.0.2
 * updated API docs
 

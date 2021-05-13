@@ -30,7 +30,9 @@ class ObsWebSocket {
       : channel = IOWebSocketChannel.connect(connectUrl) {
     broadcast = channel.stream.asBroadcastStream();
 
-    if (onEvent != null) addListener(onEvent);
+    if (onEvent != null) {
+      addListener(onEvent);
+    }
 
     broadcast.listen((jsonEvent) {
       final Map<String, dynamic> rawEvent = jsonDecode(jsonEvent);
@@ -69,7 +71,9 @@ class ObsWebSocket {
             'Server returned error to GetAuthRequiredResponse request: ${message}');
       }
 
-      if (authRequired.messageId == messageId) break;
+      if (authRequired.messageId == messageId) {
+        break;
+      }
     }
 
     return authRequired;
@@ -124,7 +128,9 @@ class ObsWebSocket {
             'Server returned error to ${command} request: ${message}');
       }
 
-      if (response.messageId == messageId) break;
+      if (response.messageId == messageId) {
+        break;
+      }
     }
 
     return response;
@@ -140,7 +146,9 @@ class ObsWebSocket {
 
     payload['message-id'] = message_id.toString();
 
-    if (args != null) payload.addAll(args);
+    if (args != null) {
+      payload.addAll(args);
+    }
 
     final String requestPayload = jsonEncode(payload);
 
@@ -178,7 +186,9 @@ class ObsWebSocket {
   Future<StreamSettingsResponse> getStreamSettings() async {
     final response = await command('GetStreamSettings');
 
-    if (response == null) throw Exception('Problem getting stream settings');
+    if (response == null) {
+      throw Exception('Problem getting stream settings');
+    }
 
     return StreamSettingsResponse.fromJson(response.rawResponse);
   }
@@ -201,7 +211,9 @@ class ObsWebSocket {
   Future<StudioModeStatus> getStudioModeStatus() async {
     final response = await command('GetStudioModeStatus');
 
-    if (response == null) throw Exception('Problem getting stream settings');
+    if (response == null) {
+      throw Exception('Problem getting stream settings');
+    }
 
     return StudioModeStatus.fromJson(response.rawResponse);
   }
@@ -210,7 +222,9 @@ class ObsWebSocket {
   Future<Scene> getCurrentScene() async {
     final response = await command('GetCurrentScene');
 
-    if (response == null) throw Exception('Problem getting current scene');
+    if (response == null) {
+      throw Exception('Problem getting current scene');
+    }
 
     return Scene.fromJson(response.rawResponse);
   }
@@ -254,7 +268,9 @@ class ObsWebSocket {
   Future<MediaStateResponse> getMediaState([Map<String, dynamic>? args]) async {
     final response = await command('GetMediaState', args);
 
-    if (response == null) throw Exception('Problem getting media state');
+    if (response == null) {
+      throw Exception('Problem getting media state');
+    }
 
     return MediaStateResponse.fromJson(response.rawResponse);
   }

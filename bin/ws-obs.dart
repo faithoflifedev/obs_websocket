@@ -1,8 +1,8 @@
 import 'dart:convert';
-import 'dart:io';
 
 import 'package:args/args.dart';
 import 'package:obs_websocket/obsWebsocket.dart';
+import 'package:universal_io/io.dart';
 
 void main(List<String> args) async {
   final Config config = Config();
@@ -73,9 +73,9 @@ class Config {
           "GetVolume",
           "SetVolume"
         ], callback: (cmd) {
-      if (cmd != null)
+      if (cmd != null) {
         this.command = cmd;
-      else {
+      } else {
         print(
             "You need to supply a command for this to work, use --help for more options");
       }
@@ -110,9 +110,9 @@ class Config {
       exit(99);
     }
 
-    if (authRequired.status && passwd != null)
+    if (authRequired.status && passwd != null) {
       await obsWebSocket.authenticate(authRequired, passwd!);
-    else {
+    } else {
       print(
           "OBS authentication has been enabled. A password is required for a successful connection, use --help for more options");
       print(parser.usage);
@@ -120,7 +120,9 @@ class Config {
     }
 
     try {
-      if (commandParams != null) jsonParams = jsonDecode(commandParams!);
+      if (commandParams != null) {
+        jsonParams = jsonDecode(commandParams!);
+      }
     } on FormatException catch (fe) {
       print(fe);
       exit(99);

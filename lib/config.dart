@@ -1,9 +1,9 @@
 import 'dart:convert';
-import 'dart:io';
 
 import 'package:args/args.dart';
 import 'package:obs_websocket/obsWebsocket.dart';
 import 'package:obs_websocket/src/model/authRequiredResponse.dart';
+import 'package:universal_io/io.dart';
 
 class Config {
   late final ArgParser parser;

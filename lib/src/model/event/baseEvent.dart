@@ -12,7 +12,9 @@ class BaseEvent {
   }
 
   StreamStatusEvent asSteamStatusEvent() {
-    if (updateType != 'StreamStatus') throw Exception('wrong type');
+    if (updateType != 'StreamStatus') {
+      throw Exception('wrong type');
+    }
     return StreamStatusEvent.fromJson(this.rawEvent);
   }
 

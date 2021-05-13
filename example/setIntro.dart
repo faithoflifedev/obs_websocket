@@ -36,7 +36,10 @@ void main(List<String> args) async {
 
   final sceneDetail = currentScene.getSceneDetail(withName: sceneItem);
 
-  if (sceneDetail == null) throw Exception();
+  if (sceneDetail == null) {
+    throw Exception();
+  }
+  ;
 
   if (sceneDetail.render) {
     await obsWebSocket

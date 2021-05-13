@@ -134,7 +134,7 @@ function initSearch(name) {
 
       // only care about exact matches if length is 2 or less
       // and only continue if we didn't find a match above
-      if (q.length <= 2 || previousMatchCount < allMatches.length) return;
+      if (q.length <= 2 || previousMatchCount < allMatches.length) {return;}
 
       if (element.name.indexOf(q) === 0 || element.qualifiedName.indexOf(q) === 0) {
         // starts with
