@@ -1,5 +1,5 @@
 ## 2.0.4
-* using pendantic for static analysis
+* using pendantic for static analysis, upgrade to some dependencies
 
 ## 2.0.3
 * universal_io package replaces dart:io to maybe support web
@@ -21,4 +21,3 @@
 
 ## 0.0.1
 * initial commit, no support for responses to commands
-ß
