@@ -16,9 +16,9 @@ class Scene {
   final Map<String, SceneDetail> _sceneDetailMap;
 
   Scene({required this.name, required this.scenes})
-      : _sceneDetailMap = Map.fromIterable(scenes,
-            key: (sceneDetail) => sceneDetail.name,
-            value: (sceneDetail) => sceneDetail);
+      : _sceneDetailMap = {
+          for (var sceneDetail in scenes) sceneDetail.name: sceneDetail
+        };
 
   SceneDetail? getSceneDetail({required String withName}) =>
       _sceneDetailMap[withName];

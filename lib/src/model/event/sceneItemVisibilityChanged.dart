@@ -30,10 +30,10 @@ class SceneItemVisibilityChanged {
   Map<String, dynamic> toJson() => _$SceneItemVisibilityChangedToJson(this);
 
   Map<String, dynamic> asArgs() => {
-        'scene-name': this.sceneName,
-        'source': this.itemName,
-        'item': this.itemId,
-        'render': this.itemVisible
+        'scene-name': sceneName,
+        'source': itemName,
+        'item': itemId,
+        'render': itemVisible
       };
 
   @override

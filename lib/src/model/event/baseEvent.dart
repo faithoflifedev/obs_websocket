@@ -15,12 +15,13 @@ class BaseEvent {
     if (updateType != 'StreamStatus') {
       throw Exception('wrong type');
     }
-    return StreamStatusEvent.fromJson(this.rawEvent);
+    return StreamStatusEvent.fromJson(rawEvent);
   }
 
   SceneItemVisibilityChanged asSceneItemVisibilityChangedEvent() {
-    if (updateType != 'SceneItemVisibilityChanged')
+    if (updateType != 'SceneItemVisibilityChanged') {
       throw Exception('wrong type');
-    return SceneItemVisibilityChanged.fromJson(this.rawEvent);
+    }
+    return SceneItemVisibilityChanged.fromJson(rawEvent);
   }
 }

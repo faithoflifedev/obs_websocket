@@ -5,13 +5,13 @@ import 'package:obs_websocket/obsWebsocket.dart';
 import 'package:universal_io/io.dart';
 
 void main(List<String> args) async {
-  final Config config = Config();
+  final config = Config();
 
   config.initialize(args);
 
   await config.check();
 
-  final BaseResponse? baseResponse =
+  final baseResponse =
       await config.obsWebSocket.command(config.command, config.jsonParams);
 
   if (baseResponse != null) {
@@ -34,58 +34,58 @@ class Config {
   bool showHelp = false;
 
   void initialize(List<String> args) {
-    parser.addFlag("help",
-        abbr: "h",
+    parser.addFlag('help',
+        abbr: 'h',
         negatable: false,
-        help: "Display this helpful message", callback: (help) {
-      this.showHelp = help;
+        help: 'Display this helpful message', callback: (help) {
+      showHelp = help;
     });
-    parser.addOption("passwd",
-        abbr: "p",
-        help: "The OBS websocket password, only required if enabled in OBS",
+    parser.addOption('passwd',
+        abbr: 'p',
+        help: 'The OBS websocket password, only required if enabled in OBS',
         callback: (password) {
-      this.passwd = password;
+      passwd = password;
     });
-    parser.addOption("url",
-        abbr: "u",
-        // defaultsTo: "ws://127.0.0.1:4444",
+    parser.addOption('url',
+        abbr: 'u',
+        // defaultsTo: 'ws://127.0.0.1:4444',
         valueHelp: 'ws://[host]:[port]',
-        help: "The url and port for OBS websocket", callback: (url) {
+        help: 'The url and port for OBS websocket', callback: (url) {
       if (url != null) {
-        this.obsWebSocket = ObsWebSocket(connectUrl: url);
+        obsWebSocket = ObsWebSocket(connectUrl: url);
       } else {
         print(
-            "You need to supply a url for this to work, use --help for more options");
+            'You need to supply a url for this to work, use --help for more options');
       }
     });
-    parser.addOption("command",
-        abbr: "c",
-        help: "Required. The OBS command to send",
+    parser.addOption('command',
+        abbr: 'c',
+        help: 'Required. The OBS command to send',
         allowed: [
-          "StartStopStreaming",
-          "StartStreaming",
-          "StopStreaming",
-          "GetStreamingStatus",
-          "GetStreamSettings",
-          "SetStreamSettings",
-          "SaveStreamSettings",
-          "GetSourcesList",
-          "GetVolume",
-          "SetVolume"
+          'StartStopStreaming',
+          'StartStreaming',
+          'StopStreaming',
+          'GetStreamingStatus',
+          'GetStreamSettings',
+          'SetStreamSettings',
+          'SaveStreamSettings',
+          'GetSourcesList',
+          'GetVolume',
+          'SetVolume'
         ], callback: (cmd) {
       if (cmd != null) {
-        this.command = cmd;
+        command = cmd;
       } else {
         print(
-            "You need to supply a command for this to work, use --help for more options");
+            'You need to supply a command for this to work, use --help for more options');
       }
     });
-    parser.addOption("args",
-        abbr: "a",
+    parser.addOption('args',
+        abbr: 'a',
         help:
-            "Optional. The json encoded arguments for the supplied command if required",
+            'Optional. The json encoded arguments for the supplied command if required',
         callback: (arguments) {
-      this.commandParams = arguments;
+      commandParams = arguments;
     });
 
     try {
@@ -114,7 +114,7 @@ class Config {
       await obsWebSocket.authenticate(authRequired, passwd!);
     } else {
       print(
-          "OBS authentication has been enabled. A password is required for a successful connection, use --help for more options");
+          'OBS authentication has been enabled. A password is required for a successful connection, use --help for more options');
       print(parser.usage);
       exit(99);
     }

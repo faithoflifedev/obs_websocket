@@ -11,7 +11,7 @@ class BaseResponse {
 
   factory BaseResponse.fromJson(Map<String, dynamic> json) {
     return BaseResponse(
-        error: json.containsKey("error") ? json["error"] : "",
+        error: json.containsKey('error') ? json['error'] : '',
         messageId: json['message-id'],
         rawStatus: json['status'],
         rawResponse: json);

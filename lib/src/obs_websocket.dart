@@ -59,16 +59,16 @@ class ObsWebSocket {
   ///required for authentication in the case that it is required throws an
   ///[Exception] if there is a problem or error returned by the server.
   Future<AuthRequiredResponse> getAuthRequired() async {
-    AuthRequiredResponse authRequired = AuthRequiredResponse.init();
+    var authRequired = AuthRequiredResponse.init();
 
-    String messageId = sendCommand({'request-type': 'GetAuthRequired'});
+    var messageId = sendCommand({'request-type': 'GetAuthRequired'});
 
     await for (String message in broadcast) {
       authRequired = AuthRequiredResponse.fromJson(jsonDecode(message));
 
       if (!authRequired.status) {
         throw Exception(
-            'Server returned error to GetAuthRequiredResponse request: ${message}');
+            'Server returned error to GetAuthRequiredResponse request: $message');
       }
 
       if (authRequired.messageId == messageId) {
@@ -85,12 +85,12 @@ class ObsWebSocket {
   ///an [Exception] will be thrown.
   Future<BaseResponse?> authenticate(
       AuthRequiredResponse requirements, String passwd) async {
-    final String secret = base64Hash(passwd + requirements.salt!);
-    final String auth_reponse = base64Hash(secret + requirements.challenge!);
+    final secret = base64Hash(passwd + requirements.salt!);
+    final auth_reponse = base64Hash(secret + requirements.challenge!);
 
     BaseResponse? response;
 
-    String messageId =
+    var messageId =
         sendCommand({'request-type': 'Authenticate', 'auth': auth_reponse});
 
     await for (String message in broadcast) {
@@ -98,7 +98,7 @@ class ObsWebSocket {
 
       if (!response.status) {
         throw Exception(
-            'Server returned error to Authenticate request: ${message}');
+            'Server returned error to Authenticate request: $message');
       }
 
       if (response.messageId == messageId) {
@@ -118,14 +118,13 @@ class ObsWebSocket {
       [Map<String, dynamic>? args]) async {
     BaseResponse? response;
 
-    String messageId = sendCommand({'request-type': command}, args);
+    var messageId = sendCommand({'request-type': command}, args);
 
     await for (String message in broadcast) {
       response = BaseResponse.fromJson(jsonDecode(message));
 
       if (!response.status && response.messageId == messageId) {
-        throw Exception(
-            'Server returned error to ${command} request: ${message}');
+        throw Exception('Server returned error to $command request: $message');
       }
 
       if (response.messageId == messageId) {
@@ -150,7 +149,7 @@ class ObsWebSocket {
       payload.addAll(args);
     }
 
-    final String requestPayload = jsonEncode(payload);
+    final requestPayload = jsonEncode(payload);
 
     channel.sink.add(requestPayload);
 
@@ -161,8 +160,9 @@ class ObsWebSocket {
   Future<StreamStatusResponse> getStreamStatus() async {
     var response = await command('GetStreamingStatus');
 
-    if (response == null)
+    if (response == null) {
       throw Exception('Could not retrieve the stream status');
+    }
 
     return StreamStatusResponse.fromJson(response.rawResponse);
   }
@@ -278,9 +278,9 @@ class ObsWebSocket {
   ///A helper function that encrypts authentication info [data] for the purpose of
   ///authentication.
   String base64Hash(String data) {
-    final Digest hash = sha256.convert(utf8.encode(data));
+    final hash = sha256.convert(utf8.encode(data));
 
-    final String secret = base64.encode(hash.bytes);
+    final secret = base64.encode(hash.bytes);
 
     return secret;
   }

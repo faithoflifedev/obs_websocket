@@ -23,67 +23,67 @@ class Config {
   File get commandFile => _commandFile;
 
   void initialize(List<String> args) {
-    parser.addFlag("help",
-        abbr: "h",
+    parser.addFlag('help',
+        abbr: 'h',
         negatable: false,
-        help: "Display this helpful message", callback: (help) {
-      this.showHelp = help;
+        help: 'Display this helpful message', callback: (help) {
+      showHelp = help;
     });
-    parser.addOption("passwd",
-        abbr: "p",
-        help: "The OBS websocket password, only required if enabled in OBS",
+    parser.addOption('passwd',
+        abbr: 'p',
+        help: 'The OBS websocket password, only required if enabled in OBS',
         callback: (password) {
-      this.passwd = password!;
+      passwd = password!;
     });
-    parser.addOption("url",
-        abbr: "u",
-        defaultsTo: "ws://127.0.0.1:4444",
+    parser.addOption('url',
+        abbr: 'u',
+        defaultsTo: 'ws://127.0.0.1:4444',
         valueHelp: 'ws://[host]:[port]',
-        help: "The url and port for OBS websocket", callback: (url) {
+        help: 'The url and port for OBS websocket', callback: (url) {
       obsWebSocket = ObsWebSocket(connectUrl: url!);
     });
-    parser.addOption("command",
-        abbr: "c",
-        help: "Required. The OBS command to send",
+    parser.addOption('command',
+        abbr: 'c',
+        help: 'Required. The OBS command to send',
         allowed: [
-          "StartStopStreaming",
-          "StartStreaming",
-          "StopStreaming",
-          "GetStreamingStatus",
-          "GetStreamSettings",
-          "SetStreamSettings",
-          "SaveStreamSettings",
-          "GetSourcesList",
-          "GetSourceSettings",
-          "GetVolume",
-          "SetVolume",
-          "GetCurrentSceneCollection",
-          "ListSceneCollections",
-          "GetSceneList",
-          "GetCurrentScene",
-          "SetCurrentScene",
-          "EnableStudioMode",
-          "TransitionToProgram",
-          "SetPreviewScene",
-          "GetPreviewScene",
-          "GetStudioModeStatus",
-          "EnableStudioMode",
-          "DisableStudioMode",
-          "GetSceneItemProperties"
+          'StartStopStreaming',
+          'StartStreaming',
+          'StopStreaming',
+          'GetStreamingStatus',
+          'GetStreamSettings',
+          'SetStreamSettings',
+          'SaveStreamSettings',
+          'GetSourcesList',
+          'GetSourceSettings',
+          'GetVolume',
+          'SetVolume',
+          'GetCurrentSceneCollection',
+          'ListSceneCollections',
+          'GetSceneList',
+          'GetCurrentScene',
+          'SetCurrentScene',
+          'EnableStudioMode',
+          'TransitionToProgram',
+          'SetPreviewScene',
+          'GetPreviewScene',
+          'GetStudioModeStatus',
+          'EnableStudioMode',
+          'DisableStudioMode',
+          'GetSceneItemProperties'
         ], callback: (cmd) {
-      this.command = cmd!;
+      command = cmd!;
     });
-    parser.addOption("args",
-        abbr: "a",
+    parser.addOption('args',
+        abbr: 'a',
         help:
-            "Optional. The json encoded arguments for the supplied command if required",
+            'Optional. The json encoded arguments for the supplied command if required',
         callback: (arguments) {
-      this.commandParams = arguments!;
+      commandParams = arguments!;
     });
-    // parser.addOption("file",
-    //     abbr: "f",
+    // parser.addOption('file',
+    //     abbr: 'f',
     //     help:
-    //         "Optional. File with a set of commands and args. If included these commands will run after any given with --command",
+    //         'Optional. File with a set of commands and args. If included these commands will run after any given with --command',
     //     callback: (file) {
     //   if (file != null) {
     //     _commandFile =
@@ -116,11 +116,11 @@ class Config {
       exit(99);
     }
 
-    if (authRequired.status)
+    if (authRequired.status) {
       await obsWebSocket.authenticate(authRequired, passwd);
-    else {
+    } else {
       print(
-          "OBS authentication has been enabled. A password is required for a successful connection, use --help for more options");
+          'OBS authentication has been enabled. A password is required for a successful connection, use --help for more options');
       exit(99);
     }
 
