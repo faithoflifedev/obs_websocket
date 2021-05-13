@@ -1,3 +1,6 @@
+## 2.0.2
+* updated API docs
+
 ## 2.0.1
 * static analysis improvements
 
