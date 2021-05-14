@@ -9,13 +9,13 @@ import 'package:obs_websocket/src/model/streamSetting.dart';
 import 'package:obs_websocket/src/model/streamSettingsResponse.dart';
 import 'package:obs_websocket/src/model/streamStatusResponse.dart';
 import 'package:obs_websocket/src/model/studioModeStatus.dart';
-import 'package:web_socket_channel/io.dart';
 import 'package:web_socket_channel/status.dart' as status;
+import 'package:web_socket_channel/web_socket_channel.dart';
 
 class ObsWebSocket {
   final String connectUrl;
 
-  final IOWebSocketChannel channel;
+  final WebSocketChannel channel;
 
   late final Stream<dynamic> broadcast;
 
@@ -27,7 +27,7 @@ class ObsWebSocket {
   ///broadcast stream so that we can have multiple listeners providing responses
   ///to commands. [connectUrl] is in the format 'ws://host:port'.
   ObsWebSocket({required this.connectUrl, Function? onEvent})
-      : channel = IOWebSocketChannel.connect(connectUrl) {
+      : channel = WebSocketChannel.connect(Uri.parse(connectUrl)) {
     broadcast = channel.stream.asBroadcastStream();
 
     if (onEvent != null) {

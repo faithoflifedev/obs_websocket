@@ -1,3 +1,6 @@
+## 2.0.5
+* trying to remove the dart:io dependency, for greater platform support
+
 ## 2.0.4
 * using pendantic for static analysis, upgrade to some dependencies
 
