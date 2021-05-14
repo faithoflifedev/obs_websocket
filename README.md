@@ -1,8 +1,12 @@
 # obs_websocket
-Some background, I needed a way to automate the start and stop streaming actions for [OBS](https://obsproject.com/) (Open Broadcast Software) with [cron](https://en.wikipedia.org/wiki/Cron) on OSX.  This package will allow you to do that with [dart](https://dart.dev/) or can be used with [flutter](https://flutter.dev/) to control OBS with a platform independent mobile app.
+Some background first. I needed a way to automate the start and stop streaming actions for [OBS](https://obsproject.com/) (Open Broadcast Software) with [cron](https://en.wikipedia.org/wiki/Cron) on OSX.  This package will allow you to do that with [dart](https://dart.dev/) or can be used with [flutter](https://flutter.dev/) to control OBS with a platform independent mobile app.
+
+This package gives access to all of the methods and events outlined by the [obs-websocket 4.9.0 protocol reference](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md) through the `command` method documented below, but also has helper methods for many of the more popular [Requests](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#requests) that are made avaialble through the protocol reference.
+
+Please feel free to submit PRs for any addtional helper methods, or report an [issue](https://github.com/faithoflifedev/obsWebsocket/issues) for a missing helper method and I'll add it if I have time available.
 
 ## Getting Started
-In your flutter project add the dependency:
+In your project add the dependency:
 
 ```yml
 dependencies:
@@ -16,8 +20,7 @@ For help getting started with dart, check out these [guides](https://dart.dev/gu
 Import the websocket connection library and the response library.
 
 ```dart
-import 'package:obs_websocket/obs_websocket.dart';
-import 'package:obs_websocket/response.dart';
+import 'package:obs_websocket/obsWebsocket.dart';
 ```
 
 ## Opening a websocket Connection
@@ -139,5 +142,29 @@ dart bin/ws-obs.dart --command GetStreamingStatus --url=ws://192.168.1.84:4444  
 
 You can use [dart compile](https://dart.dev/tools/dart-compile) to create the cli executable.
 
+## Breaking changes moving from v1.x v2.x
+I'm sorry to say that there are several, but it should be very easy to migrate over v1.0.0 code.
+
+```dart
+//This no longer works
+//import 'package:obs_websocket/obs_websocket.dart';
+
+//instead use
+import 'package:obs_websocket/obsWebsocket.dart';
+
+//This additional import is no longer necessary
+//import 'package:obs_websocket/response.dart';
+
+//SimpleResponse has gone away
+//SimpleResponse response = await obsWebSocket.command("StartStreaming");
+
+//It's been replaces with BaseResponse?
+BaseResponse? response = await obsWebSocket.command('StartStreaming');
+```
+
 ## Known bugs
 ~~I've submitted a [bug](https://github.com/Palakis/obs-websocket/issues/486) to the [obs-websocket](https://github.com/Palakis/obs-websocket) team for a bug that I am seeing when executing a websocket connecting program multiple times in sequence to start and stop steaming causes [OBS](https://obsproject.com/) to crash. For my use case I am able to work around this by stopping and restarting OBS itself before restarting streaming.~~
+
+
+## What's next
+In the next release I intent to simplify event handling somewhat.  Instead of one event handler created upon creation of the obsWebSocket instance, the library instead will provide the ability to subscribe handlers to specific events.

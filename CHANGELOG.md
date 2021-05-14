@@ -1,4 +1,7 @@
 ## 2.0.5
+* improved readme and example
+
+## 2.0.5
 * trying to remove the dart:io dependency, for greater platform support
 
 ## 2.0.4
