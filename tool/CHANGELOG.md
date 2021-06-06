@@ -1,3 +1,3 @@
-## {{ version }}
 
-- {{ change }}
+## {{ version }}
+* {{ change }}

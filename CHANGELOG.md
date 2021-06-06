@@ -1,6 +1,6 @@
 ## 2.0.8
+* added grind for a simplified workflow
 
-- added grind for a simplified workflow
 ## 2.0.7
 * more readme improvements
 
