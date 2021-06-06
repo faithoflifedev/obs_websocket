@@ -1,8 +1,13 @@
 import 'package:obs_websocket/obsWebsocket.dart';
+import 'package:universal_io/io.dart';
+import 'package:yaml/yaml.dart';
 
 void main(List<String> args) async {
+  //get connection infomration from the config.yaml file
+  final config = loadYaml(File('example/config.yaml').readAsStringSync());
+
   ObsWebSocket obsWebSocket = ObsWebSocket(
-      connectUrl: "ws://192.168.1.84:4444",
+      connectUrl: config['host'],
       onEvent: (BaseEvent event) {
         print('streaming: ${event.rawEvent}');
       });
@@ -10,7 +15,7 @@ void main(List<String> args) async {
   final authRequired = await obsWebSocket.getAuthRequired();
 
   if (authRequired.status) {
-    await obsWebSocket.authenticate(authRequired, "test");
+    await obsWebSocket.authenticate(authRequired, config['password']);
   }
 
   final status = await obsWebSocket.getStreamStatus();
@@ -19,12 +24,12 @@ void main(List<String> args) async {
     obsWebSocket.startStopStreaming();
   }
 
+  // final setting =
+  //     StreamSetting.fromJson(config['stream'].cast<Map<String, dynamic>>());
+
   final setting = StreamSetting.fromJson({
     'type': 'rtmp_custom',
-    'settings': {
-      'server': 'rtmp://localhost/live',
-      'key': 'e799f8a080cd11ea8ab98d27449157a9'
-    }
+    'settings': {'server': '[rtmp_url]', 'key': '[stream_key]'}
   });
 
   await obsWebSocket.setStreamSettings(setting);

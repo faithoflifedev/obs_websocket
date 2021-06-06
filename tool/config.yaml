@@ -1,0 +1,8 @@
+templates:
+  - name: README.md
+    type: overwrite
+  - name: CHANGELOG.md
+    type: prepend
+
+version: 2.0.8
+change: added grind for a simplified workflow

@@ -1,3 +1,9 @@
+## 2.0.8
+
+- added grind for a simplified workflow
+## 2.0.7
+* more readme improvements
+
 ## 2.0.6
 * improved readme and example
 
