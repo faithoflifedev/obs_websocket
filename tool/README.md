@@ -3,9 +3,16 @@ Some background first. I needed a way to automate the start and stop streaming a
 
 This package gives access to all of the methods and events outlined by the [obs-websocket 4.9.0 protocol reference](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md) through the `command` method documented below, but also has helper methods for many of the more popular [Requests](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#requests) that are made avaialble through the protocol reference.
 
+[![pub package](https://img.shields.io/pub/v/obs_websocket.svg)](https://pub.dartlang.org/packages/obs_websocket)
+
 Please feel free to submit PRs for any addtional helper methods, or report an [issue](https://github.com/faithoflifedev/obsWebsocket/issues) for a missing helper method and I'll add it if I have time available.
 
 ## Getting Started
+
+### Requirements:
+* The [OBS](https://obsproject.com/) application needs to be installed on a machine reachable on the local network
+* The [obs-websocket](https://github.com/Palakis/obs-websocket) plugin needs to be installed on the same machine
+
 In your project add the dependency:
 
 ```yml
