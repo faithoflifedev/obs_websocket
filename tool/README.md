@@ -53,7 +53,7 @@ obs-studio host ip - is the ip address or host name of the computer running [OBS
 final AuthRequired authRequired = await obsWebSocket.getAuthRequired();
 
 if (authRequired.status)
-	await obsWebSocket.authenticate(authRequired, "mySecretDontTell");
+	await obsWebSocket.authenticate(authRequired, '[password]');
 ```
 
 ## Sending Commands to [OBS](https://obsproject.com/)
@@ -71,7 +71,7 @@ if (!status.streaming) {
 Alternatively, there is a low-level interface for sending commands.  This can be used in place of the above, or in the case that a specific documented Request has not been implemented as method yet.  The available commands are documented on the [protocol](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md) page of the [obs-websocket](https://github.com/Palakis/obs-websocket) github page
 
 ```dart
-SimpleResponse response await obsWebSocket.command("StartStreaming");
+SimpleResponse response await obsWebSocket.command('StartStreaming');
 ```
 
 `response.status` will be `true` on success. `response.error` will give an error description if one is available.
@@ -79,23 +79,23 @@ SimpleResponse response await obsWebSocket.command("StartStreaming");
 Commands can also return a result as a `Map`:
 
 ```dart
-SimpleResponse response = await obsWebSocket.command("GetSourcesList");
+SimpleResponse response = await obsWebSocket.command('GetSourcesList');
 
-List sources = response.map["sources"];
+List sources = response.map['sources'];
 
-sources.forEach((source) => print(source["name"] + " - " + source["type"]));
+sources.forEach((source) => print(source['name'] + ' - ' + source['type']));
 ```
 
 Additionally you can provide arguments with a command:
 ```dart
-response = await obsWebSocket.command("GetSourceSettings", { "sourceName": "foreground" });
+response = await obsWebSocket.command('GetSourceSettings', { 'sourceName': 'foreground' });
 
 Map newSettings = Map<String,dynamic>.from(response.map);
 
-newSettings["sourceSettings"]["height"] = 1080;
-newSettings["sourceSettings"]["width"] = 1920;
+newSettings['sourceSettings']['height'] = 1080;
+newSettings['sourceSettings']['width'] = 1920;
 
-response = await obsWebSocket.command("SetSourceSettings", newSettings);
+response = await obsWebSocket.command('SetSourceSettings', newSettings);
 
 print(response.map);
 ```
@@ -135,7 +135,7 @@ obsWebSocket
 class           | types               
 ----------------|---------------------------
 RecordingState  | [RecordingStarting](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#recordingstarting), [RecordingStarted](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#recordingstarted), [RecordingStopping](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#recordingstopping), [RecordingStopped](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#recordingstopped), [RecordingPaused](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#recordingpaused), [RecordingResumed](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#recordingresumed)
-SceneItem       | [SceneItemAdded](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#sceneitemadded), [SceneItemRemoved](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#sceneitemremoved), [SceneItemSelected](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#sceneitemselected), [SceneItemDeselected]((https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#sceneitemdeselected))
+SceneItem       | [SceneItemAdded](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#sceneitemadded), [SceneItemRemoved](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#sceneitemremoved), [SceneItemSelected](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#sceneitemselected), [SceneItemDeselected](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#sceneitemdeselected)
 SceneItemState  | [SceneItemVisibilityChanged](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#sceneitemvisibilitychanged), [SceneItemLockChanged](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#sceneitemlockchanged)
 StreamState     | [StreamStarting](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#streamstarting), [StreamStarted](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#streamstarted), [StreamStopping](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#streamstopping), [StreamStopped](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#streamstopped)
 StreamStatus    | [StreamStatus](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#streamstatus)
@@ -352,7 +352,7 @@ import 'package:obs_websocket/obsWebsocket.dart';
 //import 'package:obs_websocket/response.dart';
 
 //SimpleResponse has gone away
-//SimpleResponse response = await obsWebSocket.command("StartStreaming");
+//SimpleResponse response = await obsWebSocket.command('StartStreaming');
 
 //It's been replaces with BaseResponse?
 BaseResponse? response = await obsWebSocket.command('StartStreaming');
