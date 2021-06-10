@@ -12,19 +12,19 @@ void main(List<String> args) async {
         print('event: ${event.rawEvent}');
       });
 
-  obsWebSocket.addListener<RecordingState>((RecordingState recordingState) =>
+  obsWebSocket.addHandler<RecordingState>((RecordingState recordingState) =>
       print('recording state: ${recordingState.type}'));
 
-  obsWebSocket.addListener<SceneItem>(
+  obsWebSocket.addHandler<SceneItem>(
       (SceneItem sceneItem) => print('scene item: ${sceneItem.itemName}'));
 
-  obsWebSocket.addListener<SceneItemState>((SceneItemState sceneItemState) =>
+  obsWebSocket.addHandler<SceneItemState>((SceneItemState sceneItemState) =>
       print('scene item state: ${sceneItemState.type}'));
 
-  obsWebSocket.addListener<StreamState>(
+  obsWebSocket.addHandler<StreamState>(
       (StreamState streamState) => print('stream state: ${streamState.type}'));
 
-  obsWebSocket.addListener<StreamStatus>((StreamStatus streamStatus) =>
+  obsWebSocket.addHandler<StreamStatus>((StreamStatus streamStatus) =>
       print('stream status (total frames): ${streamStatus.numTotalFrames}'));
 
   final authRequired = await obsWebSocket.getAuthRequired();

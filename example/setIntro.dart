@@ -1,34 +1,40 @@
 import 'package:obs_websocket/obsWebsocket.dart';
+import 'package:universal_io/io.dart';
+import 'package:yaml/yaml.dart';
 
 void main(List<String> args) async {
-  final sceneItem = 'ytBell';
+  final config = loadYaml(File('config.yaml').readAsStringSync());
 
-  ObsWebSocket obsWebSocket = await ObsWebSocket.connect(
-      connectUrl: "ws://192.168.1.84:4444",
-      fallbackEvent: (BaseEvent event, ObsWebSocket obsWebSocket) async {
-        // print('streaming: ${event.rawEvent}');
+  final sceneItem = 'opsLower';
 
-        if (event.updateType == 'SceneItemVisibilityChanged') {
-          final sceneItemVisibilityChanged = event.asSceneItemStateEvent();
+  ObsWebSocket obsWebSocket =
+      await ObsWebSocket.connect(connectUrl: config['host']);
 
-          if (sceneItemVisibilityChanged.itemName == sceneItem &&
-              sceneItemVisibilityChanged.state) {
-            final args = sceneItemVisibilityChanged.asArgs()
-              ..['render'] = 'false';
+  //this handler will only run when a SceneItemState event is generated
+  obsWebSocket
+      .addHandler<SceneItemState>((SceneItemState sceneItemState) async {
+    print('event: ${sceneItemState.sceneName} ${sceneItemState.state}');
 
-            await Future.delayed(Duration(seconds: 13));
+    //make sure we have the correct sceneItem and that it's currently visible
+    if (sceneItemState.type == 'SceneItemVisibilityChanged' &&
+        sceneItemState.itemName == sceneItem &&
+        sceneItemState.state) {
+      //wait 13 seconds
+      await Future.delayed(Duration(seconds: 13));
 
-            await obsWebSocket.setSceneItemRender(args);
+      //hide the sceneItem
+      await obsWebSocket
+          .setSceneItemRender(sceneItemState.toSceneItemRenderMap(false));
 
-            await obsWebSocket.close();
-          }
-        }
-      });
+      //close the socket when complete
+      await obsWebSocket.close();
+    }
+  });
 
   final authRequired = await obsWebSocket.getAuthRequired();
 
   if (authRequired.status) {
-    await obsWebSocket.authenticate(authRequired, "test");
+    await obsWebSocket.authenticate(authRequired, config['password']);
   }
 
   final currentScene = await obsWebSocket.getCurrentScene();
@@ -38,7 +44,6 @@ void main(List<String> args) async {
   if (sceneDetail == null) {
     throw Exception();
   }
-  ;
 
   if (sceneDetail.render) {
     await obsWebSocket

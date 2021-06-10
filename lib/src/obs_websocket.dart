@@ -21,9 +21,9 @@ class ObsWebSocket {
 
   late final Stream<dynamic> broadcast;
 
-  final List<Function> fallbackListeners = [];
+  final List<Function> fallbackHandlers = [];
 
-  final eventListeners = Map<String, List<Function>>();
+  final eventHandlers = Map<String, List<Function>>();
 
   int message_id = 0;
 
@@ -63,27 +63,27 @@ class ObsWebSocket {
   }
 
   ///add an event handler for the event type [T]
-  void addListener<T>(Function listener) {
-    eventListeners['$T'] ??= <Function>[];
+  void addHandler<T>(Function listener) {
+    eventHandlers['$T'] ??= <Function>[];
 
-    eventListeners['$T']?.add(listener);
+    eventHandlers['$T']?.add(listener);
   }
 
   ///remove an event handler for the event type [T]
-  void removeListener<T>(Function listener) {
-    eventListeners['$T'] ??= <Function>[];
+  void removeHandler<T>(Function listener) {
+    eventHandlers['$T'] ??= <Function>[];
 
-    eventListeners['$T']?.remove(listener);
+    eventHandlers['$T']?.remove(listener);
   }
 
   ///add an event handler for an event that don't have a specific class
   void addFallbackListener(Function listener) {
-    fallbackListeners.add(listener);
+    fallbackHandlers.add(listener);
   }
 
   ///remove an event handler for an event that don't have a specific class
   void removeFallbackListener(Function listener) {
-    fallbackListeners.remove(listener);
+    fallbackHandlers.remove(listener);
   }
 
   ///look at the raw [event] data and run the appropriate event handler
@@ -95,7 +95,7 @@ class ObsWebSocket {
       case 'RecordingStopped':
       case 'RecordingPaused':
       case 'RecordingResumed':
-        final listeners = eventListeners['RecordingState'] ?? [];
+        final listeners = eventHandlers['RecordingState'] ?? [];
 
         if (listeners.isNotEmpty) {
           listeners
@@ -107,7 +107,7 @@ class ObsWebSocket {
       case 'SceneItemRemoved':
       case 'SceneItemSelected':
       case 'SceneItemDeselected':
-        final listeners = eventListeners['SceneItem'] ?? [];
+        final listeners = eventHandlers['SceneItem'] ?? [];
 
         if (listeners.isNotEmpty) {
           listeners.forEach((handler) => handler(event.asSceneItemEvent()));
@@ -116,7 +116,7 @@ class ObsWebSocket {
 
       case 'SceneItemVisibilityChanged':
       case 'SceneItemLockChanged':
-        final listeners = eventListeners['SceneItemState'] ?? [];
+        final listeners = eventHandlers['SceneItemState'] ?? [];
 
         if (listeners.isNotEmpty) {
           listeners
@@ -128,7 +128,7 @@ class ObsWebSocket {
       case 'StreamStarted':
       case 'StreamStopping':
       case 'StreamStopped':
-        final listeners = eventListeners['StreamState'] ?? [];
+        final listeners = eventHandlers['StreamState'] ?? [];
 
         if (listeners.isNotEmpty) {
           listeners.forEach((handler) => handler(event.asSteamStateEvent()));
@@ -136,7 +136,7 @@ class ObsWebSocket {
         break;
 
       case 'StreamStatus':
-        final listeners = eventListeners['StreamStatus'] ?? [];
+        final listeners = eventHandlers['StreamStatus'] ?? [];
 
         if (listeners.isNotEmpty) {
           listeners.forEach((handler) => handler(event.asSteamStatusEvent()));
@@ -150,7 +150,7 @@ class ObsWebSocket {
 
   ///handler when none of the others match the event class
   void _fallback(BaseEvent event) {
-    fallbackListeners.forEach((handler) => handler(event));
+    fallbackHandlers.forEach((handler) => handler(event));
   }
 
   // void addListener(Function listener) {

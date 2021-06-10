@@ -49,11 +49,11 @@ class SceneItemState {
 
   Map<String, dynamic> toJson() => _$SceneItemStateToJson(this);
 
-  Map<String, dynamic> asArgs() => {
+  Map<String, dynamic> toSceneItemRenderMap(bool render) => {
         'scene-name': sceneName,
         'source': itemName,
         'item': itemId,
-        'render': itemVisible
+        'render': render
       };
 
   @override
