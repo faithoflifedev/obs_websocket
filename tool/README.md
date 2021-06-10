@@ -38,7 +38,10 @@ Before a websocket connection can be made to a running instance of [OBS](https:/
 To open a websocket connection, we need to create new ObsWebSocket using the special protocol ws in the url:
 
 ```dart
-ObsWebSocket obsWebSocket = ObsWebSocket(connectUrl: "ws://[obs-studio host ip]:4444");
+//the method to connect has changed with v2.1.x
+ObsWebSocket obsWebSocket =
+    await ObsWebSocket.connect(connectUrl: 'ws://[obs-studio host ip]:4444');
+
 ```
 
 obs-studio host ip - is the ip address or host name of the computer running [OBS](https://obsproject.com/) that wou would like to send remote control commands to.
@@ -314,6 +317,26 @@ For any of the items that have an [x] from the list below, a high level command 
     + [ ] [StartVirtualCam](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#startvirtualcam)
     + [ ] [StopVirtualCam](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#stopvirtualcam)
 
+## Breaking changes moving from v2.0.x to v2.1.x
+The underlying [web_socket_channel](https://pub.dev/packages/web_socket_channel) library defaults to a very long timeout and attempting to connect to OBS when it is not actually running will not throw an catchable exception, there is more info about this available in the project github [issue](https://github.com/dart-lang/web_socket_channel/issues/61) tracker.  To resolve this [issue](https://github.com/faithoflifedev/obsWebsocket/issues/2) in obs_websocket there has been a modification to the code used to connect to OBS.
+
+```dart
+//This will no longer work
+//ObsWebSocket obsWebSocket = ObsWebSocket(connectUrl: 'ws://[obs-studio host ip]:4444');
+//
+//alternatively you could use:
+//final websocket = await WebSocket.connect(connectUrl).timeout(timeout);
+//
+//final obsWebSocket = ObsWebSocket(channel: IOWebSocketChannel(websocket));
+//or
+//The new connect method also gives the option for a timeout and will throw a catchable exception in 
+//the case that OBS is not running.  The default timeout is 30 seconds.
+final obsWebSocket =
+    await ObsWebSocket.connect(
+      connectUrl: 'ws://[obs-studio host ip]:4444', 
+      timeout: const Duration(seconds: 5)
+    );
+```
 
 ## Breaking changes moving from v1.x to v2.x
 I'm sorry to say that there are several, but it should be very easy to migrate over v1.0.0 code.

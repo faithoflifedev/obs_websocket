@@ -29,7 +29,7 @@ class ObsWebSocket {
 
   ///When the object is created we open the websocket connection and create a
   ///broadcast stream so that we can have multiple listeners providing responses
-  ///to commands. [connectUrl] is in the format 'ws://host:port'.
+  ///to commands. [channel] is an existing [WebSocketChannel].
   ObsWebSocket({required this.channel, Function? fallbackEvent}) {
     broadcast = channel.stream.asBroadcastStream();
 
@@ -50,7 +50,7 @@ class ObsWebSocket {
       {required String connectUrl,
       Function? fallbackEvent,
       Function? onError,
-      Duration timeout = const Duration(seconds: 10)}) async {
+      Duration timeout = const Duration(seconds: 30)}) async {
     final websocket = await WebSocket.connect(connectUrl).timeout(timeout);
 
     return ObsWebSocket(
