@@ -4,5 +4,5 @@ templates:
   - name: CHANGELOG.md
     type: prepend
 
-version: 2.0.8
-change: added grind for a simplified workflow
+version: 2.1.0
+change: 'Closes #2. Adds a timeout and a throwable exception to the websocket'
