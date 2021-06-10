@@ -1,4 +1,7 @@
 
+## 2.2.0
+* file name changed to match publish spec
+
 ## 2.1.2
 * runtime js compatibility
 

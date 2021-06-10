@@ -4,5 +4,5 @@ templates:
   - name: CHANGELOG.md
     type: prepend
 
-version: 2.1.2
-change: 'runtime js compatibility'
+version: 2.2.0
+change: 'file name changed to match publish spec'

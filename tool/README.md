@@ -317,6 +317,18 @@ For any of the items that have an [x] from the list below, a high level command 
     + [ ] [StartVirtualCam](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#startvirtualcam)
     + [ ] [StopVirtualCam](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#stopvirtualcam)
 
+## Breaking changes moving from v2.1.x to v2.2.x
+
+The [dart pub publish] analyzer wanted a file name change, so here it is.
+
+```dart
+//This no longer works
+//import 'package:obs_websocket/obsWebsocket.dart';
+
+//instead use
+import 'package:obs_websocket/obs_websocket.dart';
+```
+
 ## Breaking changes moving from v2.0.x to v2.1.x
 The underlying [web_socket_channel](https://pub.dev/packages/web_socket_channel) library defaults to a very long timeout and attempting to connect to OBS when it is not actually running will not throw an catchable exception, there is more info about this available in the project github [issue](https://github.com/dart-lang/web_socket_channel/issues/61) tracker.  To resolve this [issue](https://github.com/faithoflifedev/obsWebsocket/issues/2) in obs_websocket there has been a modification to the code used to connect to OBS.
 
@@ -346,7 +358,7 @@ I'm sorry to say that there are several, but it should be very easy to migrate o
 //import 'package:obs_websocket/obs_websocket.dart';
 
 //instead use
-import 'package:obs_websocket/obs_websocket.dart';
+import 'package:obs_websocket/obsWebsocket.dart';
 
 //This additional import is no longer necessary
 //import 'package:obs_websocket/response.dart';
