@@ -4,13 +4,28 @@ import 'package:yaml/yaml.dart';
 
 void main(List<String> args) async {
   //get connection infomration from the config.yaml file
-  final config = loadYaml(File('example/config.yaml').readAsStringSync());
+  final config = loadYaml(File('config.yaml').readAsStringSync());
 
-  ObsWebSocket obsWebSocket = ObsWebSocket(
+  ObsWebSocket obsWebSocket = await ObsWebSocket.connect(
       connectUrl: config['host'],
-      onEvent: (BaseEvent event) {
-        print('streaming: ${event.rawEvent}');
+      fallbackEvent: (BaseEvent event) {
+        print('event: ${event.rawEvent}');
       });
+
+  obsWebSocket.addHandler<RecordingState>((RecordingState recordingState) =>
+      print('recording state: ${recordingState.type}'));
+
+  obsWebSocket.addHandler<SceneItem>(
+      (SceneItem sceneItem) => print('scene item: ${sceneItem.itemName}'));
+
+  obsWebSocket.addHandler<SceneItemState>((SceneItemState sceneItemState) =>
+      print('scene item state: ${sceneItemState.type}'));
+
+  obsWebSocket.addHandler<StreamState>(
+      (StreamState streamState) => print('stream state: ${streamState.type}'));
+
+  obsWebSocket.addHandler<StreamStatus>((StreamStatus streamStatus) =>
+      print('stream status (total frames): ${streamStatus.numTotalFrames}'));
 
   final authRequired = await obsWebSocket.getAuthRequired();
 
@@ -20,33 +35,32 @@ void main(List<String> args) async {
 
   final status = await obsWebSocket.getStreamStatus();
 
-  if (status.streaming) {
-    obsWebSocket.startStopStreaming();
+  if (!status.streaming) {
+    final setting = StreamSetting.fromJson({
+      'type': 'rtmp_custom',
+      'settings': {'server': '[rtmp_url]', 'key': '[stream_key]'}
+    });
+
+    await obsWebSocket.setStreamSettings(setting);
+
+    obsWebSocket.startStreaming();
   }
-
-  // final setting =
-  //     StreamSetting.fromJson(config['stream'].cast<Map<String, dynamic>>());
-
-  final setting = StreamSetting.fromJson({
-    'type': 'rtmp_custom',
-    'settings': {'server': '[rtmp_url]', 'key': '[stream_key]'}
-  });
-
-  await obsWebSocket.setStreamSettings(setting);
 
   final streamSettings = await obsWebSocket.getStreamSettings();
 
-  print(streamSettings.settings.toString());
+  await obsWebSocket.startStopRecording();
 
   //using the old v1.x lower lovel methods
-  final response = await obsWebSocket.command('StartStreaming');
+  // final response = await obsWebSocket.command('StopStreaming');
+
+  // if (response != null) {
+  //   print(response.status);
+  // }
 
   //Alternatively, the helper method could be used
-  //await obsWebSocket.startStreaming();
+  await obsWebSocket.stopStreaming();
 
-  if (response != null) {
-    print(response.status);
-  }
+  print(streamSettings.settings.toString());
 
   obsWebSocket.close();
 }
