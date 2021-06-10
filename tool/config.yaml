@@ -4,5 +4,5 @@ templates:
   - name: CHANGELOG.md
     type: prepend
 
-version: 2.1.1
-change: 'tweak readme'
+version: 2.1.2
+change: 'runtime js compatibility'
