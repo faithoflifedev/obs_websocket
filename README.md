@@ -355,7 +355,7 @@ I'm sorry to say that there are several, but it should be very easy to migrate o
 
 ```dart
 //This no longer works
-//import 'package:obs_websocket/obsWebsocket.dart';
+//import 'package:obs_websocket/obs_websocket.dart';
 
 //instead use
 import 'package:obs_websocket/obsWebsocket.dart';
