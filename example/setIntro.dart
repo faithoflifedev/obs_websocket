@@ -1,4 +1,4 @@
-import 'package:obs_websocket/obsWebsocket.dart';
+import 'package:obs_websocket/obs_websocket.dart';
 import 'package:universal_io/io.dart';
 import 'package:yaml/yaml.dart';
 

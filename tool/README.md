@@ -27,7 +27,7 @@ For help getting started with dart, check out these [guides](https://dart.dev/gu
 Import the websocket connection library and the response library.
 
 ```dart
-import 'package:obs_websocket/obsWebsocket.dart';
+import 'package:obs_websocket/obs_websocket.dart';
 ```
 
 ## Opening a websocket Connection
@@ -346,7 +346,7 @@ I'm sorry to say that there are several, but it should be very easy to migrate o
 //import 'package:obs_websocket/obs_websocket.dart';
 
 //instead use
-import 'package:obs_websocket/obsWebsocket.dart';
+import 'package:obs_websocket/obs_websocket.dart';
 
 //This additional import is no longer necessary
 //import 'package:obs_websocket/response.dart';

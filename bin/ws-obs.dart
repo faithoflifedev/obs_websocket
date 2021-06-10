@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:args/args.dart';
-import 'package:obs_websocket/obsWebsocket.dart';
+import 'package:obs_websocket/obs_websocket.dart';
 import 'package:universal_io/io.dart';
 
 void main(List<String> args) async {

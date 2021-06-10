@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:crypto/crypto.dart';
-import 'package:obs_websocket/obsWebsocket.dart';
+import 'package:obs_websocket/obs_websocket.dart';
 import 'package:obs_websocket/src/model/authRequiredResponse.dart';
 import 'package:obs_websocket/src/model/mediaStateResponse.dart';
 import 'package:obs_websocket/src/model/scene.dart';
