@@ -1,26 +1,28 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'sceneItemVisibilityChanged.dart';
+part of 'sceneItemState.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-SceneItemVisibilityChanged _$SceneItemVisibilityChangedFromJson(
-    Map<String, dynamic> json) {
-  return SceneItemVisibilityChanged(
+SceneItemState _$SceneItemStateFromJson(Map<String, dynamic> json) {
+  return SceneItemState(
     itemId: json['item-id'] as int,
     itemName: json['item-name'] as String,
-    itemVisible: json['item-visible'] as bool,
+    itemVisible: json['item-visible'] as bool?,
+    itemLocked: json['item-locked'] as bool?,
     sceneName: json['scene-name'] as String,
+    type: json['type'] as String?,
   );
 }
 
-Map<String, dynamic> _$SceneItemVisibilityChangedToJson(
-        SceneItemVisibilityChanged instance) =>
+Map<String, dynamic> _$SceneItemStateToJson(SceneItemState instance) =>
     <String, dynamic>{
       'item-id': instance.itemId,
       'item-name': instance.itemName,
       'item-visible': instance.itemVisible,
+      'item-locked': instance.itemLocked,
       'scene-name': instance.sceneName,
+      'type': instance.type,
     };

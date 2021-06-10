@@ -5,10 +5,11 @@ import 'package:yaml/yaml.dart';
 void main(List<String> args) async {
   final config = loadYaml(File('config.yaml').readAsStringSync());
 
-  ObsWebSocket obsWebSocket = ObsWebSocket(
+  ObsWebSocket obsWebSocket = await ObsWebSocket.connect(
       connectUrl: config['host'],
-      onEvent: (BaseEvent event) {
-        print('streaming: ${event.rawEvent}');
+      timeout: const Duration(seconds: 5),
+      fallbackEvent: (event) {
+        print('event: ${event.rawEvent}');
       });
 
   final authRequired = await obsWebSocket.getAuthRequired();

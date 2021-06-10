@@ -50,9 +50,9 @@ class Config {
         abbr: 'u',
         // defaultsTo: 'ws://127.0.0.1:4444',
         valueHelp: 'ws://[host]:[port]',
-        help: 'The url and port for OBS websocket', callback: (url) {
+        help: 'The url and port for OBS websocket', callback: (url) async {
       if (url != null) {
-        obsWebSocket = ObsWebSocket(connectUrl: url);
+        obsWebSocket = await ObsWebSocket.connect(connectUrl: url);
       } else {
         print(
             'You need to supply a url for this to work, use --help for more options');

@@ -1,13 +1,13 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'streamStatusEvent.dart';
+part of 'streamStatus.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-StreamStatusEvent _$StreamStatusEventFromJson(Map<String, dynamic> json) {
-  return StreamStatusEvent(
+StreamStatus _$StreamStatusFromJson(Map<String, dynamic> json) {
+  return StreamStatus(
     avgFrameTime: (json['average-frame-time'] as num?)?.toDouble(),
     bytesPerSec: json['bytes-per-sec'] as int?,
     cpuUsage: (json['cpu-usage'] as num?)?.toDouble(),
@@ -33,7 +33,7 @@ StreamStatusEvent _$StreamStatusEventFromJson(Map<String, dynamic> json) {
   );
 }
 
-Map<String, dynamic> _$StreamStatusEventToJson(StreamStatusEvent instance) =>
+Map<String, dynamic> _$StreamStatusToJson(StreamStatus instance) =>
     <String, dynamic>{
       'average-frame-time': instance.avgFrameTime,
       'bytes-per-sec': instance.bytesPerSec,
