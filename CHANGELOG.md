@@ -1,3 +1,6 @@
+
+## 2.1.0
+* enhanced event support
 ## 2.0.8
 * added grind for a simplified workflow
 
