@@ -39,8 +39,8 @@ class Config {
         abbr: 'u',
         defaultsTo: 'ws://127.0.0.1:4444',
         valueHelp: 'ws://[host]:[port]',
-        help: 'The url and port for OBS websocket', callback: (url) {
-      obsWebSocket = ObsWebSocket(connectUrl: url!);
+        help: 'The url and port for OBS websocket', callback: (url) async {
+      obsWebSocket = await ObsWebSocket.connect(connectUrl: url!);
     });
     parser.addOption('command',
         abbr: 'c',

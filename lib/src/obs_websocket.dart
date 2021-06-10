@@ -9,39 +9,52 @@ import 'package:obs_websocket/src/model/streamSetting.dart';
 import 'package:obs_websocket/src/model/streamSettingsResponse.dart';
 import 'package:obs_websocket/src/model/streamStatusResponse.dart';
 import 'package:obs_websocket/src/model/studioModeStatus.dart';
+import 'package:universal_io/io.dart';
+import 'package:web_socket_channel/io.dart';
 import 'package:web_socket_channel/status.dart' as status;
 import 'package:web_socket_channel/web_socket_channel.dart';
 
 class ObsWebSocket {
-  final String connectUrl;
+  //final String connectUrl;
 
   final WebSocketChannel channel;
 
   late final Stream<dynamic> broadcast;
 
-  final List<Function> listeners = [];
+  final List<Function> fallbackListeners = [];
+
+  final eventListeners = Map<String, List<Function>>();
 
   int message_id = 0;
 
   ///When the object is created we open the websocket connection and create a
   ///broadcast stream so that we can have multiple listeners providing responses
   ///to commands. [connectUrl] is in the format 'ws://host:port'.
-  ObsWebSocket({required this.connectUrl, Function? onEvent})
-      : channel = WebSocketChannel.connect(Uri.parse(connectUrl)) {
+  ObsWebSocket({required this.channel, Function? fallbackEvent}) {
     broadcast = channel.stream.asBroadcastStream();
 
-    if (onEvent != null) {
-      addListener(onEvent);
-    }
+    // if (fallbackEvent != null) {
+    //   addFallbackListener(fallbackEvent);
+    // }
 
     broadcast.listen((jsonEvent) {
       final Map<String, dynamic> rawEvent = jsonDecode(jsonEvent);
 
-      if (!rawEvent.containsKey('message-id') && listeners.isNotEmpty) {
-        listeners.forEach((listener) async =>
-            await listener(BaseEvent.fromJson(rawEvent), this));
+      if (!rawEvent.containsKey('message-id')) {
+        _handleEvent(BaseEvent.fromJson(rawEvent));
       }
-    });
+    }, cancelOnError: true);
+  }
+
+  static Future<ObsWebSocket> connect(
+      {required String connectUrl,
+      Function? fallbackEvent,
+      Function? onError,
+      Duration timeout = const Duration(seconds: 10)}) async {
+    final websocket = await WebSocket.connect(connectUrl).timeout(timeout);
+
+    return ObsWebSocket(
+        channel: IOWebSocketChannel(websocket), fallbackEvent: fallbackEvent);
   }
 
   /// Before execution finished the websocket needs to be closed
@@ -49,9 +62,100 @@ class ObsWebSocket {
     await channel.sink.close(status.goingAway);
   }
 
-  void addListener(Function listener) {
-    listeners.add(listener);
+  ///add an event handler for the event type [T]
+  void addListener<T>(Function listener) {
+    eventListeners['$T'] ??= <Function>[];
+
+    eventListeners['$T']?.add(listener);
   }
+
+  ///remove an event handler for the event type [T]
+  void removeListener<T>(Function listener) {
+    eventListeners['$T'] ??= <Function>[];
+
+    eventListeners['$T']?.remove(listener);
+  }
+
+  ///add an event handler for an event that don't have a specific class
+  void addFallbackListener(Function listener) {
+    fallbackListeners.add(listener);
+  }
+
+  ///remove an event handler for an event that don't have a specific class
+  void removeFallbackListener(Function listener) {
+    fallbackListeners.remove(listener);
+  }
+
+  ///look at the raw [event] data and run the appropriate event handler
+  void _handleEvent(BaseEvent event) {
+    switch (event.updateType) {
+      case 'RecordingStarting':
+      case 'RecordingStarted':
+      case 'RecordingStopping':
+      case 'RecordingStopped':
+      case 'RecordingPaused':
+      case 'RecordingResumed':
+        final listeners = eventListeners['RecordingState'] ?? [];
+
+        if (listeners.isNotEmpty) {
+          listeners
+              .forEach((handler) => handler(event.asRecordingStateEvent()));
+        }
+        break;
+
+      case 'SceneItemAdded':
+      case 'SceneItemRemoved':
+      case 'SceneItemSelected':
+      case 'SceneItemDeselected':
+        final listeners = eventListeners['SceneItem'] ?? [];
+
+        if (listeners.isNotEmpty) {
+          listeners.forEach((handler) => handler(event.asSceneItemEvent()));
+        }
+        break;
+
+      case 'SceneItemVisibilityChanged':
+      case 'SceneItemLockChanged':
+        final listeners = eventListeners['SceneItemState'] ?? [];
+
+        if (listeners.isNotEmpty) {
+          listeners
+              .forEach((handler) => handler(event.asSceneItemStateEvent()));
+        }
+        break;
+
+      case 'StreamStarting':
+      case 'StreamStarted':
+      case 'StreamStopping':
+      case 'StreamStopped':
+        final listeners = eventListeners['StreamState'] ?? [];
+
+        if (listeners.isNotEmpty) {
+          listeners.forEach((handler) => handler(event.asSteamStateEvent()));
+        }
+        break;
+
+      case 'StreamStatus':
+        final listeners = eventListeners['StreamStatus'] ?? [];
+
+        if (listeners.isNotEmpty) {
+          listeners.forEach((handler) => handler(event.asSteamStatusEvent()));
+        }
+        break;
+
+      default:
+        _fallback(event);
+    }
+  }
+
+  ///handler when none of the others match the event class
+  void _fallback(BaseEvent event) {
+    fallbackListeners.forEach((handler) => handler(event));
+  }
+
+  // void addListener(Function listener) {
+  //   listeners.add(listener);
+  // }
 
   ///Returns an AuthRequiredResponse object that can be used to determine if
   ///authentication is required to connect to the server.  The
@@ -172,14 +276,29 @@ class ObsWebSocket {
     await command('StopStreaming');
   }
 
+  ///Stop recording. Will return an error if recording is not active.
+  Future<void> stopRecording() async {
+    await command('StopRecordinging');
+  }
+
   ///Start streaming. Will return an error if streaming is already active.
   Future<void> startStreaming() async {
     await command('StartStreaming');
   }
 
+  ///Start recording. Will return an error if recording is already active.
+  Future<void> startRecording() async {
+    await command('StartRecording');
+  }
+
   ///Toggle streaming on or off (depending on the current stream state).
   Future<void> startStopStreaming() async {
     await command('StartStopStreaming');
+  }
+
+  ///Toggle recording on or off (depending on the current recording state).
+  Future<void> startStopRecording() async {
+    await command('StartStopRecording');
   }
 
   ///Get the current streaming server settings.
@@ -200,6 +319,18 @@ class ObsWebSocket {
   ///same as 'GetStreamSettings').
   Future<void> setStreamSettings(StreamSetting streamSetting) async {
     await command('SetStreamSettings', streamSetting.toJson());
+  }
+
+  ///Pause the current recording. Returns an error if recording is not active or
+  ///already paused.
+  Future<void> pauseRecording() async {
+    await command('PauseRecording');
+  }
+
+  ///Resume/unpause the current recording (if paused). Returns an error if
+  ///recording is not active or not paused.
+  Future<void> resumeRecording() async {
+    await command('ResumeRecording');
   }
 
   ///Enables Studio Mode.

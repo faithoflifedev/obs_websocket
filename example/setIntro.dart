@@ -3,17 +3,16 @@ import 'package:obs_websocket/obsWebsocket.dart';
 void main(List<String> args) async {
   final sceneItem = 'ytBell';
 
-  ObsWebSocket obsWebSocket = ObsWebSocket(
+  ObsWebSocket obsWebSocket = await ObsWebSocket.connect(
       connectUrl: "ws://192.168.1.84:4444",
-      onEvent: (BaseEvent event, ObsWebSocket obsWebSocket) async {
+      fallbackEvent: (BaseEvent event, ObsWebSocket obsWebSocket) async {
         // print('streaming: ${event.rawEvent}');
 
         if (event.updateType == 'SceneItemVisibilityChanged') {
-          final sceneItemVisibilityChanged =
-              event.asSceneItemVisibilityChangedEvent();
+          final sceneItemVisibilityChanged = event.asSceneItemStateEvent();
 
           if (sceneItemVisibilityChanged.itemName == sceneItem &&
-              sceneItemVisibilityChanged.itemVisible) {
+              sceneItemVisibilityChanged.state) {
             final args = sceneItemVisibilityChanged.asArgs()
               ..['render'] = 'false';
 

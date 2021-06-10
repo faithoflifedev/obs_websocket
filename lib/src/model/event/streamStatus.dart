@@ -2,10 +2,10 @@ import 'dart:convert';
 
 import 'package:json_annotation/json_annotation.dart';
 
-part 'streamStatusEvent.g.dart';
+part 'streamStatus.g.dart';
 
 @JsonSerializable()
-class StreamStatusEvent {
+class StreamStatus {
   @JsonKey(name: 'average-frame-time')
   final double? avgFrameTime;
 
@@ -72,7 +72,7 @@ class StreamStatusEvent {
   @JsonKey(name: 'update-type')
   final String updateType;
 
-  StreamStatusEvent(
+  StreamStatus(
       {this.avgFrameTime,
       this.bytesPerSec,
       this.cpuUsage,
@@ -96,10 +96,10 @@ class StreamStatusEvent {
       this.totalStreamTime,
       required this.updateType});
 
-  factory StreamStatusEvent.fromJson(Map<String, dynamic> json) =>
-      _$StreamStatusEventFromJson(json);
+  factory StreamStatus.fromJson(Map<String, dynamic> json) =>
+      _$StreamStatusFromJson(json);
 
-  Map<String, dynamic> toJson() => _$StreamStatusEventToJson(this);
+  Map<String, dynamic> toJson() => _$StreamStatusToJson(this);
 
   @override
   String toString() {
