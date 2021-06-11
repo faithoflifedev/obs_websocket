@@ -11,20 +11,21 @@ void main(List<String> args) async {
       await ObsWebSocket.connect(connectUrl: config['host']);
 
   //this handler will only run when a SceneItemState event is generated
-  obsWebSocket
-      .addHandler<SceneItemState>((SceneItemState sceneItemState) async {
-    print('event: ${sceneItemState.sceneName} ${sceneItemState.state}');
+  obsWebSocket.addHandler<SceneItemStateEvent>(
+      (SceneItemStateEvent sceneItemStateEvent) async {
+    print(
+        'event: ${sceneItemStateEvent.sceneName} ${sceneItemStateEvent.state}');
 
     //make sure we have the correct sceneItem and that it's currently visible
-    if (sceneItemState.type == 'SceneItemVisibilityChanged' &&
-        sceneItemState.itemName == sceneItem &&
-        sceneItemState.state) {
+    if (sceneItemStateEvent.type == 'SceneItemVisibilityChanged' &&
+        sceneItemStateEvent.itemName == sceneItem &&
+        sceneItemStateEvent.state) {
       //wait 13 seconds
       await Future.delayed(Duration(seconds: 13));
 
       //hide the sceneItem
       await obsWebSocket
-          .setSceneItemRender(sceneItemState.toSceneItemRenderMap(false));
+          .setSceneItemRender(sceneItemStateEvent.toSceneItemRenderMap(false));
 
       //close the socket when complete
       await obsWebSocket.close();

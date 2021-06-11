@@ -2,10 +2,11 @@ import 'dart:convert';
 
 import 'package:json_annotation/json_annotation.dart';
 
-part 'streamStatus.g.dart';
+part 'streamStatusEvent.g.dart';
 
+///Emitted every 2 seconds when stream is active.
 @JsonSerializable()
-class StreamStatus {
+class StreamStatusEvent {
   @JsonKey(name: 'average-frame-time')
   final double? avgFrameTime;
 
@@ -72,7 +73,7 @@ class StreamStatus {
   @JsonKey(name: 'update-type')
   final String updateType;
 
-  StreamStatus(
+  StreamStatusEvent(
       {this.avgFrameTime,
       this.bytesPerSec,
       this.cpuUsage,
@@ -96,10 +97,10 @@ class StreamStatus {
       this.totalStreamTime,
       required this.updateType});
 
-  factory StreamStatus.fromJson(Map<String, dynamic> json) =>
-      _$StreamStatusFromJson(json);
+  factory StreamStatusEvent.fromJson(Map<String, dynamic> json) =>
+      _$StreamStatusEventFromJson(json);
 
-  Map<String, dynamic> toJson() => _$StreamStatusToJson(this);
+  Map<String, dynamic> toJson() => _$StreamStatusEventToJson(this);
 
   @override
   String toString() {

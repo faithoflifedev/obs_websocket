@@ -1,9 +1,10 @@
-import 'package:obs_websocket/src/model/event/recordingState.dart';
-import 'package:obs_websocket/src/model/event/sceneItem.dart';
-import 'package:obs_websocket/src/model/event/sceneItemState.dart';
-import 'package:obs_websocket/src/model/event/streamState.dart';
-import 'package:obs_websocket/src/model/event/streamStatus.dart';
+import 'package:obs_websocket/src/model/event/recordingStateEvent.dart';
+import 'package:obs_websocket/src/model/event/sceneItemEvent.dart';
+import 'package:obs_websocket/src/model/event/sceneItemStateEvent.dart';
+import 'package:obs_websocket/src/model/event/streamStateEvent.dart';
+import 'package:obs_websocket/src/model/event/streamStatusEvent.dart';
 
+///A class that represents an event emitted by the [ObsWebSocket] the a
 class BaseEvent {
   final String updateType;
   final Map<String, dynamic> rawEvent;
@@ -16,9 +17,34 @@ class BaseEvent {
     return BaseEvent(json['update-type'], json);
   }
 
+  ///returns a [StreamStatusEvent], [RecordingStateEvent], [SceneItemEvent], [SceneItemStateEvent],
+  ///[StreamStateEvent] object or an [Exception] if [BaseEvent] doesn't match the
+  ///[Type] provided.
+  Object asEvent<T>() {
+    switch (T.toString()) {
+      case 'StreamStatusEvent':
+        return StreamStatusEvent.fromJson(rawEvent);
+
+      case 'RecordingStateEvent':
+        return RecordingStateEvent.fromJson(rawEvent, updateType);
+
+      case 'SceneItemEvent':
+        return SceneItemEvent.fromJson(rawEvent, updateType);
+
+      case 'SceneItemStateEvent':
+        return SceneItemStateEvent.fromJson(rawEvent, updateType);
+
+      case 'StreamStateEvent':
+        return StreamStateEvent.fromJson(rawEvent, updateType);
+    }
+
+    throw exception;
+  }
+
   ///returns a [RecordingState] object or an [Exception] if [BaseEvent] type
   ///can't be resolved.
-  RecordingState asRecordingStateEvent() {
+  @deprecated
+  RecordingStateEvent asRecordingStateEvent() {
     switch (updateType) {
       case 'RecordingStarting':
       case 'RecordingStarted':
@@ -26,57 +52,61 @@ class BaseEvent {
       case 'RecordingStopped':
       case 'RecordingPaused':
       case 'RecordingResumed':
-        return RecordingState.fromJson(rawEvent, updateType);
+        return RecordingStateEvent.fromJson(rawEvent, updateType);
     }
 
     throw exception;
   }
 
-  ///returns a [SceneItem] object or an [Exception] if [BaseEvent] type
+  ///returns a [SceneItemEvent] object or an [Exception] if [BaseEvent] type
   ///can't be resolved.
-  SceneItem asSceneItemEvent() {
+  @deprecated
+  SceneItemEvent asSceneItemEvent() {
     switch (updateType) {
       case 'SceneItemAdded':
       case 'SceneItemRemoved':
       case 'SceneItemSelected':
       case 'SceneItemDeselected':
-        return SceneItem.fromJson(rawEvent, updateType);
+        return SceneItemEvent.fromJson(rawEvent, updateType);
     }
 
     throw exception;
   }
 
-  ///returns a [SceneItemState] object or an [Exception] if [BaseEvent] type
+  ///returns a [SceneItemStateEvent] object or an [Exception] if [BaseEvent] type
   ///can't be resolved.
-  SceneItemState asSceneItemStateEvent() {
+  @deprecated
+  SceneItemStateEvent asSceneItemStateEvent() {
     switch (updateType) {
       case 'SceneItemVisibilityChanged':
       case 'SceneItemLockChanged':
-        return SceneItemState.fromJson(rawEvent, updateType);
+        return SceneItemStateEvent.fromJson(rawEvent, updateType);
     }
     throw exception;
   }
 
-  ///returns a [StreamState] object or an [Exception] if [BaseEvent] type
+  ///returns a [StreamStateEvent] object or an [Exception] if [BaseEvent] type
   ///can't be resolved.
-  StreamState asSteamStateEvent() {
+  @deprecated
+  StreamStateEvent asSteamStateEvent() {
     switch (updateType) {
       case 'StreamStarting':
       case 'StreamStarted':
       case 'StreamStopping':
       case 'StreamStopped':
-        return StreamState.fromJson(rawEvent, updateType);
+        return StreamStateEvent.fromJson(rawEvent, updateType);
     }
 
     throw exception;
   }
 
-  ///returns a [StreamStatus] object or an [Exception] if [BaseEvent] type
+  ///returns a [StreamStatusEvent] object or an [Exception] if [BaseEvent] type
   ///can't be resolved.
-  StreamStatus asSteamStatusEvent() {
+  @deprecated
+  StreamStatusEvent asSteamStatusEvent() {
     if (updateType != 'StreamStatus') {
       throw exception;
     }
-    return StreamStatus.fromJson(rawEvent);
+    return StreamStatusEvent.fromJson(rawEvent);
   }
 }

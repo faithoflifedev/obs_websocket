@@ -95,11 +95,11 @@ class ObsWebSocket {
       case 'RecordingStopped':
       case 'RecordingPaused':
       case 'RecordingResumed':
-        final listeners = eventHandlers['RecordingState'] ?? [];
+        final listeners = eventHandlers['RecordingStateEvent'] ?? [];
 
         if (listeners.isNotEmpty) {
-          listeners
-              .forEach((handler) => handler(event.asRecordingStateEvent()));
+          listeners.forEach(
+              (handler) => handler(event.asEvent<RecordingStateEvent>()));
         }
         break;
 
@@ -107,20 +107,21 @@ class ObsWebSocket {
       case 'SceneItemRemoved':
       case 'SceneItemSelected':
       case 'SceneItemDeselected':
-        final listeners = eventHandlers['SceneItem'] ?? [];
+        final listeners = eventHandlers['SceneItemEvent'] ?? [];
 
         if (listeners.isNotEmpty) {
-          listeners.forEach((handler) => handler(event.asSceneItemEvent()));
+          listeners
+              .forEach((handler) => handler(event.asEvent<SceneItemEvent>()));
         }
         break;
 
       case 'SceneItemVisibilityChanged':
       case 'SceneItemLockChanged':
-        final listeners = eventHandlers['SceneItemState'] ?? [];
+        final listeners = eventHandlers['SceneItemStateEvent'] ?? [];
 
         if (listeners.isNotEmpty) {
-          listeners
-              .forEach((handler) => handler(event.asSceneItemStateEvent()));
+          listeners.forEach(
+              (handler) => handler(event.asEvent<SceneItemStateEvent>()));
         }
         break;
 
@@ -128,18 +129,20 @@ class ObsWebSocket {
       case 'StreamStarted':
       case 'StreamStopping':
       case 'StreamStopped':
-        final listeners = eventHandlers['StreamState'] ?? [];
+        final listeners = eventHandlers['StreamStateEvent'] ?? [];
 
         if (listeners.isNotEmpty) {
-          listeners.forEach((handler) => handler(event.asSteamStateEvent()));
+          listeners
+              .forEach((handler) => handler(event.asEvent<StreamStateEvent>()));
         }
         break;
 
       case 'StreamStatus':
-        final listeners = eventHandlers['StreamStatus'] ?? [];
+        final listeners = eventHandlers['StreamStatusEvent'] ?? [];
 
         if (listeners.isNotEmpty) {
-          listeners.forEach((handler) => handler(event.asSteamStatusEvent()));
+          listeners.forEach(
+              (handler) => handler(event.asEvent<StreamStatusEvent>()));
         }
         break;
 

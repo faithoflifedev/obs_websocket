@@ -1,18 +1,18 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'streamState.dart';
+part of 'streamStateEvent.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-StreamState _$StreamStateFromJson(Map<String, dynamic> json) {
-  return StreamState(
+StreamStateEvent _$StreamStateEventFromJson(Map<String, dynamic> json) {
+  return StreamStateEvent(
     previewOnly: json['preview-only'] as bool?,
   )..type = json['type'] as String?;
 }
 
-Map<String, dynamic> _$StreamStateToJson(StreamState instance) =>
+Map<String, dynamic> _$StreamStateEventToJson(StreamStateEvent instance) =>
     <String, dynamic>{
       'preview-only': instance.previewOnly,
       'type': instance.type,

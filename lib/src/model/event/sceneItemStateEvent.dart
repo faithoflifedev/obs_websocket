@@ -2,10 +2,21 @@ import 'dart:convert';
 
 import 'package:json_annotation/json_annotation.dart';
 
-part 'sceneItemState.g.dart';
+part 'sceneItemStateEvent.g.dart';
 
+///Enumerated states
+enum SceneItemState {
+  @JsonValue('SceneItemVisibilityChanged')
+  sceneItemVisibilityChanged,
+  @JsonValue('SceneItemLockChanged')
+  sceneItemLockChanged
+}
+
+///A class that represents a group of events emitted by [ObsWebSocket].  These
+///are [SceneItemState.sceneItemVisibilityChanged] and [SceneItemState.sceneItemLockChanged].  The [type]
+///attribute returns the [SceneItemState].
 @JsonSerializable()
-class SceneItemState {
+class SceneItemStateEvent {
   @JsonKey(name: 'item-id')
   final int itemId;
 
@@ -23,7 +34,7 @@ class SceneItemState {
 
   String? type;
 
-  SceneItemState(
+  SceneItemStateEvent(
       {required this.itemId,
       required this.itemName,
       this.itemVisible,
@@ -39,15 +50,15 @@ class SceneItemState {
     return _state;
   }
 
-  factory SceneItemState.fromJson(Map<String, dynamic> json, String type) {
-    final sceneItemState = _$SceneItemStateFromJson(json);
+  factory SceneItemStateEvent.fromJson(Map<String, dynamic> json, String type) {
+    final sceneItemStateEvent = _$SceneItemStateEventFromJson(json);
 
-    sceneItemState.type = type;
+    sceneItemStateEvent.type = type;
 
-    return sceneItemState;
+    return sceneItemStateEvent;
   }
 
-  Map<String, dynamic> toJson() => _$SceneItemStateToJson(this);
+  Map<String, dynamic> toJson() => _$SceneItemStateEventToJson(this);
 
   Map<String, dynamic> toSceneItemRenderMap(bool render) => {
         'scene-name': sceneName,

@@ -4,5 +4,5 @@ templates:
   - name: CHANGELOG.md
     type: prepend
 
-version: 2.2.0
-change: 'file name changed to match publish spec'
+version: 2.2.1
+change: 'restructured the event model'

@@ -1,4 +1,7 @@
 
+## 2.2.1
+* restructured the event model
+
 ## 2.2.0
 * file name changed to match publish spec
 
