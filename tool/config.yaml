@@ -4,5 +4,5 @@ templates:
   - name: CHANGELOG.md
     type: prepend
 
-version: 2.2.1
-change: 'restructured the event model'
+version: 2.2.2
+change: 'correction of soem class names in the readme'

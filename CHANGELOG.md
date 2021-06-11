@@ -1,4 +1,7 @@
 
+## 2.2.2
+* correction of soem class names in the readme
+
 ## 2.2.1
 * restructured the event model
 
