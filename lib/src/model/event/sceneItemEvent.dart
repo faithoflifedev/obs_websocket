@@ -30,7 +30,7 @@ class SceneItemEvent {
   @JsonKey(name: 'scene-name')
   final String sceneName;
 
-  SceneItemChange? type;
+  String? type;
 
   SceneItemEvent(
       {required this.itemId,
@@ -41,7 +41,7 @@ class SceneItemEvent {
   factory SceneItemEvent.fromJson(Map<String, dynamic> json, String type) {
     final sceneItemEvent = _$SceneItemEventFromJson(json);
 
-    sceneItemEvent.type = type.sceneItemChange;
+    sceneItemEvent.type = type;
 
     return sceneItemEvent;
   }

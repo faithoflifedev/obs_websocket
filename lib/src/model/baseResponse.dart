@@ -1,3 +1,4 @@
+///response to the low-level [ObsWebSocket.command]
 class BaseResponse {
   final String? error;
   final String? messageId;

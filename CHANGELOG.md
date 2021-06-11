@@ -1,4 +1,7 @@
 
+## 2.2.3
+* improved API docs
+
 ## 2.2.2
 * correction of soem class names in the readme
 

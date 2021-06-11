@@ -30,14 +30,14 @@ enum RecordingState {
 class RecordingStateEvent {
   @JsonKey(name: 'recordingFilename')
   String? recordingFilename;
-  RecordingState? type;
+  String? type;
 
   RecordingStateEvent({this.recordingFilename, this.type});
 
   factory RecordingStateEvent.fromJson(Map<String, dynamic> json, String type) {
     final recordingStateEvent = _$RecordingStateEventFromJson(json);
 
-    recordingStateEvent.type = type.recordingState;
+    recordingStateEvent.type = type;
 
     return recordingStateEvent;
   }

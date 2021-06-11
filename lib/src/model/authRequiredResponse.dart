@@ -2,6 +2,7 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'authRequiredResponse.g.dart';
 
+///response to the [ObsWebSocket.getAuthRequired] command
 @JsonSerializable()
 class AuthRequiredResponse {
   final bool? authRequired;

@@ -6,6 +6,7 @@ import 'streamSettings.dart';
 
 part 'streamSetting.g.dart';
 
+///Represents an OBS StreamSetting
 @JsonSerializable()
 class StreamSetting {
   final String type;

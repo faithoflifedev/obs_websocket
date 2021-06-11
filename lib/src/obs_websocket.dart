@@ -164,7 +164,8 @@ class ObsWebSocket {
   ///authentication is required to connect to the server.  The
   ///AuthRequiredResponse object hods the 'salt' and 'secret' that will be
   ///required for authentication in the case that it is required throws an
-  ///[Exception] if there is a problem or error returned by the server.
+  ///[Exception] if there is a problem or error returned by the server.  Returns
+  ///an [AuthRequiredResponse] object.
   Future<AuthRequiredResponse> getAuthRequired() async {
     var authRequired = AuthRequiredResponse.init();
 
@@ -352,7 +353,7 @@ class ObsWebSocket {
     return StudioModeStatus.fromJson(response.rawResponse);
   }
 
-  ///Get the current scene's name and source items.
+  ///Get the current scene's name and source items.  Returns a [Scene] object.
   Future<Scene> getCurrentScene() async {
     final response = await command('GetCurrentScene');
 
@@ -398,7 +399,7 @@ class ObsWebSocket {
   }
 
   ///Get the current playing state of a media source. Supports ffmpeg and vlc
-  ///media sources (as of OBS v25.0.8)
+  ///media sources (as of OBS v25.0.8),  Returns a [MediaStateResponse] object.
   Future<MediaStateResponse> getMediaState([Map<String, dynamic>? args]) async {
     final response = await command('GetMediaState', args);
 

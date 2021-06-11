@@ -6,6 +6,7 @@ import 'sceneDetail.dart';
 
 part 'sceneItem.g.dart';
 
+///Represents an OBS SceneItem
 @JsonSerializable()
 class SceneItem {
   final String name;

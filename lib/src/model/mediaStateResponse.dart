@@ -4,6 +4,7 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'mediaStateResponse.g.dart';
 
+///response to the [ObsWebSocket.getMediaState] command
 @JsonSerializable()
 class MediaStateResponse {
   final String mediaState;

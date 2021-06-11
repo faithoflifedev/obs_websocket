@@ -4,6 +4,7 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'sceneDetail.g.dart';
 
+///Represents an OBS SceneDetail
 @JsonSerializable()
 class SceneDetail {
   final double cy;

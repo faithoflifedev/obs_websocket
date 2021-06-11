@@ -3,22 +3,6 @@
 part of 'sceneItemStateEvent.dart';
 
 // **************************************************************************
-// EasyEnumGenerator
-// **************************************************************************
-
-extension SceneItemStateExt on SceneItemState {
-  String get value =>
-      ['sceneItemVisibilityChanged', 'sceneItemLockChanged'][index];
-}
-
-extension SceneItemStateTxe on String {
-  SceneItemState? get sceneItemState => {
-        'sceneItemVisibilityChanged': SceneItemState.sceneItemVisibilityChanged,
-        'sceneItemLockChanged': SceneItemState.sceneItemLockChanged,
-      }[this];
-}
-
-// **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 

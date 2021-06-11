@@ -4,5 +4,5 @@ templates:
   - name: CHANGELOG.md
     type: prepend
 
-version: 2.2.2
-change: 'correction of soem class names in the readme'
+version: 2.2.3
+change: 'improved API docs'
