@@ -112,7 +112,7 @@ ObsWebSocket obsWebSocket = ObsWebSocket(
 
 //this handler will only run when a SceneItemState event is generated
 obsWebSocket
-    .addHandler<SceneItemState>((SceneItemStateEvent sceneItemStateEvent) async {
+    .addHandler<SceneItemStateEvent>((SceneItemStateEvent sceneItemStateEvent) async {
     //make sure we have the correct sceneItem and that it's currently visible
     if (sceneItemStateEvent.type == 'SceneItemVisibilityChanged' &&
         sceneItemStateEvent.itemName == sceneItem &&
