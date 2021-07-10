@@ -51,6 +51,8 @@ class ObsWebSocket {
       Function? fallbackEvent,
       Function? onError,
       Duration timeout = const Duration(seconds: 30)}) async {
+    if(!connectUrl.startsWith('ws://'))
+      connectUrl = 'ws://${connectUrl}';
     final websocket = await WebSocket.connect(connectUrl).timeout(timeout);
 
     return ObsWebSocket(
