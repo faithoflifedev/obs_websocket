@@ -366,8 +366,9 @@ class ObsWebSocket {
   }
 
   ///Switch to the specified scene.
-  Future<void> setCurrentScene(Map<String, dynamic> args) async {
-    await command('SetCurrentScene', args);
+  Future<void> setCurrentScene(String name) async {
+    var scene = <String, dynamic>{'scene-name': name};
+    await command('SetCurrentScene', scene);
   }
 
   ///Show or hide a specified source item in a specified scene.
