@@ -9,6 +9,13 @@ main(args) => grind(args);
 @Task()
 test() => new TestRunner().testAsync();
 
+@Task('Apply dartfmt to all Dart source files')
+void format() => DartFmt.format(existingSourceDirs);
+
+@Task()
+Future<String> analyze() =>
+    Dart.runAsync('analyze', arguments: ['--fatal-infos']);
+
 @DefaultTask()
 @Depends(test)
 build() {
@@ -19,7 +26,7 @@ build() {
 clean() => defaultClean();
 
 @Task('publish')
-@Depends(dartdoc, analyze, version, dryrun)
+@Depends(dartdoc, format, analyze, version, dryrun)
 publish() {
   // log('publishing...');
 
@@ -47,12 +54,12 @@ dartdoc() {
   DartDoc.doc();
 }
 
-@Task('dart analyze')
-analyze() {
-  log('analyzing...');
+// @Task('dart analyze')
+// analyze() {
+//   log('analyzing...');
 
-  Analyzer.analyze('.', fatalWarnings: true);
-}
+//   Analyzer.analyze('.', fatalWarnings: true);
+// }
 
 @Task('version bump')
 version() async {

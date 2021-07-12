@@ -1,4 +1,7 @@
 
+## 2.2.5
+* adjustments to the publish workflow
+
 ## 2.2.4
 * code tweaks from Sabuto merged
 

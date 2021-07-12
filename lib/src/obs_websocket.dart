@@ -51,8 +51,7 @@ class ObsWebSocket {
       Function? fallbackEvent,
       Function? onError,
       Duration timeout = const Duration(seconds: 30)}) async {
-    if(!connectUrl.startsWith('ws://'))
-      connectUrl = 'ws://${connectUrl}';
+    if (!connectUrl.startsWith('ws://')) connectUrl = 'ws://${connectUrl}';
     final websocket = await WebSocket.connect(connectUrl).timeout(timeout);
 
     return ObsWebSocket(
@@ -368,8 +367,7 @@ class ObsWebSocket {
 
   ///Switch to the specified scene.
   Future<void> setCurrentScene(String name) async {
-    var scene = <String, dynamic>{'scene-name': name};
-    await command('SetCurrentScene', scene);
+    await command('SetCurrentScene', <String, String>{'scene-name': name});
   }
 
   ///Show or hide a specified source item in a specified scene.
