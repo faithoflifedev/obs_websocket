@@ -1,4 +1,7 @@
 
+## 2.2.4
+* code tweaks from Sabuto merged
+
 ## 2.2.3
 * improved API docs
 

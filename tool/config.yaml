@@ -4,5 +4,5 @@ templates:
   - name: CHANGELOG.md
     type: prepend
 
-version: 2.2.3
-change: 'improved API docs'
+version: 2.2.4
+change: "code tweaks from Sabuto merged"
