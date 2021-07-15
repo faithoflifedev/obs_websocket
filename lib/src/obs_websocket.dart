@@ -343,6 +343,11 @@ class ObsWebSocket {
     await command('EnableStudioMode');
   }
 
+  /// Disables Studio mode
+  Future<void> disableStudioMode() async {
+    await command('DisableStudioMode');
+  }
+
   ///Indicates if Studio Mode is currently enabled.
   Future<StudioModeStatus> getStudioModeStatus() async {
     final response = await command('GetStudioModeStatus');
