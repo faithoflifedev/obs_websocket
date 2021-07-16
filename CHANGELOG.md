@@ -1,4 +1,7 @@
 
+## 2.2.6
+* disable studio mode
+
 ## 2.2.5
 * adjustments to the publish workflow
 
