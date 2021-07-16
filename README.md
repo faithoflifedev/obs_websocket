@@ -312,7 +312,7 @@ For any of the items that have an [x] from the list below, a high level command 
     - [ ] [SetPreviewScene](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#setpreviewscene)
     - [ ] [TransitionToProgram](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#transitiontoprogram)
     - [x] [EnableStudioMode](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#enablestudiomode)
-    - [ ] [DisableStudioMode](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#disablestudiomode)
+    - [x] [DisableStudioMode](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#disablestudiomode)
     - [ ] [ToggleStudioMode](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#togglestudiomode)
   - [Transitions](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#transitions-1)
     - [ ] [GetTransitionList](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#gettransitionlist)
