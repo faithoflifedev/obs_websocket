@@ -110,12 +110,12 @@ commit(
 
   await shell(exec: 'git', args: 'commit -m "$change"');
 
+  await shell(exec: 'git', args: 'push');
+
   if (newTag) {
     await shell(exec: 'git', args: 'tag v$version');
 
     await shell(exec: 'git', args: 'push --tags');
-  } else {
-    await shell(exec: 'git', args: 'push');
   }
 }
 
