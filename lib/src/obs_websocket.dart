@@ -416,6 +416,11 @@ class ObsWebSocket {
     return MediaStateResponse.fromJson(response.rawResponse);
   }
 
+  /// Set the current profile
+  Future<void> setCurrentProfile(String name) async {
+    await command('SetCurrentProfile', <String, dynamic>{'profile-name': name});
+  }
+
   ///A helper function that encrypts authentication info [data] for the purpose of
   ///authentication.
   String base64Hash(String data) {
