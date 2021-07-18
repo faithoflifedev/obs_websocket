@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:crypto/crypto.dart';
 import 'package:obs_websocket/obs_websocket.dart';
 import 'package:obs_websocket/src/model/authRequiredResponse.dart';
+import 'package:obs_websocket/src/model/currentProfileResponse.dart';
 import 'package:obs_websocket/src/model/mediaStateResponse.dart';
 import 'package:obs_websocket/src/model/scene.dart';
 import 'package:obs_websocket/src/model/streamSetting.dart';
@@ -414,6 +415,22 @@ class ObsWebSocket {
     }
 
     return MediaStateResponse.fromJson(response.rawResponse);
+  }
+
+  /// Set the current profile
+  Future<void> setCurrentProfile(String name) async {
+    await command('SetCurrentProfile', <String, dynamic>{'profile-name': name});
+  }
+
+  /// Get the current profile
+  Future<CurrentProfileResponse> getCurrentProfile() async {
+    final response = await command('GetCurrentProfile');
+
+    if (response == null) {
+      throw Exception('Problem getting current profile');
+    }
+
+    return CurrentProfileResponse.fromJson(response.rawResponse);
   }
 
   ///A helper function that encrypts authentication info [data] for the purpose of
