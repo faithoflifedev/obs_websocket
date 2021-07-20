@@ -6,12 +6,11 @@ part of 'recordingStateEvent.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-RecordingStateEvent _$RecordingStateEventFromJson(Map<String, dynamic> json) {
-  return RecordingStateEvent(
-    recordingFilename: json['recordingFilename'] as String?,
-    type: json['type'] as String?,
-  );
-}
+RecordingStateEvent _$RecordingStateEventFromJson(Map<String, dynamic> json) =>
+    RecordingStateEvent(
+      recordingFilename: json['recordingFilename'] as String?,
+      type: json['type'] as String?,
+    );
 
 Map<String, dynamic> _$RecordingStateEventToJson(
         RecordingStateEvent instance) =>

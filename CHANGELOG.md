@@ -1,4 +1,7 @@
 
+## 2.2.7
+* added SaveStreamSettings, TakeSourceScreenshot, SetCurrentProfile, GetCurrentProfile and RefreshBrowserSource
+
 ## 2.2.6
 * disable studio mode
 

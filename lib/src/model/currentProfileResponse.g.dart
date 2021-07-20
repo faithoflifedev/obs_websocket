@@ -7,14 +7,13 @@ part of 'currentProfileResponse.dart';
 // **************************************************************************
 
 CurrentProfileResponse _$CurrentProfileResponseFromJson(
-    Map<String, dynamic> json) {
-  return CurrentProfileResponse(
-    profileName: json['profile-name'] as String,
-  );
-}
+        Map<String, dynamic> json) =>
+    CurrentProfileResponse(
+      profileName: json['profileName'] as String,
+    );
 
 Map<String, dynamic> _$CurrentProfileResponseToJson(
         CurrentProfileResponse instance) =>
     <String, dynamic>{
-      'profile-name': instance.profileName,
+      'profileName': instance.profileName,
     };

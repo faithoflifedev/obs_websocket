@@ -6,16 +6,15 @@ part of 'sceneItemStateEvent.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-SceneItemStateEvent _$SceneItemStateEventFromJson(Map<String, dynamic> json) {
-  return SceneItemStateEvent(
-    itemId: json['item-id'] as int,
-    itemName: json['item-name'] as String,
-    itemVisible: json['item-visible'] as bool?,
-    itemLocked: json['item-locked'] as bool?,
-    sceneName: json['scene-name'] as String,
-    type: json['type'] as String?,
-  );
-}
+SceneItemStateEvent _$SceneItemStateEventFromJson(Map<String, dynamic> json) =>
+    SceneItemStateEvent(
+      itemId: json['item-id'] as int,
+      itemName: json['item-name'] as String,
+      itemVisible: json['item-visible'] as bool?,
+      itemLocked: json['item-locked'] as bool?,
+      sceneName: json['scene-name'] as String,
+      type: json['type'] as String?,
+    );
 
 Map<String, dynamic> _$SceneItemStateEventToJson(
         SceneItemStateEvent instance) =>

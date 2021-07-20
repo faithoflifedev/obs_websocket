@@ -10,6 +10,8 @@ import 'package:obs_websocket/src/model/streamSetting.dart';
 import 'package:obs_websocket/src/model/streamSettingsResponse.dart';
 import 'package:obs_websocket/src/model/streamStatusResponse.dart';
 import 'package:obs_websocket/src/model/studioModeStatus.dart';
+export 'package:obs_websocket/src/model/takeSourceScreenshotResponse.dart';
+export 'package:obs_websocket/src/model/takeSourceScreenshot.dart';
 import 'package:universal_io/io.dart';
 import 'package:web_socket_channel/io.dart';
 import 'package:web_socket_channel/status.dart' as status;
@@ -195,8 +197,8 @@ class ObsWebSocket {
   ///an [Exception] will be thrown.
   Future<BaseResponse?> authenticate(
       AuthRequiredResponse requirements, String passwd) async {
-    final secret = base64Hash(passwd + requirements.salt!);
-    final auth_reponse = base64Hash(secret + requirements.challenge!);
+    final secret = _base64Hash(passwd + requirements.salt!);
+    final auth_reponse = _base64Hash(secret + requirements.challenge!);
 
     BaseResponse? response;
 
@@ -208,7 +210,7 @@ class ObsWebSocket {
 
       if (!response.status) {
         throw Exception(
-            'Server returned error to Authenticate request: $message');
+            'Server returned error to Authenticate request\n: ${response.error}');
       }
 
       if (response.messageId == messageId) {
@@ -234,7 +236,8 @@ class ObsWebSocket {
       response = BaseResponse.fromJson(jsonDecode(message));
 
       if (!response.status && response.messageId == messageId) {
-        throw Exception('Server returned error to $command request: $message');
+        throw Exception(
+            '\nServer returned error to [$command] request:\n\t ${response.error}\n');
       }
 
       if (response.messageId == messageId) {
@@ -433,13 +436,33 @@ class ObsWebSocket {
     return CurrentProfileResponse.fromJson(response.rawResponse);
   }
 
+  ///Refreshes the specified browser source.
+  Future<void> refreshBrowserSource(String sourceName) async {
+    await command('RefreshBrowserSource', {'sourceName': 'opsLower'});
+  }
+
+  Future<TakeSourceScreenshotResponse> takeSourceScreenshot(
+      TakeSourceScreenshot takeSourceScreenshot) async {
+    final response =
+        await command('TakeSourceScreenshot', takeSourceScreenshot.toJson());
+
+    if (response == null) {
+      throw Exception('Problem getting source screenshot reponse');
+    }
+
+    return TakeSourceScreenshotResponse.fromJson(response.rawResponse);
+  }
+
+  ///Save the current streaming server settings to disk.
+  Future<void> saveStreamSettings() async {
+    await command('SaveStreamSettings');
+  }
+
   ///A helper function that encrypts authentication info [data] for the purpose of
   ///authentication.
-  String base64Hash(String data) {
+  String _base64Hash(String data) {
     final hash = sha256.convert(utf8.encode(data));
 
-    final secret = base64.encode(hash.bytes);
-
-    return secret;
+    return base64.encode(hash.bytes);
   }
 }

@@ -20,7 +20,7 @@ In your project add the dependency:
 ```yml
 dependencies:
   ...
-  obs_websocket: ^2.2.6
+  obs_websocket: ^2.2.7
 ```
 
 For help getting started with dart, check out these [guides](https://dart.dev/guides).
@@ -246,8 +246,8 @@ For any of the items that have an [x] from the list below, a high level command 
     - [ ] [GetAudioMonitorType](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#getaudiomonitortype)
     - [ ] [SetAudioMonitorType](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#setaudiomonitortype)
     - [ ] [GetSourceDefaultSettings](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#getsourcedefaultsettings)
-    - [ ] [TakeSourceScreenshot](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#takesourcescreenshot)
-    - [ ] [RefreshBrowserSource](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#refreshbrowsersource)
+    - [x] [TakeSourceScreenshot](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#takesourcescreenshot)
+    - [x] [RefreshBrowserSource](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#refreshbrowsersource)
   - [Outputs](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#outputs)
     - [ ] [ListOutputs](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#listoutputs)
     - [ ] [GetOutputInfo](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#getoutputinfo)
@@ -304,7 +304,7 @@ For any of the items that have an [x] from the list below, a high level command 
     - [x] [StopStreaming](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#stopstreaming)
     - [x] [SetStreamSettings](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#setstreamsettings)
     - [x] [GetStreamSettings](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#getstreamsettings)
-    - [ ] [SaveStreamSettings](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#savestreamsettings)
+    - [x] [SaveStreamSettings](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#savestreamsettings)
     - [ ] [SendCaptions](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#sendcaptions)
   - [Studio Mode](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#studio-mode-1)
     - [x] [GetStudioModeStatus](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#getstudiomodestatus)

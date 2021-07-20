@@ -6,11 +6,10 @@ part of 'studioModeStatus.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-StudioModeStatus _$StudioModeStatusFromJson(Map<String, dynamic> json) {
-  return StudioModeStatus(
-    enabled: json['studio-mode'] as bool,
-  );
-}
+StudioModeStatus _$StudioModeStatusFromJson(Map<String, dynamic> json) =>
+    StudioModeStatus(
+      enabled: json['studio-mode'] as bool,
+    );
 
 Map<String, dynamic> _$StudioModeStatusToJson(StudioModeStatus instance) =>
     <String, dynamic>{

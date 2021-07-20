@@ -7,12 +7,11 @@ part of 'streamSettingsResponse.dart';
 // **************************************************************************
 
 StreamSettingsResponse _$StreamSettingsResponseFromJson(
-    Map<String, dynamic> json) {
-  return StreamSettingsResponse(
-    json['type'] as String,
-    json['settings'],
-  );
-}
+        Map<String, dynamic> json) =>
+    StreamSettingsResponse(
+      json['type'] as String,
+      json['settings'],
+    );
 
 Map<String, dynamic> _$StreamSettingsResponseToJson(
         StreamSettingsResponse instance) =>

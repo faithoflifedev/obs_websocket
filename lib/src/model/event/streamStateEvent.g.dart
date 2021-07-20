@@ -6,11 +6,10 @@ part of 'streamStateEvent.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-StreamStateEvent _$StreamStateEventFromJson(Map<String, dynamic> json) {
-  return StreamStateEvent(
-    previewOnly: json['preview-only'] as bool?,
-  )..type = json['type'] as String?;
-}
+StreamStateEvent _$StreamStateEventFromJson(Map<String, dynamic> json) =>
+    StreamStateEvent(
+      previewOnly: json['preview-only'] as bool?,
+    )..type = json['type'] as String?;
 
 Map<String, dynamic> _$StreamStateEventToJson(StreamStateEvent instance) =>
     <String, dynamic>{

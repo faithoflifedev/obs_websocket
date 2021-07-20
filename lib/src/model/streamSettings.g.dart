@@ -6,15 +6,14 @@ part of 'streamSettings.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-StreamSettings _$StreamSettingsFromJson(Map<String, dynamic> json) {
-  return StreamSettings(
-    server: json['server'] as String?,
-    key: json['key'] as String?,
-    useAuth: json['use_auth'] as bool?,
-    username: json['username'] as String?,
-    password: json['password'] as String?,
-  );
-}
+StreamSettings _$StreamSettingsFromJson(Map<String, dynamic> json) =>
+    StreamSettings(
+      server: json['server'] as String?,
+      key: json['key'] as String?,
+      useAuth: json['use_auth'] as bool?,
+      username: json['username'] as String?,
+      password: json['password'] as String?,
+    );
 
 Map<String, dynamic> _$StreamSettingsToJson(StreamSettings instance) =>
     <String, dynamic>{
