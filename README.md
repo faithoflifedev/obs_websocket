@@ -2,7 +2,7 @@
 
 Some background first. I needed a way to automate the start and stop streaming actions for [OBS](https://obsproject.com/) (Open Broadcast Software) with [cron](https://en.wikipedia.org/wiki/Cron) on OSX. This package will allow you to do that with [dart](https://dart.dev/) or can be used with [flutter](https://flutter.dev/) to control OBS with a platform independent mobile app.
 
-This package gives access to all of the methods and events outlined by the [obs-websocket 4.9.1 protocol reference](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md) through the `command` method documented below, but also has helper methods for many of the more popular [Requests](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#requests) that are made avaialble through the protocol reference.
+This package gives access to all of the methods and events outlined by the [obs-websocket 4.9.1 protocol reference](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md) through the `command` method documented below, but also has helper methods for many of the more popular [Requests](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#requests) that are made available through the protocol reference.
 
 [![pub package](https://img.shields.io/pub/v/obs_websocket.svg)](https://pub.dartlang.org/packages/obs_websocket)
 
@@ -20,7 +20,7 @@ In your project add the dependency:
 ```yml
 dependencies:
   ...
-  obs_websocket: ^2.2.8
+  obs_websocket: ^2.2.9
 ```
 
 For help getting started with dart, check out these [guides](https://dart.dev/guides).

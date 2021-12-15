@@ -1,4 +1,7 @@
 
+## 2.2.9
+* readme typo
+
 ## 2.2.8
 * added GetMediaSourcesList, GetSourcesList, GetSourceActive and GetSourceActive
 

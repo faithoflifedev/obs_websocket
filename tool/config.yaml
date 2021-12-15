@@ -4,5 +4,5 @@ templates:
   - name: CHANGELOG.md
     type: prepend
 
-version: 2.2.8
-change: "added GetMediaSourcesList, GetSourcesList, GetSourceActive and GetSourceActive"
+version: 2.2.9
+change: "readme typo"
