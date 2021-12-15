@@ -462,10 +462,11 @@ class ObsWebSocket {
 
   ///Get the source's active status of a specified source (if it is showing in the final mix).
   Future<bool> getSourceActive(String sourceName) async {
-    final response = await command('GetSourceActive');
+    final response =
+        await command('GetSourceActive', {'sourceName': sourceName});
 
     if (response == null) {
-      throw Exception('Problem getting source  response');
+      throw Exception('Problem getting sourceActive response');
     }
 
     return response.rawResponse['sourceActive'] == 'true';
@@ -473,7 +474,8 @@ class ObsWebSocket {
 
   ///Get the audio's active status of a specified source.
   Future<bool> getAudioActive(String sourceName) async {
-    final response = await command('GetAudioActive');
+    final response =
+        await command('GetAudioActive', {'sourceName': sourceName});
 
     if (response == null) {
       throw Exception('Problem getting audio response');

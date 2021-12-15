@@ -4,5 +4,5 @@ templates:
   - name: CHANGELOG.md
     type: prepend
 
-version: 2.2.9
-change: "readme typo"
+version: 2.2.10
+change: "fix for GetSourceActive and GetSourceActive"
