@@ -4,9 +4,11 @@ import 'package:crypto/crypto.dart';
 import 'package:obs_websocket/obs_websocket.dart';
 import 'package:obs_websocket/src/model/authRequiredResponse.dart';
 import 'package:obs_websocket/src/model/currentProfileResponse.dart';
+import 'package:obs_websocket/src/model/mediaSourcesListResponse.dart';
 import 'package:obs_websocket/src/model/mediaStateResponse.dart';
 import 'package:obs_websocket/src/model/scene.dart';
-import 'package:obs_websocket/src/model/streamSetting.dart';
+import 'package:obs_websocket/src/model/sourcesListResponse.dart';
+// import 'package:obs_websocket/src/model/streamSetting.dart';
 import 'package:obs_websocket/src/model/streamSettingsResponse.dart';
 import 'package:obs_websocket/src/model/streamStatusResponse.dart';
 import 'package:obs_websocket/src/model/studioModeStatus.dart';
@@ -198,12 +200,12 @@ class ObsWebSocket {
   Future<BaseResponse?> authenticate(
       AuthRequiredResponse requirements, String passwd) async {
     final secret = _base64Hash(passwd + requirements.salt!);
-    final auth_reponse = _base64Hash(secret + requirements.challenge!);
+    final auth_response = _base64Hash(secret + requirements.challenge!);
 
     BaseResponse? response;
 
     var messageId =
-        sendCommand({'request-type': 'Authenticate', 'auth': auth_reponse});
+        sendCommand({'request-type': 'Authenticate', 'auth': auth_response});
 
     await for (String message in broadcast) {
       response = BaseResponse.fromJson(jsonDecode(message));
@@ -436,6 +438,50 @@ class ObsWebSocket {
     return CurrentProfileResponse.fromJson(response.rawResponse);
   }
 
+  ///List the media state of all media sources (vlc and media source)
+  Future<MediaSourcesListResponse> getMediaSourcesList() async {
+    final response = await command('GetMediaSourcesList');
+
+    if (response == null) {
+      throw Exception('Problem getting mediaSourcesList response');
+    }
+
+    return MediaSourcesListResponse.fromJson(response.rawResponse);
+  }
+
+  ///List all sources available in the running OBS instance
+  Future<SourcesListResponse> getSourcesList() async {
+    final response = await command('GetSourcesList');
+
+    if (response == null) {
+      throw Exception('Problem getting sourcesList response');
+    }
+
+    return SourcesListResponse.fromJson(response.rawResponse);
+  }
+
+  ///Get the source's active status of a specified source (if it is showing in the final mix).
+  Future<bool> getSourceActive(String sourceName) async {
+    final response = await command('GetSourceActive');
+
+    if (response == null) {
+      throw Exception('Problem getting source  response');
+    }
+
+    return response.rawResponse['sourceActive'] == 'true';
+  }
+
+  ///Get the audio's active status of a specified source.
+  Future<bool> getAudioActive(String sourceName) async {
+    final response = await command('GetAudioActive');
+
+    if (response == null) {
+      throw Exception('Problem getting audio response');
+    }
+
+    return response.rawResponse['audioActive'] == 'true';
+  }
+
   ///Refreshes the specified browser source.
   Future<void> refreshBrowserSource(String sourceName) async {
     await command('RefreshBrowserSource', {'sourceName': 'opsLower'});
@@ -447,7 +493,7 @@ class ObsWebSocket {
         await command('TakeSourceScreenshot', takeSourceScreenshot.toJson());
 
     if (response == null) {
-      throw Exception('Problem getting source screenshot reponse');
+      throw Exception('Problem getting source screenshot response');
     }
 
     return TakeSourceScreenshotResponse.fromJson(response.rawResponse);

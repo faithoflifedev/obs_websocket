@@ -9,8 +9,8 @@ main(args) => grind(args);
 @Task()
 test() => new TestRunner().testAsync();
 
-@Task('Apply dartfmt to all Dart source files')
-void format() => DartFmt.format(existingSourceDirs);
+// @Task('Apply dartfmt to all Dart source files')
+// void format() => DartFmt.format(existingSourceDirs);
 
 @Task()
 Future<String> analyze() =>
@@ -26,7 +26,8 @@ build() {
 clean() => defaultClean();
 
 @Task('publish')
-@Depends(dartdoc, format, analyze, version, dryrun)
+// @Depends(dartdoc, format, analyze, version, dryrun)
+@Depends(dartdoc, analyze, version, dryrun)
 publish() {
   // log('publishing...');
 

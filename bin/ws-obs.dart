@@ -7,7 +7,7 @@ import 'package:universal_io/io.dart';
 void main(List<String> args) async {
   final config = Config();
 
-  config.initialize(args);
+  await config.initialize(args);
 
   await config.check();
 
@@ -24,40 +24,45 @@ void main(List<String> args) async {
 class Config {
   final ArgParser parser = ArgParser();
 
-  late final ObsWebSocket obsWebSocket;
+  // late final ObsWebSocket obsWebSocket;
   late final String command;
+  late final ObsWebSocket obsWebSocket;
 
   String? passwd;
   String? commandParams;
+  String? url;
   Map<String, dynamic>? jsonParams;
 
   bool showHelp = false;
 
-  void initialize(List<String> args) {
+  Future<void> initialize(List<String> args) async {
     parser.addFlag('help',
         abbr: 'h',
         negatable: false,
         help: 'Display this helpful message', callback: (help) {
       showHelp = help;
     });
+
     parser.addOption('passwd',
         abbr: 'p',
         help: 'The OBS websocket password, only required if enabled in OBS',
         callback: (password) {
       passwd = password;
     });
+
     parser.addOption('url',
         abbr: 'u',
         // defaultsTo: 'ws://127.0.0.1:4444',
         valueHelp: 'ws://[host]:[port]',
         help: 'The url and port for OBS websocket', callback: (url) async {
       if (url != null) {
-        obsWebSocket = await ObsWebSocket.connect(connectUrl: url);
+        this.url = url;
       } else {
         print(
             'You need to supply a url for this to work, use --help for more options');
       }
     });
+
     parser.addOption('command',
         abbr: 'c',
         help: 'Required. The OBS command to send',
@@ -69,7 +74,10 @@ class Config {
           'GetStreamSettings',
           'SetStreamSettings',
           'SaveStreamSettings',
+          'GetMediaSourcesList',
           'GetSourcesList',
+          'GetSourceActive',
+          'GetAudioActive',
           'GetVolume',
           'SetVolume'
         ], callback: (cmd) {
@@ -80,6 +88,7 @@ class Config {
             'You need to supply a command for this to work, use --help for more options');
       }
     });
+
     parser.addOption('args',
         abbr: 'a',
         help:
@@ -101,6 +110,8 @@ class Config {
       print(parser.usage);
       exit(99);
     }
+
+    obsWebSocket = await ObsWebSocket.connect(connectUrl: url!);
 
     final authRequired = await obsWebSocket.getAuthRequired();
 

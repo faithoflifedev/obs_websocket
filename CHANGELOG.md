@@ -1,4 +1,7 @@
 
+## 2.2.8
+* added GetMediaSourcesList, GetSourcesList, GetSourceActive and GetSourceActive
+
 ## 2.2.7
 * added SaveStreamSettings, TakeSourceScreenshot, SetCurrentProfile, GetCurrentProfile and RefreshBrowserSource
 
