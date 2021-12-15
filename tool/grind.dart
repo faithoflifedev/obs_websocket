@@ -9,8 +9,12 @@ main(args) => grind(args);
 @Task()
 test() => new TestRunner().testAsync();
 
-// @Task('Apply dartfmt to all Dart source files')
-// void format() => DartFmt.format(existingSourceDirs);
+@Task('Apply dart format to all Dart source files')
+void format() async {
+  log('format...');
+
+  await shell(args: 'format bin lib test tool');
+}
 
 @Task()
 Future<String> analyze() =>
@@ -26,8 +30,7 @@ build() {
 clean() => defaultClean();
 
 @Task('publish')
-// @Depends(dartdoc, format, analyze, version, dryrun)
-@Depends(dartdoc, analyze, version, dryrun)
+@Depends(dartdoc, format, analyze, version, dryrun)
 publish() {
   // log('publishing...');
 
@@ -45,7 +48,7 @@ publish() {
 dryrun() async {
   log('dryrun...');
 
-  await shell(args: 'pub publish --dry-run');
+  await shell(args: 'dart pub publish --dry-run');
 }
 
 @Task('dartdoc')
