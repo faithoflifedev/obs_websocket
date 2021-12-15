@@ -48,7 +48,7 @@ publish() {
 dryrun() async {
   log('dryrun...');
 
-  await shell(args: 'dart pub publish --dry-run');
+  await shell(args: 'pub publish --dry-run');
 }
 
 @Task('dartdoc')
