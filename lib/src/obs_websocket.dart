@@ -469,7 +469,7 @@ class ObsWebSocket {
       throw Exception('Problem getting sourceActive response');
     }
 
-    return response.rawResponse['sourceActive'] == 'true';
+    return response.rawResponse['sourceActive'];
   }
 
   ///Get the audio's active status of a specified source.
@@ -481,7 +481,7 @@ class ObsWebSocket {
       throw Exception('Problem getting audio response');
     }
 
-    return response.rawResponse['audioActive'] == 'true';
+    return response.rawResponse['audioActive'];
   }
 
   ///Refreshes the specified browser source.

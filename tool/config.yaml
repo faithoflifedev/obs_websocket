@@ -4,5 +4,5 @@ templates:
   - name: CHANGELOG.md
     type: prepend
 
-version: 2.2.10
-change: "fix for GetSourceActive and GetSourceActive"
+version: 2.2.11
+change: "more fix for GetSourceActive and GetSourceActive"
