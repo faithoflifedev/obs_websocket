@@ -78,8 +78,11 @@ class Config {
           'GetSourcesList',
           'GetSourceActive',
           'GetAudioActive',
+          'GetSourceSettings',
+          'SetSourceSettings',
           'GetVolume',
-          'SetVolume'
+          'SetVolume',
+          'GetSceneItemList'
         ], callback: (cmd) {
       if (cmd != null) {
         command = cmd;

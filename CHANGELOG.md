@@ -1,4 +1,7 @@
 
+## 2.2.12
+* updated package layout
+
 ## 2.2.11
 * more fix for GetSourceActive and GetSourceActive
 

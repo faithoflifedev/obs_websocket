@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:json_annotation/json_annotation.dart';
 
-import 'source.dart';
+import '../source.dart';
 
 part 'sourcesListResponse.g.dart';
 

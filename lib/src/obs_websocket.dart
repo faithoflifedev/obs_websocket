@@ -2,17 +2,9 @@ import 'dart:convert';
 
 import 'package:crypto/crypto.dart';
 import 'package:obs_websocket/obs_websocket.dart';
-import 'package:obs_websocket/src/model/authRequiredResponse.dart';
-import 'package:obs_websocket/src/model/currentProfileResponse.dart';
-import 'package:obs_websocket/src/model/mediaSourcesListResponse.dart';
-import 'package:obs_websocket/src/model/mediaStateResponse.dart';
+import 'package:obs_websocket/src/model/response/sceneItemResponse.dart';
 import 'package:obs_websocket/src/model/scene.dart';
-import 'package:obs_websocket/src/model/sourcesListResponse.dart';
-// import 'package:obs_websocket/src/model/streamSetting.dart';
-import 'package:obs_websocket/src/model/streamSettingsResponse.dart';
-import 'package:obs_websocket/src/model/streamStatusResponse.dart';
 import 'package:obs_websocket/src/model/studioModeStatus.dart';
-export 'package:obs_websocket/src/model/takeSourceScreenshotResponse.dart';
 export 'package:obs_websocket/src/model/takeSourceScreenshot.dart';
 import 'package:universal_io/io.dart';
 import 'package:web_socket_channel/io.dart';
@@ -482,6 +474,62 @@ class ObsWebSocket {
     }
 
     return response.rawResponse['audioActive'];
+  }
+
+  ///Get settings of the specified source
+  Future<void> getSourceSettings(String sourceName, String? sourceType) async {
+    final response =
+        await command('GetSourceSettings', {'sourceName': sourceName});
+
+    if (response == null) {
+      throw Exception('Problem getting audio response');
+    }
+
+    print(response);
+
+    //return response.rawResponse['audioActive'];
+  }
+
+  ///Set settings of the specified source.
+  Future<void> setSourceSettings(
+      String sourceName, String souceType, dynamic sourceSettings) async {
+    final response =
+        await command('SetSourceSettings', {'sourceName': sourceName});
+
+    if (response == null) {
+      throw Exception('Problem getting audio response');
+    }
+
+    print(response);
+
+    // return response.rawResponse['audioActive'];
+  }
+
+  ///Get a list of all scene items in a scene.
+  Future<SceneItemResponse> getSceneItemList(
+      String sourceName, String sceneName) async {
+    final response =
+        await command('GetSceneItemList', {'sceneName': sceneName});
+
+    if (response == null) {
+      throw Exception('Problem getting audio response');
+    }
+
+    return SceneItemResponse.fromJson(response.rawResponse);
+  }
+
+  ///Gets the scene specific properties of the specified source item. Coordinates are relative to the item's parent (the scene or group it belongs to).
+  Future<SceneItemResponse> getSceneItemProperties(
+    String? sceneName,
+  ) async {
+    final response =
+        await command('GetSceneItemProperties', {'scene-name': sceneName});
+
+    if (response == null) {
+      throw Exception('Problem getting audio response');
+    }
+
+    return SceneItemResponse.fromJson(response.rawResponse);
   }
 
   ///Refreshes the specified browser source.
