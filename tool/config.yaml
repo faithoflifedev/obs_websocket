@@ -4,5 +4,5 @@ templates:
   - name: CHANGELOG.md
     type: prepend
 
-version: 2.2.12
-change: "updated package layout"
+version: 2.3.0
+change: 'support for "web" platform'

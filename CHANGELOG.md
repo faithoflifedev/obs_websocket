@@ -1,4 +1,7 @@
 
+## 2.3.0
+* support for &quot;web&quot; platform
+
 ## 2.2.12
 * updated package layout
 

@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:json_annotation/json_annotation.dart';
 
-import 'sceneDetail.dart';
+import 'scene_detail.dart';
 
 part 'scene.g.dart';
 

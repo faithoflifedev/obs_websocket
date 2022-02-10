@@ -2,37 +2,26 @@ import 'dart:convert';
 
 import 'package:crypto/crypto.dart';
 import 'package:obs_websocket/obs_websocket.dart';
-import 'package:obs_websocket/src/model/response/sceneItemResponse.dart';
-import 'package:obs_websocket/src/model/scene.dart';
-import 'package:obs_websocket/src/model/studioModeStatus.dart';
-export 'package:obs_websocket/src/model/takeSourceScreenshot.dart';
-import 'package:universal_io/io.dart';
-import 'package:web_socket_channel/io.dart';
+import 'package:obs_websocket/src/connect.dart';
 import 'package:web_socket_channel/status.dart' as status;
 import 'package:web_socket_channel/web_socket_channel.dart';
 
 class ObsWebSocket {
-  //final String connectUrl;
-
   final WebSocketChannel channel;
 
   late final Stream<dynamic> broadcast;
 
   final List<Function> fallbackHandlers = [];
 
-  final eventHandlers = Map<String, List<Function>>();
+  final eventHandlers = <String, List<Function>>{};
 
-  int message_id = 0;
+  int messageId = 0;
 
   ///When the object is created we open the websocket connection and create a
   ///broadcast stream so that we can have multiple listeners providing responses
   ///to commands. [channel] is an existing [WebSocketChannel].
   ObsWebSocket({required this.channel, Function? fallbackEvent}) {
     broadcast = channel.stream.asBroadcastStream();
-
-    // if (fallbackEvent != null) {
-    //   addFallbackListener(fallbackEvent);
-    // }
 
     broadcast.listen((jsonEvent) {
       final Map<String, dynamic> rawEvent = jsonDecode(jsonEvent);
@@ -43,48 +32,53 @@ class ObsWebSocket {
     }, cancelOnError: true);
   }
 
+  ///connect through io or html packages depending on runtime environment
   static Future<ObsWebSocket> connect(
       {required String connectUrl,
       Function? fallbackEvent,
       Function? onError,
       Duration timeout = const Duration(seconds: 30)}) async {
-    if (!connectUrl.startsWith('ws://')) connectUrl = 'ws://${connectUrl}';
-    final websocket = await WebSocket.connect(connectUrl).timeout(timeout);
+    if (!connectUrl.startsWith('ws://')) {
+      connectUrl = 'ws://$connectUrl';
+    }
+
+    final webSocketChannel =
+        await Connect().connect(connectUrl: connectUrl, timeout: timeout);
 
     return ObsWebSocket(
-        channel: IOWebSocketChannel(websocket), fallbackEvent: fallbackEvent);
+        channel: webSocketChannel, fallbackEvent: fallbackEvent);
   }
 
-  /// Before execution finished the websocket needs to be closed
+  ///Before execution finished the websocket needs to be closed
   Future<void> close() async {
     await channel.sink.close(status.goingAway);
   }
 
-  ///add an event handler for the event type [T]
+  ///Add an event handler for the event type [T]
   void addHandler<T>(Function listener) {
     eventHandlers['$T'] ??= <Function>[];
 
     eventHandlers['$T']?.add(listener);
   }
 
-  ///remove an event handler for the event type [T]
+  ///Remove an event handler for the event type [T]
   void removeHandler<T>(Function listener) {
     eventHandlers['$T'] ??= <Function>[];
 
     eventHandlers['$T']?.remove(listener);
   }
 
-  ///add an event handler for an event that don't have a specific class
+  ///Add an event handler for an event that don't have a specific class
   void addFallbackListener(Function listener) {
     fallbackHandlers.add(listener);
   }
 
-  ///remove an event handler for an event that don't have a specific class
+  ///Remove an event handler for an event that don't have a specific class
   void removeFallbackListener(Function listener) {
     fallbackHandlers.remove(listener);
   }
 
-  ///look at the raw [event] data and run the appropriate event handler
+  ///Look at the raw [event] data and run the appropriate event handler
   void _handleEvent(BaseEvent event) {
     switch (event.updateType) {
       case 'RecordingStarting':
@@ -96,8 +90,9 @@ class ObsWebSocket {
         final listeners = eventHandlers['RecordingStateEvent'] ?? [];
 
         if (listeners.isNotEmpty) {
-          listeners.forEach(
-              (handler) => handler(event.asEvent<RecordingStateEvent>()));
+          for (var handler in listeners) {
+            handler(event.asEvent<RecordingStateEvent>());
+          }
         }
         break;
 
@@ -108,8 +103,9 @@ class ObsWebSocket {
         final listeners = eventHandlers['SceneItemEvent'] ?? [];
 
         if (listeners.isNotEmpty) {
-          listeners
-              .forEach((handler) => handler(event.asEvent<SceneItemEvent>()));
+          for (var handler in listeners) {
+            handler(event.asEvent<SceneItemEvent>());
+          }
         }
         break;
 
@@ -118,8 +114,9 @@ class ObsWebSocket {
         final listeners = eventHandlers['SceneItemStateEvent'] ?? [];
 
         if (listeners.isNotEmpty) {
-          listeners.forEach(
-              (handler) => handler(event.asEvent<SceneItemStateEvent>()));
+          for (var handler in listeners) {
+            handler(event.asEvent<SceneItemStateEvent>());
+          }
         }
         break;
 
@@ -130,8 +127,9 @@ class ObsWebSocket {
         final listeners = eventHandlers['StreamStateEvent'] ?? [];
 
         if (listeners.isNotEmpty) {
-          listeners
-              .forEach((handler) => handler(event.asEvent<StreamStateEvent>()));
+          for (var handler in listeners) {
+            handler(event.asEvent<StreamStateEvent>());
+          }
         }
         break;
 
@@ -139,8 +137,9 @@ class ObsWebSocket {
         final listeners = eventHandlers['StreamStatusEvent'] ?? [];
 
         if (listeners.isNotEmpty) {
-          listeners.forEach(
-              (handler) => handler(event.asEvent<StreamStatusEvent>()));
+          for (var handler in listeners) {
+            handler(event.asEvent<StreamStatusEvent>());
+          }
         }
         break;
 
@@ -149,14 +148,12 @@ class ObsWebSocket {
     }
   }
 
-  ///handler when none of the others match the event class
+  ///Handler when none of the others match the event class
   void _fallback(BaseEvent event) {
-    fallbackHandlers.forEach((handler) => handler(event));
+    for (var handler in fallbackHandlers) {
+      handler(event);
+    }
   }
-
-  // void addListener(Function listener) {
-  //   listeners.add(listener);
-  // }
 
   ///Returns an AuthRequiredResponse object that can be used to determine if
   ///authentication is required to connect to the server.  The
@@ -192,12 +189,12 @@ class ObsWebSocket {
   Future<BaseResponse?> authenticate(
       AuthRequiredResponse requirements, String passwd) async {
     final secret = _base64Hash(passwd + requirements.salt!);
-    final auth_response = _base64Hash(secret + requirements.challenge!);
+    final authResponse = _base64Hash(secret + requirements.challenge!);
 
     BaseResponse? response;
 
     var messageId =
-        sendCommand({'request-type': 'Authenticate', 'auth': auth_response});
+        sendCommand({'request-type': 'Authenticate', 'auth': authResponse});
 
     await for (String message in broadcast) {
       response = BaseResponse.fromJson(jsonDecode(message));
@@ -248,9 +245,9 @@ class ObsWebSocket {
   ///into a single Map that is json encoded and transmitted over the websocket.
   String sendCommand(Map<String, dynamic> payload,
       [Map<String, dynamic>? args]) {
-    message_id++;
+    messageId++;
 
-    payload['message-id'] = message_id.toString();
+    payload['message-id'] = messageId.toString();
 
     if (args != null) {
       payload.addAll(args);
@@ -260,7 +257,7 @@ class ObsWebSocket {
 
     channel.sink.add(requestPayload);
 
-    return message_id.toString();
+    return messageId.toString();
   }
 
   ///Get current streaming and recording status.
@@ -341,7 +338,7 @@ class ObsWebSocket {
     await command('EnableStudioMode');
   }
 
-  /// Disables Studio mode
+  ///Disables Studio mode
   Future<void> disableStudioMode() async {
     await command('DisableStudioMode');
   }
@@ -378,12 +375,6 @@ class ObsWebSocket {
     await command('SetSceneItemRender', args);
   }
 
-  // Future<List<Scene>> getSceneList([Map<String, dynamic>? args]) async {
-  //   final response = await command('GetSceneList', args);
-
-  //   return null;
-  // }
-
   ///Pause or play a media source. Supports ffmpeg and vlc media sources (as of
   ///OBS v25.0.8) Note :Leaving out playPause toggles the current pause state
   Future<void> playPauseMedia([Map<String, dynamic>? args]) async {
@@ -414,12 +405,12 @@ class ObsWebSocket {
     return MediaStateResponse.fromJson(response.rawResponse);
   }
 
-  /// Set the current profile
+  ///Set the current profile
   Future<void> setCurrentProfile(String name) async {
     await command('SetCurrentProfile', <String, dynamic>{'profile-name': name});
   }
 
-  /// Get the current profile
+  ///Get the current profile
   Future<CurrentProfileResponse> getCurrentProfile() async {
     final response = await command('GetCurrentProfile');
 
@@ -484,10 +475,6 @@ class ObsWebSocket {
     if (response == null) {
       throw Exception('Problem getting audio response');
     }
-
-    print(response);
-
-    //return response.rawResponse['audioActive'];
   }
 
   ///Set settings of the specified source.
@@ -499,10 +486,6 @@ class ObsWebSocket {
     if (response == null) {
       throw Exception('Problem getting audio response');
     }
-
-    print(response);
-
-    // return response.rawResponse['audioActive'];
   }
 
   ///Get a list of all scene items in a scene.
@@ -518,7 +501,9 @@ class ObsWebSocket {
     return SceneItemResponse.fromJson(response.rawResponse);
   }
 
-  ///Gets the scene specific properties of the specified source item. Coordinates are relative to the item's parent (the scene or group it belongs to).
+  ///Gets the scene specific properties of the specified source item.
+  ///Coordinates are relative to the item's parent (the scene or group it
+  ///belongs to).
   Future<SceneItemResponse> getSceneItemProperties(
     String? sceneName,
   ) async {
@@ -554,8 +539,8 @@ class ObsWebSocket {
     await command('SaveStreamSettings');
   }
 
-  ///A helper function that encrypts authentication info [data] for the purpose of
-  ///authentication.
+  ///A helper function that encrypts authentication info [data] for the purpose
+  ///of authentication.
   String _base64Hash(String data) {
     final hash = sha256.convert(utf8.encode(data));
 
