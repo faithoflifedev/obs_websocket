@@ -1,4 +1,7 @@
 
+## 2.3.1
+* fix for &quot;web&quot; platform
+
 ## 2.3.0
 * support for &quot;web&quot; platform
 

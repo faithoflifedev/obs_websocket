@@ -4,6 +4,10 @@ import 'package:process_run/shell.dart';
 import 'package:universal_io/io.dart';
 import 'package:yaml/yaml.dart';
 
+///grind format analyze version dryrun
+///
+///dart pub publish --dry-run
+
 main(args) => grind(args);
 
 @Task()
