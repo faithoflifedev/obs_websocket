@@ -11,10 +11,12 @@ StreamSetting _$StreamSettingFromJson(Map<String, dynamic> json) =>
       type: json['type'] as String,
       settings:
           StreamSettings.fromJson(json['settings'] as Map<String, dynamic>),
+      save: json['save'] as bool,
     );
 
 Map<String, dynamic> _$StreamSettingToJson(StreamSetting instance) =>
     <String, dynamic>{
       'type': instance.type,
       'settings': instance.settings,
+      'save': instance.save,
     };

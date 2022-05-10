@@ -224,7 +224,7 @@ class ObsWebSocket {
     var messageId = sendCommand({'request-type': command}, args);
 
     await for (String message in broadcast) {
-      response = BaseResponse.fromJson(jsonDecode(message));
+      response = BaseResponse.fromJson(json.decode(message));
 
       if (!response.status && response.messageId == messageId) {
         throw Exception(
@@ -365,6 +365,19 @@ class ObsWebSocket {
     return Scene.fromJson(response.rawResponse);
   }
 
+  Future<Scene> getScene(String sceneName) async {
+    final sceneListResponse = await getSceneList();
+
+    final sceneList =
+        sceneListResponse.scenes.where((scene) => scene.name == sceneName);
+
+    if (sceneList.isEmpty) {
+      return await getCurrentScene();
+    }
+
+    return sceneList.first;
+  }
+
   ///Switch to the specified scene.
   Future<void> setCurrentScene(String name) async {
     await command('SetCurrentScene', <String, String>{'scene-name': name});
@@ -373,6 +386,17 @@ class ObsWebSocket {
   ///Show or hide a specified source item in a specified scene.
   Future<void> setSceneItemRender(Map<String, dynamic> args) async {
     await command('SetSceneItemRender', args);
+  }
+
+  ///Get a list of scenes in the currently active profile.
+  Future<SceneListResponse> getSceneList() async {
+    final response = await command('GetSceneList', null);
+
+    if (response == null) {
+      throw Exception('Problem getting current scene');
+    }
+
+    return SceneListResponse.fromJson(response.rawResponse);
   }
 
   ///Pause or play a media source. Supports ffmpeg and vlc media sources (as of
@@ -484,27 +508,27 @@ class ObsWebSocket {
         await command('SetSourceSettings', {'sourceName': sourceName});
 
     if (response == null) {
-      throw Exception('Problem getting audio response');
+      throw Exception('Problem getting sourceSettings response');
     }
   }
 
   ///Get a list of all scene items in a scene.
-  Future<SceneItemResponse> getSceneItemList(
-      String sourceName, String sceneName) async {
-    final response =
-        await command('GetSceneItemList', {'sceneName': sceneName});
+  Future<SceneItemListResponse> getSceneItemList(String? sceneName) async {
+    final response = await (sceneName == null
+        ? command('GetSceneItemList')
+        : command('GetSceneItemList', {'sceneName': sceneName}));
 
     if (response == null) {
-      throw Exception('Problem getting audio response');
+      throw Exception('Problem getting sceneItem response');
     }
 
-    return SceneItemResponse.fromJson(response.rawResponse);
+    return SceneItemListResponse.fromJson(response.rawResponse);
   }
 
   ///Gets the scene specific properties of the specified source item.
   ///Coordinates are relative to the item's parent (the scene or group it
   ///belongs to).
-  Future<SceneItemResponse> getSceneItemProperties(
+  Future<SceneItemPropertyResponse> getSceneItemProperties(
     String? sceneName,
   ) async {
     final response =
@@ -514,7 +538,7 @@ class ObsWebSocket {
       throw Exception('Problem getting audio response');
     }
 
-    return SceneItemResponse.fromJson(response.rawResponse);
+    return SceneItemPropertyResponse.fromJson(response.rawResponse);
   }
 
   ///Refreshes the specified browser source.

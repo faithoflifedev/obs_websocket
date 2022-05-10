@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:json_annotation/json_annotation.dart';
 
 part 'auth_required_response.g.dart';
@@ -32,4 +34,7 @@ class AuthRequiredResponse {
       _$AuthRequiredResponseFromJson(json);
 
   Map<String, dynamic> toJson() => _$AuthRequiredResponseToJson(this);
+
+  @override
+  String toString() => json.encode(toJson());
 }

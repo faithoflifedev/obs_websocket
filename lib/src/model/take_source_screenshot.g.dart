@@ -9,7 +9,7 @@ part of 'take_source_screenshot.dart';
 TakeSourceScreenshot _$TakeSourceScreenshotFromJson(
         Map<String, dynamic> json) =>
     TakeSourceScreenshot(
-      sourceName: json['sourceName'] as String,
+      sourceName: json['sourceName'] as String?,
       embedPictureFormat: json['embedPictureFormat'] as String?,
       saveToFilePath: json['saveToFilePath'] as String?,
       fileFormat: json['fileFormat'] as String?,

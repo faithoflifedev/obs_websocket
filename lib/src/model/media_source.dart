@@ -21,5 +21,5 @@ class MediaSource {
   Map<String, dynamic> toJson() => _$MediaSourceToJson(this);
 
   @override
-  String toString() => jsonEncode(toJson());
+  String toString() => json.encode(toJson());
 }

@@ -11,8 +11,10 @@ part 'stream_setting.g.dart';
 class StreamSetting {
   final String type;
   final StreamSettings settings;
+  final bool save;
 
-  StreamSetting({required this.type, required this.settings});
+  StreamSetting(
+      {required this.type, required this.settings, required this.save});
 
   factory StreamSetting.fromJson(Map<String, dynamic> json) =>
       _$StreamSettingFromJson(json);
@@ -20,5 +22,5 @@ class StreamSetting {
   Map<String, dynamic> toJson() => _$StreamSettingToJson(this);
 
   @override
-  String toString() => jsonEncode(toJson());
+  String toString() => json.encode(toJson());
 }

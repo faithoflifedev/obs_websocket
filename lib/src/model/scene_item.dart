@@ -2,17 +2,21 @@ import 'dart:convert';
 
 import 'package:json_annotation/json_annotation.dart';
 
-import 'scene_detail.dart';
-
 part 'scene_item.g.dart';
 
 ///Represents an OBS SceneItem
 @JsonSerializable()
 class SceneItem {
-  final String name;
-  final List<SceneDetail> sources;
+  final int itemId;
+  final String sourceKind;
+  final String sourceName;
+  final String sourceType;
 
-  SceneItem({required this.name, required this.sources});
+  SceneItem(
+      {required this.itemId,
+      required this.sourceKind,
+      required this.sourceName,
+      required this.sourceType});
 
   factory SceneItem.fromJson(Map<String, dynamic> json) =>
       _$SceneItemFromJson(json);
@@ -20,7 +24,5 @@ class SceneItem {
   Map<String, dynamic> toJson() => _$SceneItemToJson(this);
 
   @override
-  String toString() {
-    return jsonEncode(toJson());
-  }
+  String toString() => json.encode(toJson());
 }

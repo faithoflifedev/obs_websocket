@@ -22,5 +22,5 @@ class Source {
   Map<String, dynamic> toJson() => _$SourceToJson(this);
 
   @override
-  String toString() => jsonEncode(toJson());
+  String toString() => json.encode(toJson());
 }

@@ -32,5 +32,5 @@ class StreamSettings {
   Map<String, dynamic> toJson() => _$StreamSettingsToJson(this);
 
   @override
-  String toString() => jsonEncode(toJson());
+  String toString() => json.encode(toJson());
 }
