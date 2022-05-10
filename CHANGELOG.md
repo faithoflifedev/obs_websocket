@@ -1,6 +1,6 @@
 
 ## 2.4.0
-* fix for &quot;web&quot; platform
+* restructure of the cli functionality
 
 ## 2.3.1
 * fix for &quot;web&quot; platform
