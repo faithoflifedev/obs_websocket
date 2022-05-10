@@ -6,15 +6,25 @@ Some background first. I needed a way to automate the start and stop streaming a
 
 This package gives access to all of the methods and events outlined by the [obs-websocket 4.9.1 protocol reference](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md) through the `command` method documented below, but also has helper methods for many of the more popular [Requests](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#requests) that are made available through the protocol reference.
 
-[![github last commit](https://shields.io/github/last-commit/faithoflifedev/easy_obs_websocket)](https://shields.io/github/last-commit/faithoflifedev/easy_obs_websocket)
-[![github build](https://shields.io/github/workflow/status/faithoflifedev/easy_obs_websocket/Dart)](https://shields.io/github/workflow/status/faithoflifedev/easy_obs_websocket/Dart)
-[![github issues](https://shields.io/github/issues/faithoflifedev/easy_obs_websocket)](https://shields.io/github/issues/faithoflifedev/easy_obs_websocket)
+[![Build Status](https://github.com/faithoflifedev/easy_obs_websocket/workflows/Dart/badge.svg)](https://github.com/faithoflifedev/easy_obs_websocket/actions) [![github last commit](https://shields.io/github/last-commit/faithoflifedev/easy_obs_websocket)](https://shields.io/github/last-commit/faithoflifedev/easy_obs_websocket) [![github build](https://shields.io/github/workflow/status/faithoflifedev/easy_obs_websocket/Dart)](https://shields.io/github/workflow/status/faithoflifedev/easy_obs_websocket/Dart) [![github issues](https://shields.io/github/issues/faithoflifedev/easy_obs_websocket)](https://shields.io/github/issues/faithoflifedev/easy_obs_websocket)
 
-Please feel free to submit PRs for any addtional helper methods, or report an [issue](https://github.com/faithoflifedev/obsWebsocket/issues) for a missing helper method and I'll add it if I have time available.
+Please feel free to submit PRs for any addtional helper methods, or report an [issue](https://github.com/faithoflifedev/easy_obs_websocket/issues) for a missing helper method and I'll add it if I have time available.
+
+## New for version 2.4.0
+
+As of the 2.4.0 release of this package, there is a cli utility included that can be used to return data for many API calls currently supported by the package. If you want to get started quicky with the cli utility run these commands in a termainal session:
+
+```sh
+pub global activate obs
+
+obs --help
+```
+
+Please see the cli documentation [README.md](https://github.com/faithoflifedev/easy_obs_websocket/tree/main/bin) for more detailed usage information.
 
 ## Getting Started
 
-### Requirements:
+### Requirements
 
 - The [OBS](https://obsproject.com/) application needs to be installed on a machine reachable on the local network
 - The [obs-websocket](https://github.com/Palakis/obs-websocket) plugin needs to be installed on the same machine
@@ -24,7 +34,7 @@ In your project add the dependency:
 ```yml
 dependencies:
   ...
-  obs_websocket: ^2.3.1
+  obs_websocket: ^2.4.0
 ```
 
 For help getting started with dart, check out these [guides](https://dart.dev/guides).
@@ -62,7 +72,7 @@ obs-studio host ip - is the ip address or host name of the computer running [OBS
 final AuthRequired authRequired = await obsWebSocket.getAuthRequired();
 
 if (authRequired.status)
-	await obsWebSocket.authenticate(authRequired, '[password]');
+  await obsWebSocket.authenticate(authRequired, '[password]');
 ```
 
 ## Sending Commands to [OBS](https://obsproject.com/)
@@ -82,7 +92,7 @@ if (!status.streaming) {
 Alternatively, there is a low-level interface for sending commands. This can be used in place of the above, or in the case that a specific documented Request has not been implemented as method yet. The available commands are documented on the [protocol](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md) page of the [obs-websocket](https://github.com/Palakis/obs-websocket) github page
 
 ```dart
-SimpleResponse response await obsWebSocket.command('StartStreaming');
+SimpleResponse response = await obsWebSocket.command('StartStreaming');
 ```
 
 `response.status` will be `true` on success. `response.error` will give an error description if one is available.
@@ -165,22 +175,7 @@ obsWebSocket.close();
 
 ## Sample OBS cli
 
-This code base includes sample code for a OBS cli application that can be used to send `obs-websocket` protocol based commands to OBS. An example of a command is as follows:
-
-```bash
-dart bin/ws-obs.dart --command GetStreamingStatus --url=ws:///[obs-studio host ip]:4444  --passwd [password]
-```
-
-```bash
--h, --help                        Display this helpful message
--p, --passwd                      The OBS websocket password, only required if enabled in OBS
--u, --url=<ws://[host]:[port]>    The url and port for OBS websocket
--c, --command                     Required. The OBS command to send
-                                  [StartStopStreaming, StartStreaming, StopStreaming, GetStreamingStatus, GetStreamSettings, SetStreamSettings, SaveStreamSettings, GetSourcesList, GetVolume, SetVolume]
--a, --args                        Optional. The json encoded arguments for the supplied command if required
-```
-
-You can use [dart compile](https://dart.dev/tools/dart-compile) to create the cli executable.
+For v2.4.0 of this package the cli model has been completely revamped.  Please see the cli documentation [README.md](https://github.com/faithoflifedev/easy_obs_websocket/tree/main/bin) for more detailed usage information.
 
 ## Supported high-level commands
 
@@ -230,8 +225,8 @@ For any of the items that have an [x] from the list below, a high level command 
     - [ ] [SetSourceName](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#setsourcename)
     - [ ] [SetSyncOffset](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#setsyncoffset)
     - [ ] [GetSyncOffset](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#getsyncoffset)
-    - [ ] [GetSourceSettings](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#getsourcesettings)
-    - [ ] [SetSourceSettings](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#setsourcesettings)
+    - [x] [GetSourceSettings](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#getsourcesettings)
+    - [x] [SetSourceSettings](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#setsourcesettings)
     - [ ] [GetTextGDIPlusProperties](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#gettextgdiplusproperties)
     - [ ] [SetTextGDIPlusProperties](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#settextgdiplusproperties)
     - [ ] [GetTextFreetype2Properties](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#gettextfreetype2properties)
@@ -281,8 +276,8 @@ For any of the items that have an [x] from the list below, a high level command 
     - [ ] [GetCurrentSceneCollection](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#getcurrentscenecollection)
     - [ ] [ListSceneCollections](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#listscenecollections)
   - [Scene Items](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#scene-items-1)
-    - [ ] [GetSceneItemList](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#getsceneitemlist)
-    - [ ] [GetSceneItemProperties](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#getsceneitemproperties)
+    - [x] [GetSceneItemList](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#getsceneitemlist)
+    - [x] [GetSceneItemProperties](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#getsceneitemproperties)
     - [ ] [SetSceneItemProperties](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#setsceneitemproperties)
     - [ ] [ResetSceneItem](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#resetsceneitem)
     - [x] [SetSceneItemRender](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#setsceneitemrender)
@@ -295,7 +290,7 @@ For any of the items that have an [x] from the list below, a high level command 
   - [Scenes](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#scenes-1)
     - [x] [SetCurrentScene](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#setcurrentscene)
     - [x] [GetCurrentScene](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#getcurrentscene)
-    - [ ] [GetSceneList](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#getscenelist)
+    - [x] [GetSceneList](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#getscenelist)
     - [ ] [CreateScene](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#createscene)
     - [ ] [ReorderSceneItems](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#reordersceneitems)
     - [ ] [SetSceneTransitionOverride](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#setscenetransitionoverride)

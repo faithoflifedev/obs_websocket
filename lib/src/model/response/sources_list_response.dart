@@ -24,5 +24,5 @@ class SourcesListResponse {
   Map<String, dynamic> toJson() => _$SourcesListResponseToJson(this);
 
   @override
-  String toString() => jsonEncode(toJson());
+  String toString() => json.encode(toJson());
 }

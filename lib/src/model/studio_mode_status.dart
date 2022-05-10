@@ -17,5 +17,5 @@ class StudioModeStatus {
   Map<String, dynamic> toJson() => _$StudioModeStatusToJson(this);
 
   @override
-  String toString() => jsonEncode(toJson());
+  String toString() => json.encode(toJson());
 }

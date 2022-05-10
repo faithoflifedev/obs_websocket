@@ -24,5 +24,5 @@ class TakeSourceScreenshotResponse {
   Map<String, dynamic> toJson() => _$TakeSourceScreenshotResponseToJson(this);
 
   @override
-  String toString() => jsonEncode(toJson());
+  String toString() => json.encode(toJson());
 }

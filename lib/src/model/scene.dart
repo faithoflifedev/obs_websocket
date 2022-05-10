@@ -29,5 +29,5 @@ class Scene {
   Map<String, dynamic> toJson() => _$SceneToJson(this);
 
   @override
-  String toString() => jsonEncode(toJson());
+  String toString() => json.encode(toJson());
 }

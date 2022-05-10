@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:json_annotation/json_annotation.dart';
 
 part 'stream_settings_response.g.dart';
@@ -13,4 +15,7 @@ class StreamSettingsResponse {
       _$StreamSettingsResponseFromJson(json);
 
   Map<String, dynamic> toJson() => _$StreamSettingsResponseToJson(this);
+
+  @override
+  String toString() => json.encode(toJson());
 }

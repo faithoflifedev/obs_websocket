@@ -33,7 +33,5 @@ class StreamStatusResponse {
   Map<String, dynamic> toJson() => _$StreamStatusResponseToJson(this);
 
   @override
-  String toString() {
-    return jsonEncode(toJson());
-  }
+  String toString() => json.encode(toJson());
 }

@@ -10,7 +10,7 @@ part 'take_source_screenshot.g.dart';
 @JsonSerializable()
 class TakeSourceScreenshot {
   ///Source name. Note: Since scenes are also sources, you can also provide a scene name. Contrary to the docs, this field is required for the obs-websocket 4.9.1 protocol reference.
-  final String sourceName;
+  final String? sourceName;
 
   ///Format of the Data URI encoded picture. Can be "png", "jpg", "jpeg" or "bmp" (or any other value supported by Qt's Image module)
   final String? embedPictureFormat;
@@ -45,5 +45,5 @@ class TakeSourceScreenshot {
   Map<String, dynamic> toJson() => _$TakeSourceScreenshotToJson(this);
 
   @override
-  String toString() => jsonEncode(toJson());
+  String toString() => json.encode(toJson());
 }

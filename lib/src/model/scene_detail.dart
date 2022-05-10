@@ -50,7 +50,5 @@ class SceneDetail {
   Map<String, dynamic> toJson() => _$SceneDetailToJson(this);
 
   @override
-  String toString() {
-    return jsonEncode(toJson());
-  }
+  String toString() => json.encode(toJson());
 }

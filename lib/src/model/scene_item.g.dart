@@ -7,13 +7,15 @@ part of 'scene_item.dart';
 // **************************************************************************
 
 SceneItem _$SceneItemFromJson(Map<String, dynamic> json) => SceneItem(
-      name: json['name'] as String,
-      sources: (json['sources'] as List<dynamic>)
-          .map((e) => SceneDetail.fromJson(e as Map<String, dynamic>))
-          .toList(),
+      itemId: json['itemId'] as int,
+      sourceKind: json['sourceKind'] as String,
+      sourceName: json['sourceName'] as String,
+      sourceType: json['sourceType'] as String,
     );
 
 Map<String, dynamic> _$SceneItemToJson(SceneItem instance) => <String, dynamic>{
-      'name': instance.name,
-      'sources': instance.sources,
+      'itemId': instance.itemId,
+      'sourceKind': instance.sourceKind,
+      'sourceName': instance.sourceName,
+      'sourceType': instance.sourceType,
     };
