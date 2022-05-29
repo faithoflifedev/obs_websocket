@@ -27,6 +27,7 @@ export 'src/model/response/stream_status_response.dart';
 export 'src/model/response/take_source_screenshot_response.dart';
 export 'src/model/response/stream_status_response.dart';
 export 'src/model/scene.dart';
+export 'src/model/scene_detail.dart';
 export 'src/model/scene_item.dart';
 export 'src/model/scene_item_property.dart';
 export 'src/model/source.dart';
