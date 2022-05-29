@@ -10,26 +10,26 @@ abstract class ObsHelperCommand extends Command {
   ObsWebSocket get obs => _obs!;
 
   Future<void> initializeObs() async {
-    final _config = <String, dynamic>{};
+    final config = <String, dynamic>{};
 
     if (globalResults?['uri'] == null) {
-      final _configFile = File('${ObsUtil.userHome}/.obs/credentials.json');
+      final configFile = File('${ObsUtil.userHome}/.obs/credentials.json');
 
-      if (!_configFile.existsSync()) {
+      if (!configFile.existsSync()) {
         throw UsageException('OBS connection information not provided.', usage);
       }
 
-      _config.addAll(json.decode(_configFile.readAsStringSync()));
+      config.addAll(json.decode(configFile.readAsStringSync()));
     } else {
-      _config['uri'] = globalResults!['uri'];
+      config['uri'] = globalResults!['uri'];
 
       if (globalResults?['passwd'] == null) {
-        _config['password'] = globalResults!['passwd'];
+        config['password'] = globalResults!['passwd'];
       }
     }
 
     _obs = await ObsWebSocket.connect(
-      connectUrl: _config['uri']!,
+      connectUrl: config['uri']!,
       timeout: const Duration(seconds: 5),
     );
 
@@ -39,8 +39,8 @@ abstract class ObsHelperCommand extends Command {
       throw Exception('Could not determine authentication requirements');
     }
 
-    if (authRequired.status && _config['password'] != null) {
-      await obs.authenticate(authRequired, _config['password']!);
+    if (authRequired.status && config['password'] != null) {
+      await obs.authenticate(authRequired, config['password']!);
     } else {
       throw UsageException(
           'OBS authentication has been enabled. A password is required for a successful connection, use --help for more options',

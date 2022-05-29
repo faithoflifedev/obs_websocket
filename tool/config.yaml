@@ -4,5 +4,5 @@ templates:
   - name: CHANGELOG.md
     type: prepend
 
-version: 2.4.0
-change: 'fix for "web" platform'
+version: 2.4.1
+change: "issue #11"

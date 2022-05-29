@@ -43,11 +43,11 @@ class SceneItemStateEvent {
       this.type});
 
   bool get state {
-    bool? _state = itemVisible ?? itemLocked;
+    bool? state = itemVisible ?? itemLocked;
 
-    if (_state == null) throw Exception();
+    if (state == null) throw Exception();
 
-    return _state;
+    return state;
   }
 
   factory SceneItemStateEvent.fromJson(Map<String, dynamic> json, String type) {

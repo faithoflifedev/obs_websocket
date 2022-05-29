@@ -1,4 +1,7 @@
 
+## 2.4.1
+* issue #11
+
 ## 2.4.0
 * restructure of the cli functionality
 
