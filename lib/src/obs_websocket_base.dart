@@ -20,7 +20,7 @@ class ObsWebSocket {
   ///When the object is created we open the websocket connection and create a
   ///broadcast stream so that we can have multiple listeners providing responses
   ///to commands. [channel] is an existing [WebSocketChannel].
-  ObsWebSocket({required this.channel, Function? fallbackEvent}) {
+  ObsWebSocket({required this.channel, Function()? onDone}) {
     broadcast = channel.stream.asBroadcastStream();
 
     broadcast.listen((jsonEvent) {
@@ -29,14 +29,13 @@ class ObsWebSocket {
       if (!rawEvent.containsKey('message-id')) {
         _handleEvent(BaseEvent.fromJson(rawEvent));
       }
-    }, cancelOnError: true);
+    }, cancelOnError: true, onDone: onDone);
   }
 
   ///connect through io or html packages depending on runtime environment
   static Future<ObsWebSocket> connect(
       {required String connectUrl,
-      Function? fallbackEvent,
-      Function? onError,
+      Function()? onDone,
       Duration timeout = const Duration(seconds: 30)}) async {
     if (!connectUrl.startsWith('ws://')) {
       connectUrl = 'ws://$connectUrl';
@@ -46,7 +45,7 @@ class ObsWebSocket {
         await Connect().connect(connectUrl: connectUrl, timeout: timeout);
 
     return ObsWebSocket(
-        channel: webSocketChannel, fallbackEvent: fallbackEvent);
+        channel: webSocketChannel, onDone: onDone);
   }
 
   ///Before execution finished the websocket needs to be closed
