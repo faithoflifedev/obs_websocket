@@ -4,5 +4,5 @@ templates:
   - name: CHANGELOG.md
     type: prepend
 
-version: 2.4.1
-change: "issue #11"
+version: 2.4.2
+change: "added fallbackEvent back in"

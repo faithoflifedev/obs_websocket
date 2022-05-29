@@ -1,4 +1,7 @@
 
+## 2.4.2
+* added fallbackEvent back in
+
 ## 2.4.1
 * issue #11
 
