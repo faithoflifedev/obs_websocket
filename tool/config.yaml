@@ -5,4 +5,4 @@ templates:
     type: prepend
 
 version: 2.4.3
-change: "* README fix and grind improvement"
+change: "README fix and grind improvement"
