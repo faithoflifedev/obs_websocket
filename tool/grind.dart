@@ -4,25 +4,10 @@ import 'package:process_run/shell.dart';
 import 'package:universal_io/io.dart';
 import 'package:yaml/yaml.dart';
 
-///grind format analyze version dryrun
-///
-///dart pub publish --dry-run
-
 main(args) => grind(args);
 
 @Task()
 test() => TestRunner().testAsync();
-
-@Task('Apply dart format to all Dart source files')
-void format() async {
-  log('format...');
-
-  await shell(args: 'format bin lib test tool');
-}
-
-@Task()
-Future<String> analyze() =>
-    Dart.runAsync('analyze', arguments: ['--fatal-infos']);
 
 @DefaultTask()
 @Depends(test)
@@ -34,8 +19,8 @@ build() {
 clean() => defaultClean();
 
 @Task('publish')
-//@Depends(dartdoc, format, analyze, version, dryrun)
-@Depends(format, analyze, version, dryrun)
+@Depends(analyze, version, dryrun)
+// @Depends(dartdoc, analyze, version, dryrun)
 publish() {
   // log('publishing...');
 
@@ -63,12 +48,12 @@ dartdoc() {
   DartDoc.doc();
 }
 
-// @Task('dart analyze')
-// analyze() {
-//   log('analyzing...');
+@Task('dart analyze')
+analyze() {
+  log('analyzing...');
 
-//   Analyzer.analyze('.', fatalWarnings: true);
-// }
+  Analyzer.analyze('.', fatalWarnings: true);
+}
 
 @Task('version bump')
 version() async {
@@ -121,12 +106,12 @@ commit(
 
   await shell(exec: 'git', args: 'commit -m "$change"');
 
-  await shell(exec: 'git', args: 'push');
-
   if (newTag) {
     await shell(exec: 'git', args: 'tag v$version');
 
     await shell(exec: 'git', args: 'push --tags');
+  } else {
+    await shell(exec: 'git', args: 'push');
   }
 }
 
@@ -151,9 +136,11 @@ void updateMarkdown(config) {
 
     switch (type) {
       case 'prepend':
-        final currentContent = outputFile.readAsStringSync();
+        final currentContent =
+            outputFile.readAsStringSync().replaceFirst('# Changelog\n', '');
 
-        outputFile.writeAsStringSync(template.renderString(config));
+        outputFile.writeAsStringSync(template.renderString(config),
+            mode: FileMode.write);
 
         outputFile.writeAsStringSync(currentContent, mode: FileMode.append);
 

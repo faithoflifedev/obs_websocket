@@ -15,7 +15,7 @@ Please feel free to submit PRs for any addtional helper methods, or report an [i
 As of the 2.4.0 release of this package, there is a cli utility included that can be used to return data for many API calls currently supported by the package. If you want to get started quicky with the cli utility run these commands in a termainal session:
 
 ```sh
-pub global activate obs
+pub global activate obs_websocket
 
 obs --help
 ```

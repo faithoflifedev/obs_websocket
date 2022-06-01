@@ -4,5 +4,5 @@ templates:
   - name: CHANGELOG.md
     type: prepend
 
-version: 2.4.2
-change: "added fallbackEvent back in"
+version: 2.4.3
+change: "* README fix and grind improvement"
