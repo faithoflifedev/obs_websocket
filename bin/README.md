@@ -5,7 +5,7 @@ A command line interface for controlling OBS with cli commands
 To install:
 
 ```sh
-pub global activate obs
+pub global activate obs_websocket
 ```
 
 Usage:
