@@ -550,7 +550,7 @@ class ObsWebSocket {
 
   ///Refreshes the specified browser source.
   Future<void> refreshBrowserSource(String sourceName) async {
-    await command('RefreshBrowserSource', {'sourceName': 'opsLower'});
+    await command('RefreshBrowserSource', {'sourceName': sourceName});
   }
 
   Future<TakeSourceScreenshotResponse> takeSourceScreenshot(
