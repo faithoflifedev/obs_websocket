@@ -1,57 +1,69 @@
+import 'package:loggy/loggy.dart';
 import 'package:obs_websocket/obs_websocket.dart';
 import 'package:universal_io/io.dart';
 import 'package:yaml/yaml.dart';
 
 void main(List<String> args) async {
+  Loggy.initLoggy();
   final config = loadYaml(File('config.yaml').readAsStringSync());
 
-  final sceneItem = 'opsLower';
+  final sceneItem = 'My Face';
 
   ObsWebSocket obsWebSocket =
-      await ObsWebSocket.connect(connectUrl: config['host']);
+      await ObsWebSocket.connect(config['host'], password: config['password']);
 
-  //this handler will only run when a SceneItemState event is generated
-  obsWebSocket.addHandler<SceneItemStateEvent>(
-      (SceneItemStateEvent sceneItemStateEvent) async {
+  obsWebSocket.listen(EventSubscription.all);
+
+  final currentScene = await obsWebSocket.getCurrentProgramScene();
+
+  final sceneItemId = await obsWebSocket.getSceneItemId(SceneItemId(
+    sceneName: currentScene,
+    sourceName: sceneItem,
+  ));
+
+  final hideScene = SceneItemEnableStateChanged(
+      sceneName: currentScene,
+      sceneItemId: sceneItemId,
+      sceneItemEnabled: false);
+
+  final showScene = SceneItemEnableStateChanged(
+      sceneName: currentScene,
+      sceneItemId: sceneItemId,
+      sceneItemEnabled: true);
+
+  // this handler will only run when a SceneItemEnableStateChanged event is generated
+  obsWebSocket.addHandler<SceneItemEnableStateChanged>(
+      (SceneItemEnableStateChanged sceneItemEnableStateChanged) async {
     print(
-        'event: ${sceneItemStateEvent.sceneName} ${sceneItemStateEvent.state}');
+        'event: ${sceneItemEnableStateChanged.sceneName} ${sceneItemEnableStateChanged.sceneItemEnabled}');
 
-    //make sure we have the correct sceneItem and that it's currently visible
-    if (sceneItemStateEvent.type == 'SceneItemVisibilityChanged' &&
-        sceneItemStateEvent.itemName == sceneItem &&
-        sceneItemStateEvent.state) {
-      //wait 13 seconds
+    // make sure we have the correct sceneItem and that it's currently visible
+    if (sceneItemEnableStateChanged.sceneName == currentScene &&
+        sceneItemEnableStateChanged.sceneItemEnabled) {
+      // wait 13 seconds
       await Future.delayed(Duration(seconds: 13));
 
-      //hide the sceneItem
-      await obsWebSocket
-          .setSceneItemRender(sceneItemStateEvent.toSceneItemRenderMap(false));
+      // hide the sceneItem
+      await obsWebSocket.setSceneItemEnabled(hideScene);
 
-      //close the socket when complete
+      // close the socket when complete
       await obsWebSocket.close();
     }
   });
 
-  final authRequired = await obsWebSocket.getAuthRequired();
+  // start with scene hidden
+  final sceneItemEnabled =
+      await obsWebSocket.getSceneItemEnabled(SceneItemEnabled(
+    sceneName: currentScene,
+    sceneItemId: sceneItemId,
+  ));
 
-  if (authRequired.status) {
-    await obsWebSocket.authenticate(authRequired, config['password']);
+  if (sceneItemEnabled) {
+    await obsWebSocket.setSceneItemEnabled(hideScene);
   }
 
-  final currentScene = await obsWebSocket.getCurrentScene();
-
-  final sceneDetail = currentScene.getSceneDetail(withName: sceneItem);
-
-  if (sceneDetail == null) {
-    throw Exception();
-  }
-
-  if (sceneDetail.render) {
-    await obsWebSocket
-        .setSceneItemRender({'source': sceneItem, 'render': false});
-  }
-
-  await obsWebSocket.setSceneItemRender({'source': sceneItem, 'render': true});
+  // now show the scene
+  await obsWebSocket.setSceneItemEnabled(showScene);
 
   //obsWebSocket.close();
 }

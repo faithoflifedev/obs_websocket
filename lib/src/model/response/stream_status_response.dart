@@ -6,26 +6,25 @@ part 'stream_status_response.g.dart';
 
 @JsonSerializable()
 class StreamStatusResponse {
-  @JsonKey(name: 'message-id')
-  final String messageId;
+  final bool outputActive;
+  final bool outputReconnecting;
+  final String outputTimecode;
+  final int outputDuration;
+  final double outputCongestion;
+  final int outputBytes;
+  final int outputSkippedFrames;
+  final int outputTotalFrames;
 
-  @JsonKey(name: 'preview-only')
-  final bool previewOnly;
-
-  @JsonKey(name: 'recording')
-  final bool recording;
-
-  @JsonKey(name: 'recording-paused')
-  final bool recordingPaused;
-
-  @JsonKey(name: 'status')
-  final String status;
-
-  @JsonKey(name: 'streaming')
-  final bool streaming;
-
-  StreamStatusResponse(this.messageId, this.previewOnly, this.recording,
-      this.recordingPaused, this.status, this.streaming);
+  StreamStatusResponse({
+    required this.outputActive,
+    required this.outputReconnecting,
+    required this.outputTimecode,
+    required this.outputDuration,
+    required this.outputCongestion,
+    required this.outputBytes,
+    required this.outputSkippedFrames,
+    required this.outputTotalFrames,
+  });
 
   factory StreamStatusResponse.fromJson(Map<String, dynamic> json) =>
       _$StreamStatusResponseFromJson(json);

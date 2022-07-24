@@ -2,24 +2,19 @@ import 'dart:convert';
 
 import 'package:json_annotation/json_annotation.dart';
 
-import '../scene.dart';
-
 part 'scene_list_response.g.dart';
 
 @JsonSerializable()
 class SceneListResponse {
-  @JsonKey(name: 'message-id')
-  final String messageId;
+  final String currentProgramSceneName;
+  final String currentPreviewSceneName;
+  // final List<Scene> scenes;
 
-  @JsonKey(name: 'current-scene')
-  final String currentScene;
-
-  final List<Scene> scenes;
-
-  SceneListResponse(
-      {required this.messageId,
-      required this.currentScene,
-      required this.scenes});
+  SceneListResponse({
+    required this.currentProgramSceneName,
+    required this.currentPreviewSceneName,
+    // required this.scenes,
+  });
 
   factory SceneListResponse.fromJson(Map<String, dynamic> json) =>
       _$SceneListResponseFromJson(json);

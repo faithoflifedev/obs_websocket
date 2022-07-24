@@ -1,64 +1,221 @@
 import 'dart:convert';
 
-import 'package:crypto/crypto.dart';
+import 'package:loggy/loggy.dart';
 import 'package:obs_websocket/obs_websocket.dart';
 import 'package:obs_websocket/src/connect.dart';
+import 'package:obs_websocket/src/request/config.dart';
+import 'package:obs_websocket/src/request/stream.dart' as obs;
+import 'package:obs_websocket/src/request/record.dart';
+import 'package:obs_websocket/src/request/general.dart';
 import 'package:web_socket_channel/status.dart' as status;
 import 'package:web_socket_channel/web_socket_channel.dart';
 
-class ObsWebSocket {
-  final WebSocketChannel channel;
+class ObsWebSocket with UiLoggy {
+  final WebSocketChannel websocketChannel;
 
-  late final Stream<dynamic> broadcast;
+  final Stream broadcastStream;
+
+  final String? password;
 
   final List<Function> fallbackHandlers = [];
 
   final eventHandlers = <String, List<Function>>{};
 
+  obs.Stream? _stream;
+
+  Record? _record;
+
+  General? _general;
+
+  Config? _config;
+
+  bool handshakeComplete = false;
+
+  int? _negotiatedRpcVersion;
+
   int messageId = 0;
+
+  int get negotiatedRpcVersion => handshakeComplete
+      ? _negotiatedRpcVersion!
+      : throw Exception('authentication not completed');
+
+  obs.Stream get stream => _stream!;
+
+  Record get record => _record!;
+
+  General get general => _general!;
+
+  Config get config => _config!;
+
+  static Map<int, int> opCodeResponseMap = {
+    WebSocketOpCode.identify.code: WebSocketOpCode.identified.code,
+    WebSocketOpCode.request.code: WebSocketOpCode.requestResponse.code,
+    WebSocketOpCode.requestBatch.code:
+        WebSocketOpCode.requestBatchResponse.code,
+  };
 
   ///When the object is created we open the websocket connection and create a
   ///broadcast stream so that we can have multiple listeners providing responses
   ///to commands. [channel] is an existing [WebSocketChannel].
   ObsWebSocket(
-      {required this.channel, Function()? onDone, Function? fallbackEvent}) {
-    broadcast = channel.stream.asBroadcastStream();
+    this.websocketChannel, {
+    this.password,
+    Function()? onDone,
+    Function? fallbackEvent,
+  }) : broadcastStream = websocketChannel.stream.asBroadcastStream() {
+    _stream = obs.Stream(this);
 
-    broadcast.listen((jsonEvent) {
-      final Map<String, dynamic> rawEvent = jsonDecode(jsonEvent);
+    _record = Record(this);
 
-      if (!rawEvent.containsKey('message-id')) {
-        _handleEvent(BaseEvent.fromJson(rawEvent));
-      }
-    }, cancelOnError: true, onDone: onDone);
+    _general = General(this);
 
-    if (fallbackEvent != null) {
-      addFallbackListener(fallbackEvent);
-    }
+    _config = Config(this);
   }
 
-  ///connect through io or html packages depending on runtime environment
   static Future<ObsWebSocket> connect(
-      {required String connectUrl,
-      Function()? onDone,
-      Function? fallbackEvent,
-      Duration timeout = const Duration(seconds: 30)}) async {
+    String connectUrl, {
+    String? password,
+    Duration timeout = const Duration(seconds: 120),
+    Function()? onDone,
+    Function? fallbackEvent,
+  }) async {
     if (!connectUrl.startsWith('ws://')) {
       connectUrl = 'ws://$connectUrl';
     }
 
+    logDebug('connecting');
+
     final webSocketChannel =
         await Connect().connect(connectUrl: connectUrl, timeout: timeout);
 
-    return ObsWebSocket(
-        channel: webSocketChannel,
-        onDone: onDone,
-        fallbackEvent: fallbackEvent);
+    final obsWebSocket = ObsWebSocket(
+      webSocketChannel,
+      password: password,
+      onDone: onDone,
+      fallbackEvent: fallbackEvent,
+    );
+
+    logDebug('connected');
+
+    await obsWebSocket.init();
+
+    return obsWebSocket;
+  }
+
+  Future<void> init() async {
+    broadcastStream.listen((message) {
+      final opcode = Opcode.fromJson(json.decode(message));
+
+      if (opcode.op == WebSocketOpCode.event.code) {
+        final event = Event.fromJson(opcode.d);
+        print('event: $event');
+
+        _handleEvent(event);
+      }
+    });
+
+    await authenticate();
+  }
+
+  Future<void> authenticate() async {
+    loggy.debug('authenticating');
+
+    final helloOpcode = await getStreamOpcode(WebSocketOpCode.hello.code);
+
+    if (helloOpcode == null) {
+      throw Exception('Authentication error with Hello response');
+    }
+
+    final hello = Hello.fromJson(helloOpcode.d);
+
+    final Authentication? authentication = hello.authentication;
+
+    String? authToken;
+
+    if (authentication != null) {
+      final secret = ObsUtil.base64Hash('$password${authentication.salt}');
+
+      authToken = ObsUtil.base64Hash('$secret${authentication.challenge}');
+    }
+
+    final identifyOpcode = Identify(
+      rpcVersion: hello.rpcVersion,
+      authentication: authToken,
+      eventSubscriptions: EventSubscription.none.code,
+    ).toOpcode();
+
+    final identifiedOpcode = await sendOpcode(identifyOpcode);
+
+    if (identifiedOpcode == null) {
+      throw Exception('Authentication error with identified response');
+    }
+
+    final identified = Identified.fromJson(identifiedOpcode.d);
+
+    _negotiatedRpcVersion = identified.negotiatedRpcVersion;
+
+    handshakeComplete = true;
+
+    loggy.debug('negotiatedRpcVersion: $negotiatedRpcVersion');
+
+    loggy.debug('authenticated');
+  }
+
+  Future<Opcode?> getStreamOpcode(int? webSocketOpCode) async {
+    Opcode? opcode;
+
+    if (webSocketOpCode == null) {
+      return null;
+    }
+
+    await for (String message in broadcastStream) {
+      loggy.debug('rcv raw opcode: $message');
+
+      opcode = Opcode.fromJson(json.decode(message));
+
+      if (opcode.op == webSocketOpCode) {
+        return opcode;
+      }
+    }
+
+    return opcode;
+  }
+
+  Future<Opcode?> sendOpcode(Opcode opcode) async {
+    loggy.debug('send opcode: $opcode');
+
+    websocketChannel.sink.add(opcode.toString());
+
+    return await getStreamOpcode(opCodeResponseMap[opcode.op]);
+  }
+
+  Future<void> listen(EventSubscription eventSubscription) async {
+    final reIdentifyOpcode = ReIdentifyOpcode(
+        ReIdentify(eventSubscriptions: eventSubscription.code));
+
+    await sendOpcode(reIdentifyOpcode);
+  }
+
+  /// Look at the raw [event] data and run the appropriate event handler
+  void _handleEvent(Event event) {
+    final listeners = eventHandlers[event.eventType] ?? [];
+
+    switch (event.eventType) {
+      case 'SceneItemEnableStateChanged':
+        for (var handler in listeners) {
+          handler(SceneItemEnableStateChanged.fromJson(event.eventData));
+        }
+
+        break;
+
+      default:
+        _fallback(event);
+    }
   }
 
   ///Before execution finished the websocket needs to be closed
   Future<void> close() async {
-    await channel.sink.close(status.goingAway);
+    await websocketChannel.sink.close(status.goingAway);
   }
 
   ///Add an event handler for the event type [T]
@@ -85,496 +242,124 @@ class ObsWebSocket {
     fallbackHandlers.remove(listener);
   }
 
-  ///Look at the raw [event] data and run the appropriate event handler
-  void _handleEvent(BaseEvent event) {
-    switch (event.updateType) {
-      case 'RecordingStarting':
-      case 'RecordingStarted':
-      case 'RecordingStopping':
-      case 'RecordingStopped':
-      case 'RecordingPaused':
-      case 'RecordingResumed':
-        final listeners = eventHandlers['RecordingStateEvent'] ?? [];
-
-        if (listeners.isNotEmpty) {
-          for (var handler in listeners) {
-            handler(event.asEvent<RecordingStateEvent>());
-          }
-        }
-        break;
-
-      case 'SceneItemAdded':
-      case 'SceneItemRemoved':
-      case 'SceneItemSelected':
-      case 'SceneItemDeselected':
-        final listeners = eventHandlers['SceneItemEvent'] ?? [];
-
-        if (listeners.isNotEmpty) {
-          for (var handler in listeners) {
-            handler(event.asEvent<SceneItemEvent>());
-          }
-        }
-        break;
-
-      case 'SceneItemVisibilityChanged':
-      case 'SceneItemLockChanged':
-        final listeners = eventHandlers['SceneItemStateEvent'] ?? [];
-
-        if (listeners.isNotEmpty) {
-          for (var handler in listeners) {
-            handler(event.asEvent<SceneItemStateEvent>());
-          }
-        }
-        break;
-
-      case 'StreamStarting':
-      case 'StreamStarted':
-      case 'StreamStopping':
-      case 'StreamStopped':
-        final listeners = eventHandlers['StreamStateEvent'] ?? [];
-
-        if (listeners.isNotEmpty) {
-          for (var handler in listeners) {
-            handler(event.asEvent<StreamStateEvent>());
-          }
-        }
-        break;
-
-      case 'StreamStatus':
-        final listeners = eventHandlers['StreamStatusEvent'] ?? [];
-
-        if (listeners.isNotEmpty) {
-          for (var handler in listeners) {
-            handler(event.asEvent<StreamStatusEvent>());
-          }
-        }
-        break;
-
-      default:
-        _fallback(event);
-    }
-  }
-
   ///Handler when none of the others match the event class
-  void _fallback(BaseEvent event) {
+  void _fallback(Event event) {
     for (var handler in fallbackHandlers) {
-      handler(event);
+      handler(event.eventData);
     }
   }
 
-  ///Returns an AuthRequiredResponse object that can be used to determine if
-  ///authentication is required to connect to the server.  The
-  ///AuthRequiredResponse object hods the 'salt' and 'secret' that will be
-  ///required for authentication in the case that it is required throws an
-  ///[Exception] if there is a problem or error returned by the server.  Returns
-  ///an [AuthRequiredResponse] object.
-  Future<AuthRequiredResponse> getAuthRequired() async {
-    var authRequired = AuthRequiredResponse.init();
+  // Future<RequestResponse?> command(String command,
+  //         [Map<String, dynamic>? args]) async =>
+  //     await sendRequest(Request(requestType: command, requestData: args));
 
-    var messageId = sendCommand({'request-type': 'GetAuthRequired'});
+  Future<RequestResponse?> sendRequest(Request request) async {
+    RequestResponse? requestResponse;
 
-    await for (String message in broadcast) {
-      authRequired = AuthRequiredResponse.fromJson(jsonDecode(message));
+    loggy.debug('send ${request.requestType}: ${request.toOpcode()}');
 
-      if (!authRequired.status) {
-        throw Exception(
-            'Server returned error to GetAuthRequiredResponse request: $message');
-      }
+    websocketChannel.sink.add(request.toOpcode().toString());
 
-      if (authRequired.messageId == messageId) {
-        break;
-      }
-    }
+    await for (String message in broadcastStream) {
+      final response = Opcode.fromJson(json.decode(message));
 
-    return authRequired;
-  }
+      loggy.debug('response raw: $message');
+      if (response.op == WebSocketOpCode.requestResponse.code) {
+        requestResponse = RequestResponse.fromJson(response.d);
 
-  ///Returns a BaseResponse object, [requirements] are provided by the
-  ///AuthRequiredResponse object and [passwd] is the password assigned in the
-  ///OBS interface for websockets. If OBS returns an error in the response, then
-  ///an [Exception] will be thrown.
-  Future<BaseResponse?> authenticate(
-      AuthRequiredResponse requirements, String passwd) async {
-    final secret = _base64Hash(passwd + requirements.salt!);
-    final authResponse = _base64Hash(secret + requirements.challenge!);
+        loggy.debug(
+            'response status: ${requestResponse.requestType} ${requestResponse.requestStatus}');
+        if (request.requestId == request.requestId) {
+          _checkResponse(request, requestResponse.responseData);
 
-    BaseResponse? response;
-
-    var messageId =
-        sendCommand({'request-type': 'Authenticate', 'auth': authResponse});
-
-    await for (String message in broadcast) {
-      response = BaseResponse.fromJson(jsonDecode(message));
-
-      if (!response.status) {
-        throw Exception(
-            'Server returned error to Authenticate request\n: ${response.error}');
-      }
-
-      if (response.messageId == messageId) {
-        break;
+          break;
+        }
       }
     }
 
-    return response;
+    return requestResponse;
   }
 
-  ///This is a helper method for sending commands over the websocket.  A
-  ///SimpleResponse is returned.  The function requires a [command] from the
-  ///documented list of websocket and optionally [args] can be provided  if
-  ///required by the command.  If OBS returns an error in the response, then an
-  ///[Exception] will be thrown.
-  Future<BaseResponse?> command(String command,
-      [Map<String, dynamic>? args]) async {
-    BaseResponse? response;
-
-    var messageId = sendCommand({'request-type': command}, args);
-
-    await for (String message in broadcast) {
-      response = BaseResponse.fromJson(json.decode(message));
-
-      if (!response.status && response.messageId == messageId) {
-        throw Exception(
-            '\nServer returned error to [$command] request:\n\t ${response.error}\n');
-      }
-
-      if (response.messageId == messageId) {
-        break;
-      }
-    }
-
-    return response;
-  }
-
-  ///This is the lower level send that transmits the command supplied on the
-  ///websocket, It requires a [payload], the command as a Map that will be  json
-  ///encoded in the format required by OBS, and the [args].  Both are combined
-  ///into a single Map that is json encoded and transmitted over the websocket.
-  String sendCommand(Map<String, dynamic> payload,
-      [Map<String, dynamic>? args]) {
-    messageId++;
-
-    payload['message-id'] = messageId.toString();
-
-    if (args != null) {
-      payload.addAll(args);
-    }
-
-    final requestPayload = jsonEncode(payload);
-
-    channel.sink.add(requestPayload);
-
-    return messageId.toString();
-  }
-
-  ///Get current streaming and recording status.
-  Future<StreamStatusResponse> getStreamStatus() async {
-    var response = await command('GetStreamingStatus');
-
-    if (response == null) {
-      throw Exception('Could not retrieve the stream status');
-    }
-
-    return StreamStatusResponse.fromJson(response.rawResponse);
-  }
-
-  ///Stop streaming. Will return an error if streaming is not active.
-  Future<void> stopStreaming() async {
-    await command('StopStreaming');
-  }
-
-  ///Stop recording. Will return an error if recording is not active.
-  Future<void> stopRecording() async {
-    await command('StopRecordinging');
-  }
-
-  ///Start streaming. Will return an error if streaming is already active.
-  Future<void> startStreaming() async {
-    await command('StartStreaming');
-  }
-
-  ///Start recording. Will return an error if recording is already active.
-  Future<void> startRecording() async {
-    await command('StartRecording');
-  }
-
-  ///Toggle streaming on or off (depending on the current stream state).
-  Future<void> startStopStreaming() async {
-    await command('StartStopStreaming');
-  }
-
-  ///Toggle recording on or off (depending on the current recording state).
-  Future<void> startStopRecording() async {
-    await command('StartStopRecording');
-  }
-
-  ///Get the current streaming server settings.
-  Future<StreamSettingsResponse> getStreamSettings() async {
-    final response = await command('GetStreamSettings');
-
-    if (response == null) {
-      throw Exception('Problem getting stream settings');
-    }
-
-    return StreamSettingsResponse.fromJson(response.rawResponse);
-  }
-
-  ///Sets one or more attributes of the current streaming server settings. Any
-  ///options not passed will remain unchanged. Returns the updated settings in
-  ///'response'. If 'type' is different than the current streaming service type,
-  ///all settings are required. Returns the full settings of the stream (the
-  ///same as 'GetStreamSettings').
-  Future<void> setStreamSettings(StreamSetting streamSetting) async {
-    await command('SetStreamSettings', streamSetting.toJson());
-  }
-
-  ///Pause the current recording. Returns an error if recording is not active or
-  ///already paused.
-  Future<void> pauseRecording() async {
-    await command('PauseRecording');
-  }
-
-  ///Resume/unpause the current recording (if paused). Returns an error if
-  ///recording is not active or not paused.
-  Future<void> resumeRecording() async {
-    await command('ResumeRecording');
-  }
-
-  ///Enables Studio Mode.
-  Future<void> enableStudioMode() async {
-    await command('EnableStudioMode');
-  }
-
-  ///Disables Studio mode
-  Future<void> disableStudioMode() async {
-    await command('DisableStudioMode');
-  }
-
-  ///Indicates if Studio Mode is currently enabled.
-  Future<StudioModeStatus> getStudioModeStatus() async {
-    final response = await command('GetStudioModeStatus');
-
-    if (response == null) {
-      throw Exception('Problem getting stream settings');
-    }
-
-    return StudioModeStatus.fromJson(response.rawResponse);
-  }
-
-  ///Get the current scene's name and source items.  Returns a [Scene] object.
-  Future<Scene> getCurrentScene() async {
-    final response = await command('GetCurrentScene');
-
-    if (response == null) {
-      throw Exception('Problem getting current scene');
-    }
-
-    return Scene.fromJson(response.rawResponse);
-  }
-
-  Future<Scene> getScene(String sceneName) async {
-    final sceneListResponse = await getSceneList();
-
-    final sceneList =
-        sceneListResponse.scenes.where((scene) => scene.name == sceneName);
-
-    if (sceneList.isEmpty) {
-      return await getCurrentScene();
-    }
-
-    return sceneList.first;
-  }
-
-  ///Switch to the specified scene.
-  Future<void> setCurrentScene(String name) async {
-    await command('SetCurrentScene', <String, String>{'scene-name': name});
-  }
-
-  ///Show or hide a specified source item in a specified scene.
-  Future<void> setSceneItemRender(Map<String, dynamic> args) async {
-    await command('SetSceneItemRender', args);
-  }
-
-  ///Get a list of scenes in the currently active profile.
-  Future<SceneListResponse> getSceneList() async {
-    final response = await command('GetSceneList', null);
-
-    if (response == null) {
-      throw Exception('Problem getting current scene');
-    }
-
-    return SceneListResponse.fromJson(response.rawResponse);
-  }
-
-  ///Pause or play a media source. Supports ffmpeg and vlc media sources (as of
-  ///OBS v25.0.8) Note :Leaving out playPause toggles the current pause state
-  Future<void> playPauseMedia([Map<String, dynamic>? args]) async {
-    await command('PlayPauseMedia', args);
-  }
-
-  ///Restart a media source. Supports ffmpeg and vlc media sources (as of OBS
-  ///v25.0.8)
-  Future<void> restartMedia([Map<String, dynamic>? args]) async {
-    await command('RestartMedia', args);
-  }
-
-  ///Stop a media source. Supports ffmpeg and vlc media sources (as of OBS
-  ///v25.0.8)
-  Future<void> stopMedia([Map<String, dynamic>? args]) async {
-    await command('StopMedia', args);
-  }
-
-  ///Get the current playing state of a media source. Supports ffmpeg and vlc
-  ///media sources (as of OBS v25.0.8),  Returns a [MediaStateResponse] object.
-  Future<MediaStateResponse> getMediaState([Map<String, dynamic>? args]) async {
-    final response = await command('GetMediaState', args);
-
-    if (response == null) {
-      throw Exception('Problem getting media state');
-    }
-
-    return MediaStateResponse.fromJson(response.rawResponse);
-  }
-
-  ///Set the current profile
-  Future<void> setCurrentProfile(String name) async {
-    await command('SetCurrentProfile', <String, dynamic>{'profile-name': name});
-  }
-
-  ///Get the current profile
-  Future<CurrentProfileResponse> getCurrentProfile() async {
-    final response = await command('GetCurrentProfile');
-
-    if (response == null) {
-      throw Exception('Problem getting current profile');
-    }
-
-    return CurrentProfileResponse.fromJson(response.rawResponse);
-  }
-
-  ///List the media state of all media sources (vlc and media source)
-  Future<MediaSourcesListResponse> getMediaSourcesList() async {
-    final response = await command('GetMediaSourcesList');
-
-    if (response == null) {
-      throw Exception('Problem getting mediaSourcesList response');
-    }
-
-    return MediaSourcesListResponse.fromJson(response.rawResponse);
-  }
-
-  ///List all sources available in the running OBS instance
-  Future<SourcesListResponse> getSourcesList() async {
-    final response = await command('GetSourcesList');
-
-    if (response == null) {
-      throw Exception('Problem getting sourcesList response');
-    }
-
-    return SourcesListResponse.fromJson(response.rawResponse);
-  }
-
-  ///Get the source's active status of a specified source (if it is showing in the final mix).
-  Future<bool> getSourceActive(String sourceName) async {
-    final response =
-        await command('GetSourceActive', {'sourceName': sourceName});
-
-    if (response == null) {
-      throw Exception('Problem getting sourceActive response');
-    }
-
-    return response.rawResponse['sourceActive'];
-  }
-
-  ///Get the audio's active status of a specified source.
-  Future<bool> getAudioActive(String sourceName) async {
-    final response =
-        await command('GetAudioActive', {'sourceName': sourceName});
-
-    if (response == null) {
-      throw Exception('Problem getting audio response');
-    }
-
-    return response.rawResponse['audioActive'];
-  }
-
-  ///Get settings of the specified source
-  Future<void> getSourceSettings(String sourceName, String? sourceType) async {
-    final response =
-        await command('GetSourceSettings', {'sourceName': sourceName});
-
-    if (response == null) {
-      throw Exception('Problem getting audio response');
+  void _checkResponse(Request request, Map<String, dynamic>? responseData) {
+    if (request.hasResponseData && responseData == null) {
+      throw Exception('Problem with command: ${request.requestType}');
     }
   }
 
-  ///Set settings of the specified source.
-  Future<void> setSourceSettings(
-      String sourceName, String souceType, dynamic sourceSettings) async {
-    final response =
-        await command('SetSourceSettings', {'sourceName': sourceName});
+  /// Gets the current program scene.
+  ///
+  /// - Complexity Rating: 1/5
+  /// - Latest Supported RPC Version: 1
+  /// - Added in v5.0.0
+  Future<String> getCurrentProgramScene() async {
+    final response = await sendRequest(Request('GetCurrentProgramScene'));
 
-    if (response == null) {
-      throw Exception('Problem getting sourceSettings response');
-    }
+    final currentProgramSceneResponse =
+        CurrentProgramSceneResponse.fromJson(response!.responseData!);
+
+    return currentProgramSceneResponse.currentProgramSceneName;
   }
 
-  ///Get a list of all scene items in a scene.
-  Future<SceneItemListResponse> getSceneItemList(String? sceneName) async {
-    final response = await (sceneName == null
-        ? command('GetSceneItemList')
-        : command('GetSceneItemList', {'sceneName': sceneName}));
+  /// Sets the current program scene.
+  ///
+  /// - Complexity Rating: 1/5
+  /// - Latest Supported RPC Version: 1
+  /// - Added in v5.0.0
+  Future<void> setCurrentProgramScene(String sceneName) async =>
+      await sendRequest(Request(
+        'SetCurrentProgramScene',
+        requestData: {'sceneName': sceneName},
+      ));
 
-    if (response == null) {
-      throw Exception('Problem getting sceneItem response');
-    }
+  /// Searches a scene for a source, and returns its id.
+  ///
+  /// Scenes and Groups
+  ///
+  /// - Complexity Rating: 3/5
+  /// - Latest Supported RPC Version: 1
+  /// - Added in v5.0.0
+  Future<int> getSceneItemId(SceneItemId sceneItemId) async {
+    final response = await sendRequest(Request(
+      'GetSceneItemId',
+      requestData: sceneItemId.toJson(),
+    ));
 
-    return SceneItemListResponse.fromJson(response.rawResponse);
+    final sceneItemIdResponse =
+        SceneItemIdResponse.fromJson(response!.responseData!);
+
+    return sceneItemIdResponse.sceneItemId;
   }
 
-  ///Gets the scene specific properties of the specified source item.
-  ///Coordinates are relative to the item's parent (the scene or group it
-  ///belongs to).
-  Future<SceneItemPropertyResponse> getSceneItemProperties(
-    String? sceneName,
-  ) async {
-    final response =
-        await command('GetSceneItemProperties', {'scene-name': sceneName});
+  /// Gets the enable state of a scene item.
+  ///
+  /// Scenes and Groups
+  ///
+  /// - Complexity Rating: 3/5
+  /// - Latest Supported RPC Version: 1
+  /// - Added in v5.0.0
+  Future<bool> getSceneItemEnabled(SceneItemEnabled sceneItemEnabled) async {
+    final response = await sendRequest(Request(
+      'GetSceneItemEnabled',
+      requestData: sceneItemEnabled.toJson(),
+    ));
 
-    if (response == null) {
-      throw Exception('Problem getting audio response');
-    }
+    final sceneItemEnabledResponse =
+        SceneItemEnabledResponse.fromJson(response!.responseData!);
 
-    return SceneItemPropertyResponse.fromJson(response.rawResponse);
+    return sceneItemEnabledResponse.sceneItemEnabled;
   }
 
-  ///Refreshes the specified browser source.
-  Future<void> refreshBrowserSource(String sourceName) async {
-    await command('RefreshBrowserSource', {'sourceName': 'opsLower'});
-  }
-
-  Future<TakeSourceScreenshotResponse> takeSourceScreenshot(
-      TakeSourceScreenshot takeSourceScreenshot) async {
-    final response =
-        await command('TakeSourceScreenshot', takeSourceScreenshot.toJson());
-
-    if (response == null) {
-      throw Exception('Problem getting source screenshot response');
-    }
-
-    return TakeSourceScreenshotResponse.fromJson(response.rawResponse);
-  }
-
-  ///Save the current streaming server settings to disk.
-  Future<void> saveStreamSettings() async {
-    await command('SaveStreamSettings');
-  }
-
-  ///A helper function that encrypts authentication info [data] for the purpose
-  ///of authentication.
-  String _base64Hash(String data) {
-    final hash = sha256.convert(utf8.encode(data));
-
-    return base64.encode(hash.bytes);
-  }
+  /// Sets the enable state of a scene item.
+  ///
+  /// Scenes and Groups
+  ///
+  /// - Complexity Rating: 3/5
+  /// - Latest Supported RPC Version: 1
+  /// - Added in v5.0.0
+  Future<void> setSceneItemEnabled(
+          SceneItemEnableStateChanged sceneItemEnableStateChanged) async =>
+      await sendRequest(Request(
+        'SetSceneItemEnabled',
+        requestData: sceneItemEnableStateChanged.toJson(),
+      ));
 }

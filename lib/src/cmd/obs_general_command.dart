@@ -33,9 +33,9 @@ class ObsGetAuthRequiredCommand extends ObsHelperCommand {
   void run() async {
     await initializeObs();
 
-    final authRequiredResponse = await obs.getAuthRequired();
+    // final authRequiredResponse = await obs.getAuthRequired();
 
-    print(authRequiredResponse);
+    // print(authRequiredResponse);
 
     obs.close();
   }

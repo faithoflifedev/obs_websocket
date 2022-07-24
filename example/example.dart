@@ -3,57 +3,53 @@ import 'package:universal_io/io.dart';
 import 'package:yaml/yaml.dart';
 
 void main(List<String> args) async {
-  //get connection infomration from the config.yaml file
+  // get connection information from the config.yaml file
   final config = loadYaml(File('config.yaml').readAsStringSync());
 
   ObsWebSocket obsWebSocket = await ObsWebSocket.connect(
-      connectUrl: config['host'],
-      fallbackEvent: (BaseEvent event) {
-        print('event: ${event.rawEvent}');
-      });
+    config['host'],
+    password: config['password'],
+    fallbackEvent: (Event event) {
+      print('event: ${event.eventData}');
+    },
+  );
 
-  obsWebSocket.addHandler<RecordingStateEvent>(
-      (RecordingStateEvent recordingStateEvent) =>
-          print('recording state: ${recordingStateEvent.type}'));
+  obsWebSocket.addHandler<RecordStateChanged>(
+      (RecordStateChanged recordStateChanged) =>
+          print('recording output active: ${recordStateChanged.outputActive}'));
 
-  obsWebSocket.addHandler<SceneItemEvent>((SceneItemEvent sceneItemEvent) =>
-      print('scene item: ${sceneItemEvent.itemName}'));
+  obsWebSocket.addHandler<SceneItemSelected>(
+      (SceneItemSelected sceneItemSelected) =>
+          print('scene item: ${sceneItemSelected.sceneName}'));
 
-  obsWebSocket.addHandler<SceneItemStateEvent>(
-      (SceneItemStateEvent sceneItemState) =>
-          print('scene item state: ${sceneItemState.type}'));
+  obsWebSocket.addHandler<SceneItemEnableStateChanged>(
+      (SceneItemEnableStateChanged sceneItemEnableStateChanged) => print(
+          'scene item state: ${sceneItemEnableStateChanged.sceneItemEnabled}'));
 
-  obsWebSocket.addHandler<StreamStateEvent>(
-      (StreamStateEvent streamStateEvent) =>
-          print('stream state: ${streamStateEvent.type}'));
+  obsWebSocket.addHandler<StreamStateChanged>(
+      (StreamStateChanged streamStateEvent) =>
+          print('stream state: ${streamStateEvent.outputState}'));
 
-  obsWebSocket.addHandler<StreamStatusEvent>((StreamStatusEvent streamStatus) =>
-      print('stream status (total frames): ${streamStatus.numTotalFrames}'));
+  // obsWebSocket.addHandler<StreamStatusEvent>((StreamStatusEvent streamStatus) =>
+  //     print('stream status (total frames): ${streamStatus.numTotalFrames}'));
 
-  final authRequired = await obsWebSocket.getAuthRequired();
+  final status = await obsWebSocket.stream.status();
 
-  if (authRequired.status) {
-    await obsWebSocket.authenticate(authRequired, config['password']);
+  if (!status.outputActive) {
+    final streamServiceSettings = StreamServiceSettings(
+        streamServiceType: 'rtmp_custom',
+        streamServiceSettings: {'server': '[rtmp_url]', 'key': '[stream_key]'});
+
+    await obsWebSocket.config.setStreamServiceSettings(streamServiceSettings);
+
+    obsWebSocket.stream.start();
   }
 
-  final status = await obsWebSocket.getStreamStatus();
+  // final streamServiceSettings = await obsWebSocket.getStreamServiceSettings();
 
-  if (!status.streaming) {
-    final setting = StreamSetting.fromJson({
-      'type': 'rtmp_custom',
-      'settings': {'server': '[rtmp_url]', 'key': '[stream_key]'}
-    });
+  await obsWebSocket.record.toggle();
 
-    await obsWebSocket.setStreamSettings(setting);
-
-    obsWebSocket.startStreaming();
-  }
-
-  final streamSettings = await obsWebSocket.getStreamSettings();
-
-  await obsWebSocket.startStopRecording();
-
-  //using the old v1.x lower lovel methods
+  //using the old v1.x lower level methods
   // final response = await obsWebSocket.command('StopStreaming');
 
   // if (response != null) {
@@ -61,9 +57,9 @@ void main(List<String> args) async {
   // }
 
   //Alternatively, the helper method could be used
-  await obsWebSocket.stopStreaming();
+  // await obsWebSocket.stopStreaming();
 
-  print(streamSettings.settings.toString());
+  // print(streamSettings.settings.toString());
 
   obsWebSocket.close();
 }

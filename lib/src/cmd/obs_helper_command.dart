@@ -29,22 +29,22 @@ abstract class ObsHelperCommand extends Command {
     }
 
     _obs = await ObsWebSocket.connect(
-      connectUrl: config['uri']!,
+      config['uri']!,
       timeout: const Duration(seconds: 5),
     );
 
-    final authRequired = await obs.getAuthRequired();
+    // final authRequired = await obs.getAuthRequired();
 
-    if (!authRequired.status) {
-      throw Exception('Could not determine authentication requirements');
-    }
+    // if (!authRequired.status) {
+    //   throw Exception('Could not determine authentication requirements');
+    // }
 
-    if (authRequired.status && config['password'] != null) {
-      await obs.authenticate(authRequired, config['password']!);
-    } else {
-      throw UsageException(
-          'OBS authentication has been enabled. A password is required for a successful connection, use --help for more options',
-          usage);
-    }
+    // if (authRequired.status && config['password'] != null) {
+    //   await obs.authenticate(authRequired, config['password']!);
+    // } else {
+    //   throw UsageException(
+    //       'OBS authentication has been enabled. A password is required for a successful connection, use --help for more options',
+    //       usage);
+    // }
   }
 }

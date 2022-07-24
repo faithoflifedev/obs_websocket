@@ -6,27 +6,27 @@ void main(List<String> args) async {
   final config = loadYaml(File('config.yaml').readAsStringSync());
 
   ObsWebSocket obsWebSocket =
-      await ObsWebSocket.connect(connectUrl: config['host']);
+      await ObsWebSocket.connect(config['host'], password: config['password']);
 
-  final authRequired = await obsWebSocket.getAuthRequired();
+  // final authRequired = await obsWebSocket.getAuthRequired();
 
-  if (authRequired.authRequired != false) {
-    await obsWebSocket.authenticate(authRequired, config['password']);
-  }
+  // if (authRequired.authRequired != false) {
+  //   await obsWebSocket.authenticate(authRequired, config['password']);
+  // }
 
-  final takeSourceScreenshot = TakeSourceScreenshot(
-      sourceName: 'main',
-      saveToFilePath: '/Users/av/Movies/takeSourceScreenshot.jpg',
-      width: 720);
+  // final takeSourceScreenshot = TakeSourceScreenshot(
+  //     sourceName: 'main',
+  //     saveToFilePath: '/Users/av/Movies/takeSourceScreenshot.jpg',
+  //     width: 720);
 
-  final response =
-      await obsWebSocket.takeSourceScreenshot(takeSourceScreenshot);
+  // final response =
+  //     await obsWebSocket.takeSourceScreenshot(takeSourceScreenshot);
 
-  print(response);
+  // print(response);
 
-  await obsWebSocket.refreshBrowserSource('opsLower');
+  // await obsWebSocket.refreshBrowserSource('opsLower');
 
-  await obsWebSocket.saveStreamSettings();
+  // await obsWebSocket.saveStreamSettings();
 
   obsWebSocket.close();
 }

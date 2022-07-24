@@ -31,9 +31,9 @@ class ObsGetMediaSourcesListSourcesCommand extends ObsHelperCommand {
   void run() async {
     await initializeObs();
 
-    final mediaSourcesListResponse = await obs.getMediaSourcesList();
+    // final mediaSourcesListResponse = await obs.getMediaSourcesList();
 
-    print(mediaSourcesListResponse);
+    // print(mediaSourcesListResponse);
 
     obs.close();
   }
@@ -52,9 +52,9 @@ class ObsGetSourcesListSourcesCommand extends ObsHelperCommand {
   void run() async {
     await initializeObs();
 
-    final sourcesListResponse = await obs.getSourcesList();
+    // final sourcesListResponse = await obs.getSourcesList();
 
-    print(sourcesListResponse);
+    // print(sourcesListResponse);
 
     obs.close();
   }
@@ -78,10 +78,10 @@ class ObsGetSourceActiveSourcesCommand extends ObsHelperCommand {
   void run() async {
     await initializeObs();
 
-    final sourcesListResponse =
-        await obs.getSourceActive(argResults?['source-name']);
+    // final sourcesListResponse =
+    //     await obs.getSourceActive(argResults?['source-name']);
 
-    print(sourcesListResponse);
+    // print(sourcesListResponse);
 
     obs.close();
   }
@@ -105,10 +105,10 @@ class ObsGetAudioActiveSourcesCommand extends ObsHelperCommand {
   void run() async {
     await initializeObs();
 
-    final sourcesListResponse =
-        await obs.getAudioActive(argResults?['source-name']);
+    // final sourcesListResponse =
+    //     await obs.getAudioActive(argResults?['source-name']);
 
-    print(sourcesListResponse);
+    // print(sourcesListResponse);
 
     obs.close();
   }
@@ -167,20 +167,20 @@ class ObsTakeSourceScreenshotSourcesCommand extends ObsHelperCommand {
           usage);
     }
 
-    final takeSourceScreenshot = TakeSourceScreenshot(
-      sourceName: argResults?['source-name'],
-      embedPictureFormat: argResults?['embed-picture-format'],
-      saveToFilePath: argResults?['save-to-file-path'],
-      fileFormat: argResults?['file-format'],
-      compressionQuality: int.parse(argResults!['compression-quality']),
-      width: argResults?['width'],
-      height: argResults?['height'],
-    );
+    // final takeSourceScreenshot = TakeSourceScreenshot(
+    //   sourceName: argResults?['source-name'],
+    //   embedPictureFormat: argResults?['embed-picture-format'],
+    //   saveToFilePath: argResults?['save-to-file-path'],
+    //   fileFormat: argResults?['file-format'],
+    //   compressionQuality: int.parse(argResults!['compression-quality']),
+    //   width: argResults?['width'],
+    //   height: argResults?['height'],
+    // );
 
-    final takeSourceScreenshotResponse =
-        await obs.takeSourceScreenshot(takeSourceScreenshot);
+    // final takeSourceScreenshotResponse =
+    //     await obs.takeSourceScreenshot(takeSourceScreenshot);
 
-    print(takeSourceScreenshotResponse);
+    // print(takeSourceScreenshotResponse);
 
     obs.close();
   }
@@ -203,7 +203,7 @@ class ObsRefreshBrowserSourceSourcesCommand extends ObsHelperCommand {
   void run() async {
     await initializeObs();
 
-    await obs.refreshBrowserSource(argResults?['source-name']);
+    // await obs.refreshBrowserSource(argResults?['source-name']);
 
     obs.close();
   }

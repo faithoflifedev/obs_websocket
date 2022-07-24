@@ -31,7 +31,7 @@ class ObsGetStreamingStatusStreamingCommand extends ObsHelperCommand {
   void run() async {
     await initializeObs();
 
-    final streamStatusResponse = await obs.getStreamStatus();
+    final streamStatusResponse = await obs.stream.status();
 
     print(streamStatusResponse);
 
@@ -52,7 +52,7 @@ class ObsStartStopStreamingStreamingCommand extends ObsHelperCommand {
   void run() async {
     await initializeObs();
 
-    await obs.startStopStreaming();
+    // await obs.startStopStreaming();
 
     obs.close();
   }
@@ -71,7 +71,7 @@ class ObsStartStreamingStreamingCommand extends ObsHelperCommand {
   void run() async {
     await initializeObs();
 
-    await obs.startStreaming();
+    // await obs.startStreaming();
 
     obs.close();
   }
@@ -90,7 +90,7 @@ class ObsStopStreamingStreamingCommand extends ObsHelperCommand {
   void run() async {
     await initializeObs();
 
-    await obs.stopStreaming();
+    // await obs.stopStreaming();
 
     obs.close();
   }
@@ -126,13 +126,13 @@ class ObsSetStreamSettingsStreamingCommand extends ObsHelperCommand {
   void run() async {
     await initializeObs();
 
-    StreamSetting streamSetting = StreamSetting(
-        type: argResults!['type'],
-        settings: StreamSettings(
-            server: argResults?['server'], key: argResults?['key']),
-        save: argResults!['save']);
+    // StreamSetting streamSetting = StreamSetting(
+    //     type: argResults!['type'],
+    //     settings: StreamSettings(
+    //         server: argResults?['server'], key: argResults?['key']),
+    //     save: argResults!['save']);
 
-    await obs.setStreamSettings(streamSetting);
+    // await obs.setStreamSettings(streamSetting);
 
     obs.close();
   }
@@ -150,7 +150,7 @@ class ObsGetStreamSettingsStreamingCommand extends ObsHelperCommand {
   void run() async {
     await initializeObs();
 
-    final streamSettingsResponse = await obs.getStreamSettings();
+    final streamSettingsResponse = await obs.config.streamServiceSettings();
 
     print(streamSettingsResponse);
 
@@ -171,7 +171,7 @@ class ObsSaveStreamSettingsStreamingCommand extends ObsHelperCommand {
   void run() async {
     await initializeObs();
 
-    await obs.saveStreamSettings();
+    // await obs.saveStreamSettings();
 
     obs.close();
   }
