@@ -1,18 +1,20 @@
 import 'dart:convert';
 
 import 'package:json_annotation/json_annotation.dart';
-import 'package:obs_websocket/obs_websocket.dart';
+import 'package:obs_websocket/obs_websocket.dart' show Scene;
 
 part 'scene_item_enabled.g.dart';
 
 @JsonSerializable()
-class SceneItemEnabled extends SceneItem {
+class SceneItemEnabled extends Scene {
+  final int sceneItemId;
+
   SceneItemEnabled({
     required String sceneName,
-    required int sceneItemId,
+    required this.sceneItemId,
   }) : super(
           sceneName: sceneName,
-          sceneItemId: sceneItemId,
+          sceneIndex: sceneItemId,
         );
 
   factory SceneItemEnabled.fromJson(Map<String, dynamic> json) =>

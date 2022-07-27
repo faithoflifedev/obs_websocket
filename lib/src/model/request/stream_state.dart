@@ -9,7 +9,10 @@ class StreamState {
   final String outputActive;
   final String outputState;
 
-  StreamState({required this.outputActive, required this.outputState});
+  StreamState({
+    required this.outputActive,
+    required this.outputState,
+  });
 
   factory StreamState.fromJson(Map<String, dynamic> json) =>
       _$StreamStateFromJson(json);

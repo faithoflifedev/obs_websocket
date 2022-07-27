@@ -75,4 +75,7 @@ class Stream {
   /// - Added in v5.0.0
   Future<void> stop() async =>
       await obsWebSocket.sendRequest(Request('StopStream'));
+
+  // TODO:
+  Future<void> sendStreamCaption() async => throw UnimplementedError();
 }

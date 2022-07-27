@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:json_annotation/json_annotation.dart';
-import 'package:obs_websocket/obs_websocket.dart';
+import 'package:obs_websocket/obs_websocket.dart' show ReIdentifyOpcode, Opcode;
 
 part 'reidentify.g.dart';
 

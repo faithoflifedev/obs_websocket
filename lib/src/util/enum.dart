@@ -50,24 +50,25 @@ enum RequestStatusCode {
 }
 
 enum EventSubscription {
-  none(0),
-  general(1),
-  config(2),
-  scenes(4),
-  inputs(8),
-  transitions(16),
-  filters(32),
-  outputs(64),
-  sceneItems(128),
-  mediaInputs(256),
-  vendors(512),
-  ui(1024),
-  all(2047),
-  inputVolumeMeters(65536),
-  inputActiveStateChanged(131072),
-  inputShowStateChanged(262144),
-  sceneItemTransformChanged(524288);
+  none(0, 'None'),
+  general(1, 'General'),
+  config(2, 'Config'),
+  scenes(4, 'Scenes'),
+  inputs(8, 'Inputs'),
+  transitions(16, 'Transitions'),
+  filters(32, 'Filters'),
+  outputs(64, 'Outputs'),
+  sceneItems(128, 'SceneItems'),
+  mediaInputs(256, 'MediaInputs'),
+  vendors(512, 'Vendors'),
+  ui(1024, 'Ui'),
+  all(2047, 'All'),
+  inputVolumeMeters(65536, 'InputVolumeMeters'),
+  inputActiveStateChanged(131072, 'InputActiveStateChanged'),
+  inputShowStateChanged(262144, 'InputShowStateChanged'),
+  sceneItemTransformChanged(524288, 'SceneItemTransformChanged');
 
   final int code;
-  const EventSubscription(this.code);
+  final String name;
+  const EventSubscription(this.code, this.name);
 }

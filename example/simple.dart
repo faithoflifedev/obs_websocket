@@ -4,19 +4,79 @@ import 'package:universal_io/io.dart';
 import 'package:yaml/yaml.dart';
 
 main() async {
-  Loggy.initLoggy();
   final config = loadYaml(File('config.yaml').readAsStringSync());
 
-  ObsWebSocket obs =
-      await ObsWebSocket.connect(config['host'], password: config['password']);
+  final obs = await ObsWebSocket.connect(
+    config['host'],
+    password: config['password'],
+    logOptions: LogOptions(LogLevel.debug),
+    fallbackEventHandler: (Event event) =>
+        print('type: ${event.eventType} data: ${event.eventData}'),
+  );
 
-  await obs.listen(EventSubscription.all);
+  await obs.listen(EventSubscription.all.code);
 
+  // use a helper method to make a request
   final streamStatusResponse = await obs.stream.status();
 
-  print('time code: ${streamStatusResponse.outputTimecode}');
+  print('is streaming: ${streamStatusResponse.outputActive}');
 
-  await obs.setCurrentProgramScene('presentation');
+  // the low-level method of making a request
+  var response = await obs.send('GetStreamStatus');
+
+  print('request status: ${response?.requestStatus.result}');
+
+  print('is streaming: ${response?.responseData?['outputActive']}');
+
+  response = await obs.send('GetSceneList');
+
+  // helper equivalent
+  // final sceneListResponse = await obs.scenes.list();
+
+  var scenes = response?.responseData?['scenes'];
+
+  scenes.forEach(
+      (scene) => print('${scene['sceneName']} - ${scene['sceneIndex']}'));
+
+  // helper equivalent...
+  // for (var scene in sceneListResponse.scenes) {
+  //   print('${scene.sceneName} - ${scene.sceneIndex}');
+  // }
+
+  var groups = await obs.scenes.getGroupList();
+
+  for (var group in groups) {
+    print(group);
+  }
+
+  var sceneItems = await obs.sceneItems.getSceneItemList('Scene');
+
+  for (var sceneItem in sceneItems) {
+    print('id: ${sceneItem.sceneItemId}, sourceName ${sceneItem.sourceName}');
+  }
+
+  var groupSceneItems = await obs.sceneItems.groupList('Group');
+
+  for (var groupSceneItem in groupSceneItems) {
+    print(
+        'id: ${groupSceneItem.sceneItemId}, sourceName ${groupSceneItem.sourceName}');
+  }
+
+  var newSettings =
+      Map<String, dynamic>.from(response?.responseData as Map<String, dynamic>);
+
+  newSettings.addAll({
+    'baseWidth': 1440,
+    'baseHeight': 1080,
+    'outputWidth': 1440,
+    'outputHeight': 1080
+  });
+
+  response = await obs.send('SetVideoSettings', newSettings);
+
+  print('$response');
+
+  // await obs.scenes.setCurrentProgramScene('presentation');
 
   final statsResponse = await obs.general.stats();
 

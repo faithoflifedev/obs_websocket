@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:json_annotation/json_annotation.dart';
-import 'package:obs_websocket/obs_websocket.dart';
+import 'package:obs_websocket/obs_websocket.dart' show SceneItem;
 
 part 'scene_item_selected.g.dart';
 

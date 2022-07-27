@@ -1,6 +1,7 @@
 import 'package:args/command_runner.dart';
-import 'package:obs_websocket/obs_websocket.dart';
+import 'package:obs_websocket/command.dart';
 
+/// General Requests
 class ObsGeneralCommand extends Command {
   @override
   String get description => 'General commands';
@@ -9,33 +10,54 @@ class ObsGeneralCommand extends Command {
   String get name => 'general';
 
   ObsGeneralCommand() {
-    addSubcommand(ObsGetAuthRequiredCommand());
-    // addSubcommand(OnvifGetProfilesMediaCommand());
-    // addSubcommand(OnvifGetSnapshotUriMediaCommand());
-    // addSubcommand(OnvifGetStreamUriMediaCommand());
-    // addSubcommand(OnvifGetVideoSourcesMediaCommand());
-    // addSubcommand(OnvifStartMulticastStreamingMediaCommand());
-    // addSubcommand(OnvifStopMulticastStreamingMediaCommand());
+    addSubcommand(ObsGetVersionCommand());
+    addSubcommand(ObsGetStatsCommand());
+    // addSubcommand(ObsBroadcastCustomEventCommand());
+    // addSubcommand(ObsCallVendorRequestCommand());
+    // addSubcommand(ObsGetHotkeyListCommand());
+    // addSubcommand(ObsTriggerHotkeyByNameCommand());
+    // addSubcommand(ObsTriggerHotkeyByKeySequenceCommand());
+    // addSubcommand(ObSleepCommand());
   }
 }
 
-///Tells the client if authentication is required. If so, returns authentication
-///parameters challenge and salt (see "Authentication" for more information).
-class ObsGetAuthRequiredCommand extends ObsHelperCommand {
+/// Gets data about the current plugin and RPC version.
+class ObsGetVersionCommand extends ObsHelperCommand {
   @override
   String get description =>
-      'Tells the client if authentication is required. If so, returns authentication parameters challenge and salt (see "Authentication" for more information).';
+      'Gets data about the current plugin and RPC version.';
 
   @override
-  String get name => 'get-auth-required';
+  String get name => 'get-version';
 
   @override
   void run() async {
     await initializeObs();
 
-    // final authRequiredResponse = await obs.getAuthRequired();
+    final versionResponse = await obs.general.version();
 
-    // print(authRequiredResponse);
+    print(versionResponse);
+
+    obs.close();
+  }
+}
+
+/// Gets statistics about OBS, obs-websocket, and the current session.
+class ObsGetStatsCommand extends ObsHelperCommand {
+  @override
+  String get description =>
+      'Gets statistics about OBS, obs-websocket, and the current session.';
+
+  @override
+  String get name => 'get-stats';
+
+  @override
+  void run() async {
+    await initializeObs();
+
+    final statsResponse = await obs.general.stats();
+
+    print(statsResponse);
 
     obs.close();
   }

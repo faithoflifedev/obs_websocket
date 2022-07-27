@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:json_annotation/json_annotation.dart';
+import 'package:obs_websocket/obs_websocket.dart' show Scene;
 
 part 'scene_list_response.g.dart';
 
@@ -8,12 +9,12 @@ part 'scene_list_response.g.dart';
 class SceneListResponse {
   final String currentProgramSceneName;
   final String currentPreviewSceneName;
-  // final List<Scene> scenes;
+  final List<Scene> scenes;
 
   SceneListResponse({
     required this.currentProgramSceneName,
     required this.currentPreviewSceneName,
-    // required this.scenes,
+    required this.scenes,
   });
 
   factory SceneListResponse.fromJson(Map<String, dynamic> json) =>

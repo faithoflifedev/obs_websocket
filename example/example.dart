@@ -9,7 +9,7 @@ void main(List<String> args) async {
   ObsWebSocket obsWebSocket = await ObsWebSocket.connect(
     config['host'],
     password: config['password'],
-    fallbackEvent: (Event event) {
+    fallbackEventHandler: (Event event) {
       print('event: ${event.eventData}');
     },
   );

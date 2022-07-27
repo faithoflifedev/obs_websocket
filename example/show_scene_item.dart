@@ -9,27 +9,22 @@ void main(List<String> args) async {
 
   final sceneItem = 'My Face';
 
-  ObsWebSocket obsWebSocket =
-      await ObsWebSocket.connect(config['host'], password: config['password']);
+  final obsWebSocket = await ObsWebSocket.connect(
+    config['host'],
+    password: config['password'],
+  );
 
-  obsWebSocket.listen(EventSubscription.all);
+  // tell obsWebSocket to listen to events, since the default is to ignore them
+  await obsWebSocket.listen(EventSubscription.all.code);
 
-  final currentScene = await obsWebSocket.getCurrentProgramScene();
+  // get the current scene
+  final currentScene = await obsWebSocket.scenes.getCurrentProgramScene();
 
-  final sceneItemId = await obsWebSocket.getSceneItemId(SceneItemId(
+  // get the id of the required sceneItem
+  final sceneItemId = await obsWebSocket.sceneItems.getSceneItemId(SceneItemId(
     sceneName: currentScene,
     sourceName: sceneItem,
   ));
-
-  final hideScene = SceneItemEnableStateChanged(
-      sceneName: currentScene,
-      sceneItemId: sceneItemId,
-      sceneItemEnabled: false);
-
-  final showScene = SceneItemEnableStateChanged(
-      sceneName: currentScene,
-      sceneItemId: sceneItemId,
-      sceneItemEnabled: true);
 
   // this handler will only run when a SceneItemEnableStateChanged event is generated
   obsWebSocket.addHandler<SceneItemEnableStateChanged>(
@@ -44,26 +39,30 @@ void main(List<String> args) async {
       await Future.delayed(Duration(seconds: 13));
 
       // hide the sceneItem
-      await obsWebSocket.setSceneItemEnabled(hideScene);
+      await obsWebSocket.sceneItems.setSceneItemEnabled(
+          SceneItemEnableStateChanged(
+              sceneName: currentScene,
+              sceneItemId: sceneItemId,
+              sceneItemEnabled: false));
 
       // close the socket when complete
       await obsWebSocket.close();
     }
   });
 
-  // start with scene hidden
+// get the current state of the sceneItem
   final sceneItemEnabled =
-      await obsWebSocket.getSceneItemEnabled(SceneItemEnabled(
+      await obsWebSocket.sceneItems.getSceneItemEnabled(SceneItemEnabled(
     sceneName: currentScene,
     sceneItemId: sceneItemId,
   ));
 
-  if (sceneItemEnabled) {
-    await obsWebSocket.setSceneItemEnabled(hideScene);
+// if the sceneItem is hidden, show it
+  if (!sceneItemEnabled) {
+    await obsWebSocket.sceneItems.setSceneItemEnabled(
+        SceneItemEnableStateChanged(
+            sceneName: currentScene,
+            sceneItemId: sceneItemId,
+            sceneItemEnabled: true));
   }
-
-  // now show the scene
-  await obsWebSocket.setSceneItemEnabled(showScene);
-
-  //obsWebSocket.close();
 }

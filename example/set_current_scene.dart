@@ -6,11 +6,12 @@ import 'package:yaml/yaml.dart';
 void main(List<String> args) async {
   final config = loadYaml(File('config.yaml').readAsStringSync());
 
-  ObsWebSocket obsWebSocket = await ObsWebSocket.connect(config['host'],
-      password: config['password'],
-      timeout: const Duration(seconds: 5), fallbackEvent: (event) {
-    print('event: ${event.rawEvent}');
-  });
+  ObsWebSocket obsWebSocket = await ObsWebSocket.connect(
+    config['host'],
+    password: config['password'],
+    timeout: const Duration(seconds: 5),
+    fallbackEventHandler: (Event event) => print('event: $event'),
+  );
 
   // final authRequired = await obsWebSocket.getAuthRequired();
 
@@ -18,5 +19,5 @@ void main(List<String> args) async {
   //   await obsWebSocket.authenticate(authRequired, config['password']);
   // }
 
-  obsWebSocket.setCurrentProgramScene('Intro');
+  obsWebSocket.scenes.setCurrentProgramScene('Intro');
 }

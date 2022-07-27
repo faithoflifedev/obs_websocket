@@ -1,6 +1,8 @@
 import 'package:args/command_runner.dart';
+import 'package:obs_websocket/command.dart';
 import 'package:obs_websocket/obs_websocket.dart';
 
+/// Sources Requests
 class ObsSourcesCommand extends Command {
   @override
   String get description => 'Commands that manipulate OBS sources';
@@ -9,201 +11,116 @@ class ObsSourcesCommand extends Command {
   String get name => 'sources';
 
   ObsSourcesCommand() {
-    addSubcommand(ObsGetMediaSourcesListSourcesCommand());
-    addSubcommand(ObsGetSourcesListSourcesCommand());
-    addSubcommand(ObsGetSourceActiveSourcesCommand());
-    addSubcommand(ObsGetAudioActiveSourcesCommand());
-    addSubcommand(ObsTakeSourceScreenshotSourcesCommand());
-    addSubcommand(ObsRefreshBrowserSourceSourcesCommand());
+    addSubcommand(ObsGetSourceActiveCommand());
+    addSubcommand(ObsGetSourceScreenshotCommand());
+    addSubcommand(ObsSaveSourceScreenshotCommand());
   }
 }
 
-///List the media state of all media sources (vlc and media source)
-class ObsGetMediaSourcesListSourcesCommand extends ObsHelperCommand {
+/// Gets the active and show state of a source.
+class ObsGetSourceActiveCommand extends ObsHelperCommand {
   @override
-  String get description =>
-      'List the media state of all media sources (vlc and media source)';
-
-  @override
-  String get name => 'get-media-sources-list';
-
-  @override
-  void run() async {
-    await initializeObs();
-
-    // final mediaSourcesListResponse = await obs.getMediaSourcesList();
-
-    // print(mediaSourcesListResponse);
-
-    obs.close();
-  }
-}
-
-///List all sources available in the running OBS instance
-class ObsGetSourcesListSourcesCommand extends ObsHelperCommand {
-  @override
-  String get description =>
-      'List all sources available in the running OBS instance';
-
-  @override
-  String get name => 'get-sources-list';
-
-  @override
-  void run() async {
-    await initializeObs();
-
-    // final sourcesListResponse = await obs.getSourcesList();
-
-    // print(sourcesListResponse);
-
-    obs.close();
-  }
-}
-
-///Get the source's active status of a specified source (if it is showing in the final mix).
-class ObsGetSourceActiveSourcesCommand extends ObsHelperCommand {
-  @override
-  String get description =>
-      'Get the source\'s active status of a specified source (if it is showing in the final mix).';
+  String get description => 'Gets the active and show state of a source.';
 
   @override
   String get name => 'get-source-active';
 
-  ObsGetSourceActiveSourcesCommand() {
+  ObsGetSourceActiveCommand() {
     argParser.addOption('source-name',
-        mandatory: true, valueHelp: 'string', help: 'Source name.');
+        mandatory: true,
+        valueHelp: 'string',
+        help: 'Name of the source to get the active state of');
   }
 
   @override
   void run() async {
     await initializeObs();
 
-    // final sourcesListResponse =
-    //     await obs.getSourceActive(argResults?['source-name']);
+    final sourceActiveResponse =
+        await obs.sources.active(argResults?['source-name']);
 
-    // print(sourcesListResponse);
-
-    obs.close();
-  }
-}
-
-///Get the audio's active status of a specified source.
-class ObsGetAudioActiveSourcesCommand extends ObsHelperCommand {
-  @override
-  String get description =>
-      'Get the audio\'s active status of a specified source.';
-
-  @override
-  String get name => 'get-audio-active';
-
-  ObsGetAudioActiveSourcesCommand() {
-    argParser.addOption('source-name',
-        mandatory: true, valueHelp: 'string', help: 'Source name.');
-  }
-
-  @override
-  void run() async {
-    await initializeObs();
-
-    // final sourcesListResponse =
-    //     await obs.getAudioActive(argResults?['source-name']);
-
-    // print(sourcesListResponse);
+    print(sourceActiveResponse);
 
     obs.close();
   }
 }
 
-///At least embedPictureFormat or saveToFilePath must be specified.
+/// Gets a Base64-encoded screenshot of a source.
 ///
-///Clients can specify width and height parameters to receive scaled pictures.
-///Aspect ratio is preserved if only one of these two parameters is specified.
-class ObsTakeSourceScreenshotSourcesCommand extends ObsHelperCommand {
+/// The imageWidth and imageHeight parameters are treated as "scale to inner", meaning the smallest ratio will be used and the aspect ratio of the original resolution is kept. If imageWidth and imageHeight are not specified, the compressed image will use the full resolution of the source.
+class ObsGetSourceScreenshotCommand extends ObsHelperCommand {
   @override
-  String get description => 'Take a snapshot from the video output';
+  String get description => 'Gets a Base64-encoded screenshot of a source.';
 
   @override
-  String get name => 'take-source-screenshot';
+  String get name => 'get-source-screenshot';
 
-  ObsTakeSourceScreenshotSourcesCommand() {
+  ObsGetSourceScreenshotCommand() {
     argParser
       ..addOption('source-name',
+          mandatory: true,
+          valueHelp: 'string',
+          help: 'Name of the source to take a screenshot of')
+      ..addOption('image-format',
+          mandatory: true,
           valueHelp: 'string',
           help:
-              'Source name. Note: Since scenes are also sources, you can also provide a scene name. If not provided, the currently active scene is used.')
-      ..addOption('embed-picture-format',
-          allowed: ['png', 'jpg', 'jpeg', 'bmp'],
-          valueHelp: 'string',
-          help: 'Format of the Data URI encoded picture.')
-      ..addOption('save-to-file-path',
-          valueHelp: 'string',
-          help:
-              'Full file path (file extension included) where the captured image is to be saved. Can be in a format different from pictureFormat. Can be a relative path.')
-      ..addOption('file-format',
-          valueHelp: 'string',
-          help:
-              'Format to save the image file as (one of the values provided in the supported-image-export-formats response field of GetVersion). If not specified, tries to guess based on file extension.')
-      ..addOption('compression-quality',
-          valueHelp: 'int',
-          defaultsTo: '-1',
-          help:
-              'Compression ratio between -1 and 100 to write the image with. -1 is automatic, 1 is smallest file/most compression, 100 is largest file/least compression. Varies with image type.')
-      ..addOption('width',
-          valueHelp: 'int',
-          help: 'Screenshot width. Defaults to the source\'s base width.')
-      ..addOption('height',
-          valueHelp: 'int',
-          help: 'Screenshot height. Defaults to the source\'s base height.');
+              'Image compression format to use. Use GetVersion to get compatible image formats');
   }
 
   @override
   void run() async {
     await initializeObs();
 
-    if (argResults?['embed-picture-format'] == null &&
-        argResults?['save-to-file-path'] == null) {
-      throw UsageException(
-          'At least \'embed-picture-format\' or \'save-to-file-path\' must be specified.',
-          usage);
-    }
+    final sourceScreenshotResponse =
+        await obs.sources.getSourceScreenshot(SourceScreenshot(
+      sourceName: argResults!['source-name'],
+      imageFormat: argResults!['image-format'],
+    ));
 
-    // final takeSourceScreenshot = TakeSourceScreenshot(
-    //   sourceName: argResults?['source-name'],
-    //   embedPictureFormat: argResults?['embed-picture-format'],
-    //   saveToFilePath: argResults?['save-to-file-path'],
-    //   fileFormat: argResults?['file-format'],
-    //   compressionQuality: int.parse(argResults!['compression-quality']),
-    //   width: argResults?['width'],
-    //   height: argResults?['height'],
-    // );
-
-    // final takeSourceScreenshotResponse =
-    //     await obs.takeSourceScreenshot(takeSourceScreenshot);
-
-    // print(takeSourceScreenshotResponse);
+    print(sourceScreenshotResponse);
 
     obs.close();
   }
 }
 
-///Refreshes the specified browser source.
-class ObsRefreshBrowserSourceSourcesCommand extends ObsHelperCommand {
+/// Saves a screenshot of a source to the filesystem.
+class ObsSaveSourceScreenshotCommand extends ObsHelperCommand {
   @override
-  String get description => 'Refreshes the specified browser source.';
+  String get description => 'Saves a screenshot of a source to the filesystem.';
 
   @override
-  String get name => 'refresh-browser-source';
+  String get name => 'save-source-screenshot';
 
-  ObsRefreshBrowserSourceSourcesCommand() {
-    argParser.addOption('source-name',
-        mandatory: true, valueHelp: 'string', help: 'Source name.');
+  ObsSaveSourceScreenshotCommand() {
+    argParser
+      ..addOption('source-name',
+          mandatory: true,
+          valueHelp: 'string',
+          help: 'Name of the source to take a screenshot of')
+      ..addOption('image-format',
+          mandatory: true,
+          valueHelp: 'string',
+          help:
+              'Image compression format to use. Use GetVersion to get compatible image formats')
+      ..addOption('image-file-path',
+          mandatory: true,
+          valueHelp: 'string',
+          help: 'Path to save the screenshot file to.');
   }
 
   @override
   void run() async {
     await initializeObs();
 
-    // await obs.refreshBrowserSource(argResults?['source-name']);
+    final sourceScreenshotResponse =
+        await obs.sources.getScreenshot(SourceScreenshot(
+      sourceName: argResults!['source-name'],
+      imageFormat: argResults!['image-format'],
+      imageFilePath: argResults!['image-file-path'],
+    ));
+
+    print(sourceScreenshotResponse);
 
     obs.close();
   }

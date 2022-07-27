@@ -4,7 +4,7 @@ import 'package:args/command_runner.dart';
 import 'package:obs_websocket/obs_websocket.dart';
 import 'package:universal_io/io.dart';
 
-///Generate a refresh token used to authenticate the command line API requests
+/// Generate a refresh token used to authenticate the command line API requests
 class ObsAuthorizeCommand extends Command {
   @override
   String get description =>

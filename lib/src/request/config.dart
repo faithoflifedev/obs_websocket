@@ -39,11 +39,39 @@ class Config {
   // TODO:
   Future<void> setProfileParameter() async => throw UnimplementedError();
 
-  // TODO:
-  Future<void> getVideoSettings() async => throw UnimplementedError();
+  /// Gets the current video settings.
+  ///
+  /// Note: To get the true FPS value, divide the FPS numerator by the FPS denominator. Example: 60000/1001
+  ///
+  /// - Complexity Rating: 2/5
+  /// - Latest Supported RPC Version: 1
+  /// - Added in v5.0.0
+  Future<VideoSettingsResponse> getVideoSettings() async => videoSettings();
 
-  // TODO:
-  Future<void> setVideoSettings() async => throw UnimplementedError();
+  /// Gets the current video settings.
+  ///
+  /// Note: To get the true FPS value, divide the FPS numerator by the FPS denominator. Example: 60000/1001
+  ///
+  /// - Complexity Rating: 2/5
+  /// - Latest Supported RPC Version: 1
+  /// - Added in v5.0.0
+  Future<VideoSettingsResponse> videoSettings() async {
+    final response =
+        await obsWebSocket.sendRequest(Request('GetVideoSettings'));
+
+    return VideoSettingsResponse.fromJson(response!.responseData!);
+  }
+
+  /// Sets the current video settings.
+  ///
+  /// - Complexity Rating: 2/5
+  /// - Latest Supported RPC Version: 1
+  /// - Added in v5.0.0
+  Future<void> setVideoSettings(VideoSettings videoSettings) async =>
+      await obsWebSocket.sendRequest(Request(
+        'SetVideoSettings',
+        requestData: videoSettings.toJson(),
+      ));
 
   /// Gets the current stream service settings (stream destination).
   ///

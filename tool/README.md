@@ -2,32 +2,22 @@
 
 [![pub package](https://img.shields.io/pub/v/obs_websocket.svg)](https://pub.dartlang.org/packages/obs_websocket)
 
-Some background first. I needed a way to automate the start and stop streaming actions for [OBS](https://obsproject.com/) (Open Broadcast Software) with [cron](https://en.wikipedia.org/wiki/Cron) on OSX. This package will allow you to do that with [dart](https://dart.dev/) or can be used with [flutter](https://flutter.dev/) to control OBS with a platform independent mobile app.
-
-This package gives access to all of the methods and events outlined by the [obs-websocket 4.9.1 protocol reference](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md) through the `command` method documented below, but also has helper methods for many of the more popular [Requests](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#requests) that are made available through the protocol reference.
+This package gives access to all of the methods and events outlined by the [obs-websocket 5.0.0 protocol reference](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md) through the `send` method documented below, but also has helper methods for many of the more popular [Requests](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#requests) that are made available through the protocol reference.
 
 [![Build Status](https://github.com/faithoflifedev/easy_obs_websocket/workflows/Dart/badge.svg)](https://github.com/faithoflifedev/easy_obs_websocket/actions) [![github last commit](https://shields.io/github/last-commit/faithoflifedev/easy_obs_websocket)](https://shields.io/github/last-commit/faithoflifedev/easy_obs_websocket) [![github build](https://shields.io/github/workflow/status/faithoflifedev/easy_obs_websocket/Dart)](https://shields.io/github/workflow/status/faithoflifedev/easy_obs_websocket/Dart) [![github issues](https://shields.io/github/issues/faithoflifedev/easy_obs_websocket)](https://shields.io/github/issues/faithoflifedev/easy_obs_websocket)
 
-Please feel free to submit PRs for any addtional helper methods, or report an [issue](https://github.com/faithoflifedev/easy_obs_websocket/issues) for a missing helper method and I'll add it if I have time available.
+Please feel free to submit PRs for any additional helper methods, or report an [issue](https://github.com/faithoflifedev/easy_obs_websocket/issues) for a missing helper method and I'll add it if I have time available.
 
-## New for version 2.4.0
+## Breaking changes from v2.4.3 (obs-websocket v4.9.1 protocol)
 
-As of the 2.4.0 release of this package, there is a cli utility included that can be used to return data for many API calls currently supported by the package. If you want to get started quicky with the cli utility run these commands in a termainal session:
-
-```sh
-pub global activate obs_websocket
-
-obs --help
-```
-
-Please see the cli documentation [README.md](https://github.com/faithoflifedev/easy_obs_websocket/tree/main/bin) for more detailed usage information.
+The short answer is that everything has changed.  The obs-websocket [v5.0.0 protocol](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md) is very different from the older [v4.9.1 protocol](https://github.com/obsproject/obs-websocket/blob/4.x-current/docs/generated/protocol.md).  Any code written for the v4.9.1 protocol needs to be re-written for v5.0.0
 
 ## Getting Started
 
 ### Requirements
 
 - The [OBS](https://obsproject.com/) application needs to be installed on a machine reachable on the local network
-- The [obs-websocket](https://github.com/Palakis/obs-websocket) plugin needs to be installed on the same machine
+- The [obs-websocket](https://github.com/obsproject/obs-websocket) plugin needs to be installed on the same machine
 
 In your project add the dependency:
 
@@ -56,114 +46,381 @@ Before a websocket connection can be made to a running instance of [OBS](https:/
 To open a websocket connection, we need to create new ObsWebSocket using the special protocol ws in the url:
 
 ```dart
-//the method to connect has changed with v2.1.x
-ObsWebSocket obsWebSocket =
-    await ObsWebSocket.connect(connectUrl: 'ws://[obs-studio host ip]:4444');
-
+final obsWebSocket =
+    await ObsWebSocket.connect('ws://[obs-studio host ip]:[port]', password: '[password]');
 ```
 
-obs-studio host ip - is the ip address or host name of the computer running [OBS](https://obsproject.com/) that wou would like to send remote control commands to.
+`obs-studio host ip` - is the ip address or host name of the OBS device running obs-websocket protocol v5.0.0 that wou would like to send remote control commands to.
+
+`port` is the port number used to connect to the OBS device running obs-websocket protocol v5.0.0
+
+`password` - is the password configured for obs-websocket.
+
+These settings are available to change and review through the OBS user interface by clicking `Tools, obs-websocket Settings`.
 
 ## Authenticating to [OBS](https://obsproject.com/)
 
-[OBS](https://obsproject.com/) has an optional, but highly recommended password security feature, the `getAuthRequired` method will check if the password security has been enabled. The `AuthRequired` object that the method call returns is used as part of the authentication process. The [protocol](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md) documentation provided on the [obs-websocket](https://github.com/Palakis/obs-websocket) github pages covers this in detail.
-
-```dart
-final AuthRequired authRequired = await obsWebSocket.getAuthRequired();
-
-if (authRequired.status)
-  await obsWebSocket.authenticate(authRequired, '[password]');
-```
+If a `password` is supplied to the `connect` method, authentication will occur automatically assuming that it is enabled for OBS. 
 
 ## Sending Commands to [OBS](https://obsproject.com/)
 
-The available commands are documented on the [protocol](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md) page of the [obs-websocket](https://github.com/Palakis/obs-websocket) github page. Note that not all commands listed on the protocol page have been implemented in code at this time. For any command not yet implemented, refer to the "low-level" method of sending commands, documented below.
+The available commands/requests are documented on the [protocol](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#requests) page of the [obs-websocket](https://github.com/obsproject/obs-websocket) github page. Note that not all commands listed on the protocol page have been implemented in code at this time. For any command not yet implemented, refer to the `low-level` method of sending commands, documented below.
 
 ```dart
-final StreamStatusResponse status = await obsWebSocket.getStreamStatus();
+final status = await obs.stream.status();
 
-if (!status.streaming) {
-  await obsWebSocket.startStreaming();
+// or this works too
+// final status = await obs.stream.getStreamStatus();
+
+if (!status.outputActive) {
+  await obsWebSocket.stream.start();
 }
 ```
 
+## Supported high-level commands
+
+For any of the items that have an [x] from the list below, a high level command is available for that operation, i.e. `obsWebSocket.stream.status()` otherwise a low-level command can be used to perform the operation, `obsWebSocket.send('GetStreamStatus')`.
+
+### Requests Table of Contents
+
+- [General Requests](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#general-1-requests) - `obsWebSocket.general`
+  - [x] [GetVersion](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#getversion) - Gets data about the current plugin and RPC version.
+  - [x] [GetStats](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#getstats) - Gets statistics about OBS, obs-websocket, and the current session.
+  - [ ] [BroadcastCustomEvent](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#broadcastcustomevent)
+  - [ ] [CallVendorRequest](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#callvendorrequest)
+  - [ ] [GetHotkeyList](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#gethotkeylist)
+  - [ ] [TriggerHotkeyByName](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#triggerhotkeybyname)
+  - [ ] [TriggerHotkeyByKeySequence](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#triggerhotkeybykeysequence)
+  - [ ] [Sleep](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#sleep)
+- [Config Requests](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#config-1-requests) - `obsWebSocket.config`
+  - [ ] [GetPersistentData](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#getpersistentdata)
+  - [ ] [SetPersistentData](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#setpersistentdata)
+  - [ ] [GetSceneCollectionList](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#getscenecollectionlist)
+  - [ ] [SetCurrentSceneCollection](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#setcurrentscenecollection)
+  - [ ] [CreateSceneCollection](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#createscenecollection)
+  - [ ] [GetProfileList](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#getprofilelist)
+  - [ ] [SetCurrentProfile](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#setcurrentprofile)
+  - [ ] [CreateProfile](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#createprofile)
+  - [ ] [RemoveProfile](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#removeprofile)
+  - [ ] [GetProfileParameter](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#getprofileparameter)
+  - [ ] [SetProfileParameter](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#setprofileparameter)
+  - [x] [GetVideoSettings](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#getvideosettings) - Gets the current video settings.
+  - [x] [SetVideoSettings](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#setvideosettings) - Sets the current video settings.
+  - [x] [GetStreamServiceSettings](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#getstreamservicesettings) - Gets the current stream service settings (stream destination).
+  - [x] [SetStreamServiceSettings](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#setstreamservicesettings) - Sets the current stream service settings (stream destination).
+- [Sources Requests](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#sources-requests) - `obsWebSocket.sources`
+  - [x] [GetSourceActive](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#getsourceactive) - Gets the active and show state of a source.
+  - [x] [GetSourceScreenshot](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#getsourcescreenshot) - Gets a Base64-encoded screenshot of a source.
+  - [x] [SaveSourceScreenshot](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#savesourcescreenshot) - Saves a screenshot of a source to the filesystem.
+- [Scenes Requests](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#scenes-1-requests) - `obsWebSocket.scenes`
+  - [x] [GetSceneList](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#getscenelist) - Gets an array of all scenes in OBS.
+  - [x] [GetGroupList](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#getgrouplist) - Gets an array of all groups in OBS.
+  - [x] [GetCurrentProgramScene](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#getcurrentprogramscene) - Gets the current program scene.
+  - [x] [SetCurrentProgramScene](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#setcurrentprogramscene) - Sets the current program scene.
+  - [x] [GetCurrentPreviewScene](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#getcurrentpreviewscene) - Gets the current preview scene (only available when studio mode is enabled).
+  - [x] [SetCurrentPreviewScene](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#setcurrentpreviewscene) - Sets the current preview scene (only available when studio mode is enabled).
+  - [x] [CreateScene](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#createscene) - Creates a new scene in OBS.
+  - [x] [RemoveScene](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#removescene) - Removes a scene from OBS.
+  - [x] [SetSceneName](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#setscenename) - Sets the name of a scene (rename).
+  - [ ] [GetSceneSceneTransitionOverride](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#getscenescenetransitionoverride)
+  - [ ] [SetSceneSceneTransitionOverride](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#setscenescenetransitionoverride)
+- [Inputs Requests](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#inputs-1-requests) - `obsWebSocket.inputs`
+  - [ ] [GetInputList](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#getinputlist)
+  - [ ] [GetInputKindList](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#getinputkindlist)
+  - [ ] [GetSpecialInputs](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#getspecialinputs)
+  - [ ] [CreateInput](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#createinput)
+  - [ ] [RemoveInput](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#removeinput)
+  - [ ] [SetInputName](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#setinputname)
+  - [ ] [GetInputDefaultSettings](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#getinputdefaultsettings)
+  - [ ] [GetInputSettings](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#getinputsettings)
+  - [ ] [SetInputSettings](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#setinputsettings)
+  - [ ] [GetInputMute](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#getinputmute)
+  - [ ] [SetInputMute](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#setinputmute)
+  - [ ] [ToggleInputMute](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#toggleinputmute)
+  - [ ] [GetInputVolume](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#getinputvolume)
+  - [ ] [SetInputVolume](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#setinputvolume)
+  - [ ] [GetInputAudioBalance](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#getinputaudiobalance)
+  - [ ] [SetInputAudioBalance](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#setinputaudiobalance)
+  - [ ] [GetInputAudioSyncOffset](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#getinputaudiosyncoffset)
+  - [ ] [SetInputAudioSyncOffset](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#setinputaudiosyncoffset)
+  - [ ] [GetInputAudioMonitorType](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#getinputaudiomonitortype)
+  - [ ] [SetInputAudioMonitorType](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#setinputaudiomonitortype)
+  - [ ] [GetInputAudioTracks](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#getinputaudiotracks)
+  - [ ] [SetInputAudioTracks](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#setinputaudiotracks)
+  - [ ] [GetInputPropertiesListPropertyItems](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#getinputpropertieslistpropertyitems)
+  - [ ] [PressInputPropertiesButton](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#pressinputpropertiesbutton)
+- [Transitions Requests](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#transitions-1-requests) - `obsWebSocket.transitions`
+  - [ ] [GetTransitionKindList](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#gettransitionkindlist)
+  - [ ] [GetSceneTransitionList](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#getscenetransitionlist)
+  - [ ] [GetCurrentSceneTransition](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#getcurrentscenetransition)
+  - [ ] [SetCurrentSceneTransition](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#setcurrentscenetransition)
+  - [ ] [SetCurrentSceneTransitionDuration](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#setcurrentscenetransitionduration)
+  - [ ] [SetCurrentSceneTransitionSettings](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#setcurrentscenetransitionsettings)
+  - [ ] [GetCurrentSceneTransitionCursor](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#getcurrentscenetransitioncursor)
+  - [ ] [TriggerStudioModeTransition](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#triggerstudiomodetransition)
+  - [ ] [SetTBarPosition](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#settbarposition)
+- [Filters Requests](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#filters-1-requests) - `obsWebSocket.filters`
+  - [ ] [GetSourceFilterList](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#getsourcefilterlist)
+  - [ ] [GetSourceFilterDefaultSettings](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#getsourcefilterdefaultsettings)
+  - [ ] [CreateSourceFilter](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#createsourcefilter)
+  - [ ] [RemoveSourceFilter](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#removesourcefilter)
+  - [ ] [SetSourceFilterName](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#setsourcefiltername)
+  - [ ] [GetSourceFilter](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#getsourcefilter)
+  - [ ] [SetSourceFilterIndex](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#setsourcefilterindex)
+  - [ ] [SetSourceFilterSettings](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#setsourcefiltersettings)
+  - [ ] [SetSourceFilterEnabled](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#setsourcefilterenabled)
+- [Scene Items Requests](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#scene-items-1-requests) - `obsWebSocket.sceneItems`
+  - [x] [GetSceneItemList](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#getsceneitemlist) - Gets a list of all scene items in a scene.
+  - [x] [GetGroupSceneItemList](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#getgroupsceneitemlist) - Basically GetSceneItemList, but for groups.
+  - [x] [GetSceneItemId](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#getsceneitemid) - Searches a scene for a source, and returns its id.
+  - [ ] [CreateSceneItem](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#createsceneitem)
+  - [ ] [RemoveSceneItem](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#removesceneitem)
+  - [ ] [DuplicateSceneItem](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#duplicatesceneitem)
+  - [ ] [GetSceneItemTransform](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#getsceneitemtransform)
+  - [ ] [SetSceneItemTransform](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#setsceneitemtransform)
+  - [x] [GetSceneItemEnabled](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#getsceneitemenabled) - Gets the enable state of a scene item.
+  - [x] [SetSceneItemEnabled](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#setsceneitemenabled) - Sets the enable state of a scene item.
+  - [ ] [GetSceneItemLocked](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#getsceneitemlocked)
+  - [ ] [SetSceneItemLocked](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#setsceneitemlocked)
+  - [ ] [GetSceneItemIndex](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#getsceneitemindex)
+  - [ ] [SetSceneItemIndex](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#setsceneitemindex)
+  - [ ] [GetSceneItemBlendMode](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#getsceneitemblendmode)
+  - [ ] [SetSceneItemBlendMode](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#setsceneitemblendmode)
+- [Outputs Requests](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#outputs-1-requests) - `obsWebSocket.outputs`
+  - [ ] [GetVirtualCamStatus](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#getvirtualcamstatus)
+  - [ ] [ToggleVirtualCam](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#togglevirtualcam)
+  - [ ] [StartVirtualCam](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#startvirtualcam)
+  - [ ] [StopVirtualCam](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#stopvirtualcam)
+  - [ ] [GetReplayBufferStatus](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#getreplaybufferstatus)
+  - [ ] [ToggleReplayBuffer](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#togglereplaybuffer)
+  - [ ] [StartReplayBuffer](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#startreplaybuffer)
+  - [ ] [StopReplayBuffer](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#stopreplaybuffer)
+  - [ ] [SaveReplayBuffer](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#savereplaybuffer)
+  - [ ] [GetLastReplayBufferReplay](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#getlastreplaybufferreplay)
+  - [ ] [GetOutputList](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#getoutputlist)
+  - [ ] [GetOutputStatus](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#getoutputstatus)
+  - [ ] [ToggleOutput](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#toggleoutput)
+  - [ ] [StartOutput](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#startoutput)
+  - [ ] [StopOutput](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#stopoutput)
+  - [ ] [GetOutputSettings](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#getoutputsettings)
+  - [ ] [SetOutputSettings](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#setoutputsettings)
+- [Stream Requests](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#stream-requests) - `obsWebSocket.stream`
+  - [x] [GetStreamStatus](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#getstreamstatus) - Gets the status of the stream output.
+  - [x] [ToggleStream](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#togglestream) - Toggles the status of the stream output.
+  - [x] [StartStream](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#startstream) - Starts the stream output.
+  - [x] [StopStream](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#stopstream) - Stops the stream output.
+  - [ ] [SendStreamCaption](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#sendstreamcaption)
+- [Record Requests](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#record-requests) - `obsWebSocket.record`
+  - [x] [GetRecordStatus](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#getrecordstatus) - Gets the status of the record output.
+  - [x] [ToggleRecord](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#togglerecord) - Toggles the status of the record output.
+  - [x] [StartRecord](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#startrecord) - Starts the record output.
+  - [x] [StopRecord](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#stoprecord) - Stops the record output.
+  - [x] [ToggleRecordPause](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#togglerecordpause) - Toggles pause on the record output.
+  - [x] [PauseRecord](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#pauserecord) - Pauses the record output.
+  - [x] [ResumeRecord](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#resumerecord) - Resumes the record output.
+- [Media Inputs Requests](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#media-inputs-1-requests) - `obsWebSocket.media`
+  - [ ] [GetMediaInputStatus](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#getmediainputstatus)
+  - [ ] [SetMediaInputCursor](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#setmediainputcursor)
+  - [ ] [OffsetMediaInputCursor](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#offsetmediainputcursor)
+  - [ ] [TriggerMediaInputAction](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#triggermediainputaction)
+- [Ui Requests](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#ui-1-requests) - `obsWebSocket.ui`
+  - [x] [GetStudioModeEnabled](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#getstudiomodeenabled) - Gets whether studio is enabled.
+  - [x] [SetStudioModeEnabled](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#setstudiomodeenabled) - Enables or disables studio mode.
+  - [ ] [OpenInputPropertiesDialog](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#openinputpropertiesdialog)
+  - [ ] [OpenInputFiltersDialog](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#openinputfiltersdialog)
+  - [ ] [OpenInputInteractDialog](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#openinputinteractdialog)
+  - [ ] [GetMonitorList](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#getmonitorlist)
+  - [ ] [OpenVideoMixProjector](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#openvideomixprojector)
+  - [ ] [OpenSourceProjector](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#opensourceprojector)
+
+
 ## Sending Commands to [OBS](https://obsproject.com/) - low level
 
-Alternatively, there is a low-level interface for sending commands. This can be used in place of the above, or in the case that a specific documented Request has not been implemented as method yet. The available commands are documented on the [protocol](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md) page of the [obs-websocket](https://github.com/Palakis/obs-websocket) github page
+Alternatively, there is a low-level interface for sending commands. This can be used in place of the above, or in the case that a specific documented Request has not been implemented as a helper method yet. The available commands are documented on the [protocol](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#requests) page of the [obs-websocket](https://github.com/obsproject/obs-websocket) github page
 
 ```dart
-SimpleResponse response = await obsWebSocket.command('StartStreaming');
+var response = await obsWebSocket.send('GetStreamStatus');
+
+print('request status: ${response?.requestStatus.code}'); // 100 - for success
+
+print('is streaming: ${response?.responseData?['outputActive']}'); // false - if not currently streaming
 ```
 
-`response.status` will be `true` on success. `response.error` will give an error description if one is available.
+`response?.requestStatus.result` will be `true` on success. `response?.requestStatus.code` will give a response code that is explained in the [RequestStatus](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#requeststatus) portion of the protocol documentation.
 
-Commands can also return a result as a `Map`:
+`response?.requestStatus.comment` will sometimes give additional information about errors that might be generated.
+
+Dealing with a list in the `responseData`.
 
 ```dart
-SimpleResponse response = await obsWebSocket.command('GetSourcesList');
+var response = await obs.send('GetSceneList');
 
-List sources = response.map['sources'];
+var scenes = response?.responseData?['scenes'];
 
-sources.forEach((source) => print(source['name'] + ' - ' + source['type']));
+scenes.forEach(
+    (scene) => print('${scene['sceneName']} - ${scene['sceneIndex']}'));
 ```
 
 Additionally you can provide arguments with a command:
 
 ```dart
-response = await obsWebSocket.command('GetSourceSettings', { 'sourceName': 'foreground' });
+response = await obs.send('GetVideoSettings');
 
-Map newSettings = Map<String,dynamic>.from(response.map);
+var newSettings =
+    Map<String, dynamic>.from(response?.responseData as Map<String, dynamic>);
 
-newSettings['sourceSettings']['height'] = 1080;
-newSettings['sourceSettings']['width'] = 1920;
+newSettings.addAll({
+  'baseWidth': 1440,
+  'baseHeight': 1080,
+  'outputWidth': 1440,
+  'outputHeight': 1080
+});
 
-response = await obsWebSocket.command('SetSourceSettings', newSettings);
-
-print(response.map);
+// send the settings as an additional parameter.
+await obs.send('SetVideoSettings', newSettings);
 ```
 
-## Events - v2.1.0 intruduced a new model for event handling
+## Events
 
-Events generated by OBS through the websocket can be hooked into by supplying an event listener in the form of `addHandler<T>(Function handler)`. In the sample code below a hook is created that waits for a `SceneItemStateEvent` event. If the type of event is `SceneItemState.SceneItemVisibilityChanged`, and if the `SceneItem` is visbile the code hides the `SceneItem` after 13 seconds. This code from the `showSceneitem.dart` example could be used in a cron job to show and then hide an OBS `SceneItem` periodically.
+Events generated by OBS through the websocket can be hooked into by supplying an event listener in the form of `addHandler<T>(Function handler)`. In the sample code below a hook is created that waits for a `SceneItemEnableStateChanged` event. If the specified `SceneItem` is visible the code hides the `SceneItem` after 13 seconds. This code from the `show_scene_item.dart` example could be used in a cron job to show and then hide an OBS `SceneItem` periodically.
 
 ```dart
-//sceneItem for this event
+final obsWebSocket = await ObsWebSocket.connect(config['host'], password: config['password']);
+
+// sceneItem to show/hide
 final sceneItem = 'ytBell';
 
-ObsWebSocket obsWebSocket = ObsWebSocket(
-    connectUrl: 'ws://[obs-studio host ip]:4444');
+// tell obsWebSocket to listen to events, since the default is to ignore them
+await obsWebSocket.listen(EventSubscription.all.code);
 
-//this handler will only run when a SceneItemState event is generated
-obsWebSocket
-    .addHandler<SceneItemStateEvent>((SceneItemStateEvent sceneItemStateEvent) async {
-    //make sure we have the correct sceneItem and that it's currently visible
-    if (sceneItemStateEvent.type == 'SceneItemVisibilityChanged' &&
-        sceneItemStateEvent.itemName == sceneItem &&
-        sceneItemStateEvent.state) {
-      //wait 13 seconds
-      await Future.delayed(Duration(seconds: 13));
+// get the current scene
+final currentScene = await obsWebSocket.scenes.getCurrentProgramScene();
 
-      //hide the sceneItem
-      await obsWebSocket
-          .setSceneItemRender(sceneItemStateEvent.toSceneItemRenderMap(false));
+// get the id of the required sceneItem
+final sceneItemId = await obsWebSocket.sceneItems.getSceneItemId(SceneItemId(
+  sceneName: currentScene,
+  sourceName: sceneItem,
+));
 
-      //close the socket when complete
-      await obsWebSocket.close();
-    }
+// this handler will only run when a SceneItemEnableStateChanged event is generated
+obsWebSocket.addHandler<SceneItemEnableStateChanged>(
+    (SceneItemEnableStateChanged sceneItemEnableStateChanged) async {
+  print(
+      'event: ${sceneItemEnableStateChanged.sceneName} ${sceneItemEnableStateChanged.sceneItemEnabled}');
+
+  // make sure we have the correct sceneItem and that it's currently visible
+  if (sceneItemEnableStateChanged.sceneName == currentScene &&
+      sceneItemEnableStateChanged.sceneItemEnabled) {
+    // wait 13 seconds
+    await Future.delayed(Duration(seconds: 13));
+
+    // hide the sceneItem
+    await obsWebSocket.sceneItems.setSceneItemEnabled(SceneItemEnableStateChanged(
+        sceneName: currentScene,
+        sceneItemId: sceneItemId,
+        sceneItemEnabled: false));
+
+    // close the socket when complete
+    await obsWebSocket.close();
   }
 });
+
+// get the current state of the sceneItem
+final sceneItemEnabled =
+    await obsWebSocket.sceneItems.getSceneItemEnabled(SceneItemEnabled(
+  sceneName: currentScene,
+  sceneItemId: sceneItemId,
+));
+
+// if the sceneItem is hidden, show it
+if (!sceneItemEnabled) {
+  await obsWebSocket.sceneItems.setSceneItemEnabled(SceneItemEnableStateChanged(
+      sceneName: currentScene,
+      sceneItemId: sceneItemId,
+      sceneItemEnabled: true));
+}
 ```
 
-## Supported Events for `addHandler<T>`
+### Supported Events for `addHandler<T>`
 
-| class                                                                                                                  | types                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
-| ---------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| [RecordingStateEvent](https://pub.dev/documentation/obs_websocket/latest/obs_websocket/RecordingStateEvent-class.html) | [RecordingStarting](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#recordingstarting), [RecordingStarted](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#recordingstarted), [RecordingStopping](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#recordingstopping), [RecordingStopped](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#recordingstopped), [RecordingPausedEvent](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#recordingpaused), [RecordingResumed](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#recordingresumed) |
-| [SceneItemEvent](https://pub.dev/documentation/obs_websocket/latest/obs_websocket/SceneItemEvent-class.html)           | [SceneItemAdded](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#sceneitemadded), [SceneItemRemoved](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#sceneitemremoved), [SceneItemSelected](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#sceneitemselected), [SceneItemDeselected](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#sceneitemdeselected)                                                                                                                                                                                                                                                          |
-| [SceneItemStateEvent](https://pub.dev/documentation/obs_websocket/latest/obs_websocket/SceneItemStateEvent-class.html) | [SceneItemVisibilityChanged](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#sceneitemvisibilitychanged), [SceneItemLockChanged](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#sceneitemlockchanged)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
-| [StreamStateEvent](https://pub.dev/documentation/obs_websocket/latest/obs_websocket/StreamStateEvent-class.html)       | [StreamStarting](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#streamstarting), [StreamStarted](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#streamstarted), [StreamStopping](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#streamstopping), [StreamStoppedEvent](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#streamstopped)                                                                                                                                                                                                                                                                             |
-| [StreamStatusEvent](https://pub.dev/documentation/obs_websocket/latest/obs_websocket/StreamStatusEvent-class.html)     | [StreamStatus](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#streamstatus)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
-| [BaseEvent](https://pub.dev/documentation/obs_websocket/latest/obs_websocket/BaseEvent-class.html)                     | any not listed above, the `Map<String, dynamic> rawEvent` property gives access to the underlying event response data                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+- [General Events](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#general-events)
+  - [x] [ExitStarted](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#exitstarted) - OBS has begun the shutdown process.
+  - [x] [VendorEvent](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#vendorevent) - An event has been emitted from a vendor.
+- [Config Events](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#config-events)
+  - [ ] [CurrentSceneCollectionChanging](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#currentscenecollectionchanging)
+  - [ ] [CurrentSceneCollectionChanged](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#currentscenecollectionchanged)
+  - [ ] [SceneCollectionListChanged](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#scenecollectionlistchanged)
+  - [ ] [CurrentProfileChanging](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#currentprofilechanging)
+  - [ ] [CurrentProfileChanged](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#currentprofilechanged)
+  - [ ] [ProfileListChanged](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#profilelistchanged)
+- [Scenes Events](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#scenes-events)
+  - [ ] [SceneCreated](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#scenecreated)
+  - [ ] [SceneRemoved](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#sceneremoved)
+  - [ ] [SceneNameChanged](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#scenenamechanged)
+  - [ ] [CurrentProgramSceneChanged](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#currentprogramscenechanged)
+  - [ ] [CurrentPreviewSceneChanged](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#currentpreviewscenechanged)
+  - [ ] [SceneListChanged](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#scenelistchanged)
+- [Inputs Events](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#inputs-events)
+  - [ ] [InputCreated](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#inputcreated)
+  - [ ] [InputRemoved](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#inputremoved)
+  - [ ] [InputNameChanged](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#inputnamechanged)
+  - [ ] [InputActiveStateChanged](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#inputactivestatechanged)
+  - [ ] [InputShowStateChanged](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#inputshowstatechanged)
+  - [ ] [InputMuteStateChanged](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#inputmutestatechanged)
+  - [ ] [InputVolumeChanged](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#inputvolumechanged)
+  - [ ] [InputAudioBalanceChanged](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#inputaudiobalancechanged)
+  - [ ] [InputAudioSyncOffsetChanged](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#inputaudiosyncoffsetchanged)
+  - [ ] [InputAudioTracksChanged](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#inputaudiotrackschanged)
+  - [ ] [InputAudioMonitorTypeChanged](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#inputaudiomonitortypechanged)
+  - [ ] [InputVolumeMeters](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#inputvolumemeters)
+- [Transitions Events](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#transitions-events)
+  - [ ] [CurrentSceneTransitionChanged](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#currentscenetransitionchanged)
+  - [ ] [CurrentSceneTransitionDurationChanged](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#currentscenetransitiondurationchanged)
+  - [ ] [SceneTransitionStarted](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#scenetransitionstarted)
+  - [ ] [SceneTransitionEnded](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#scenetransitionended)
+  - [ ] [SceneTransitionVideoEnded](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#scenetransitionvideoended)
+- [Filters Events](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#filters-events)
+  - [ ] [SourceFilterListReindexed](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#sourcefilterlistreindexed)
+  - [ ] [SourceFilterCreated](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#sourcefiltercreated)
+  - [ ] [SourceFilterRemoved](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#sourcefilterremoved)
+  - [ ] [SourceFilterNameChanged](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#sourcefilternamechanged)
+  - [ ] [SourceFilterEnableStateChanged](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#sourcefilterenablestatechanged)
+- [Scene Items Events](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#scene-items-events)
+  - [ ] [SceneItemCreated](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#sceneitemcreated)
+  - [ ] [SceneItemRemoved](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#sceneitemremoved)
+  - [ ] [SceneItemListReindexed](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#sceneitemlistreindexed)
+  - [x] [SceneItemEnableStateChanged](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#sceneitemenablestatechanged) - A scene item's enable state has changed.
+  - [ ] [SceneItemLockStateChanged](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#sceneitemlockstatechanged)
+  - [x] [SceneItemSelected](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#sceneitemselected) - A scene item has been selected in the Ui.
+  - [ ] [SceneItemTransformChanged](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#sceneitemtransformchanged)
+- [Outputs Events](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#outputs-events)
+  - [x] [StreamStateChanged](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#streamstatechanged) - The state of the stream output has changed.
+  - [x] [RecordStateChanged](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#recordstatechanged) - The state of the record output has changed.
+  - [ ] [ReplayBufferStateChanged](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#replaybufferstatechanged)
+  - [ ] [VirtualcamStateChanged](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#virtualcamstatechanged)
+  - [ ] [ReplayBufferSaved](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#replaybuffersaved)
+- [Media Inputs Events](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#media-inputs-events)
+  - [ ] [MediaInputPlaybackStarted](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#mediainputplaybackstarted)
+  - [ ] [MediaInputPlaybackEnded](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#mediainputplaybackended)
+  - [ ] [MediaInputActionTriggered](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#mediainputactiontriggered)
+- [Ui Events](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#ui-events)
+  - [x] [StudioModeStateChanged](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#studiomodestatechanged) - Studio mode has been enabled or disabled.
+
+### Handling events not yet supported
+
+You can supply a `fallbackEvent` to the `ObsWebSocket` constructor to handle events that are not yet supported directly in the code.  The following code snippet provides an example of this.
+
+```dart
+final obs = await ObsWebSocket.connect(
+  'ws://[obs-studio host ip]:4455',
+  password: '[password]',
+  fallbackEventHandler: (Event event) =>
+      print('type: ${event.eventType} data: ${event.eventData}'),
+);
+
+// tell obsWebSocket to listen to events, since the default is to ignore them
+await obsWebSocket.listen(EventSubscription.all);
+```
 
 ## Closing the websocket
 
@@ -172,219 +429,3 @@ Finally before your code completes, you will should close the websocket connecti
 ```dart
 obsWebSocket.close();
 ```
-
-## Sample OBS cli
-
-For v2.4.0 of this package the cli model has been completely revamped.  Please see the cli documentation [README.md](https://github.com/faithoflifedev/easy_obs_websocket/tree/main/bin) for more detailed usage information.
-
-## Supported high-level commands
-
-For any of the items that have an [x] from the list below, a high level command is available for that operation, i.e. `obsWebSocket.getStudioModeStatus()` otherwise a low-level command can be used to perform the operation, `obsWebSocket.command('GetVersion')`.
-
-- [Requests](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#requests)
-  - [General](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#general-1)
-    - [ ] [GetVersion](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#getversion)
-    - [x] [GetAuthRequired](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#getauthrequired)
-    - [x] [Authenticate](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#authenticate)
-    - [ ] [SetHeartbeat](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#setheartbeat)
-    - [ ] [SetFilenameFormatting](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#setfilenameformatting)
-    - [ ] [GetFilenameFormatting](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#getfilenameformatting)
-    - [ ] [GetStats](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#getstats)
-    - [ ] [BroadcastCustomMessage](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#broadcastcustommessage-1)
-    - [ ] [GetVideoInfo](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#getvideoinfo)
-    - [ ] [OpenProjector](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#openprojector)
-    - [ ] [TriggerHotkeyByName](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#triggerhotkeybyname)
-    - [ ] [TriggerHotkeyBySequence](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#triggerhotkeybysequence)
-    - [ ] [ExecuteBatch](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#executebatch)
-    - [ ] [Sleep](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#sleep)
-  - [Media Control](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#media-control)
-    - [x] [PlayPauseMedia](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#playpausemedia)
-    - [x] [RestartMedia](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#restartmedia)
-    - [x] [StopMedia](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#stopmedia)
-    - [ ] [NextMedia](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#nextmedia)
-    - [ ] [PreviousMedia](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#previousmedia)
-    - [ ] [GetMediaDuration](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#getmediaduration)
-    - [ ] [GetMediaTime](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#getmediatime)
-    - [ ] [SetMediaTime](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#setmediatime)
-    - [ ] [ScrubMedia](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#scrubmedia)
-    - [x] [GetMediaState](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#getmediastate)
-  - [Sources](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#sources-1)
-    - [x] [GetMediaSourcesList](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#getmediasourceslist)
-    - [ ] [CreateSource](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#createsource)
-    - [x] [GetSourcesList](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#getsourceslist)
-    - [ ] [GetSourceTypesList](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#getsourcetypeslist)
-    - [ ] [GetVolume](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#getvolume)
-    - [ ] [SetVolume](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#setvolume)
-    - [ ] [SetTracks](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#settracks)
-    - [ ] [GetTracks](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#gettracks)
-    - [ ] [GetMute](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#getmute)
-    - [ ] [SetMute](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#setmute)
-    - [ ] [ToggleMute](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#togglemute)
-    - [x] [GetSourceActive](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#getsourceactive)
-    - [x] [GetAudioActive](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#getaudioactive)
-    - [ ] [SetSourceName](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#setsourcename)
-    - [ ] [SetSyncOffset](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#setsyncoffset)
-    - [ ] [GetSyncOffset](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#getsyncoffset)
-    - [x] [GetSourceSettings](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#getsourcesettings)
-    - [x] [SetSourceSettings](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#setsourcesettings)
-    - [ ] [GetTextGDIPlusProperties](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#gettextgdiplusproperties)
-    - [ ] [SetTextGDIPlusProperties](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#settextgdiplusproperties)
-    - [ ] [GetTextFreetype2Properties](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#gettextfreetype2properties)
-    - [ ] [SetTextFreetype2Properties](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#settextfreetype2properties)
-    - [ ] [GetBrowserSourceProperties](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#getbrowsersourceproperties)
-    - [ ] [SetBrowserSourceProperties](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#setbrowsersourceproperties)
-    - [ ] [GetSpecialSources](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#getspecialsources)
-    - [ ] [GetSourceFilters](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#getsourcefilters)
-    - [ ] [GetSourceFilterInfo](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#getsourcefilterinfo)
-    - [ ] [AddFilterToSource](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#addfiltertosource)
-    - [ ] [RemoveFilterFromSource](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#removefilterfromsource)
-    - [ ] [ReorderSourceFilter](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#reordersourcefilter)
-    - [ ] [MoveSourceFilter](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#movesourcefilter)
-    - [ ] [SetSourceFilterSettings](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#setsourcefiltersettings)
-    - [ ] [SetSourceFilterVisibility](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#setsourcefiltervisibility)
-    - [ ] [GetAudioMonitorType](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#getaudiomonitortype)
-    - [ ] [SetAudioMonitorType](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#setaudiomonitortype)
-    - [ ] [GetSourceDefaultSettings](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#getsourcedefaultsettings)
-    - [x] [TakeSourceScreenshot](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#takesourcescreenshot)
-    - [x] [RefreshBrowserSource](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#refreshbrowsersource)
-  - [Outputs](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#outputs)
-    - [ ] [ListOutputs](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#listoutputs)
-    - [ ] [GetOutputInfo](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#getoutputinfo)
-    - [ ] [StartOutput](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#startoutput)
-    - [ ] [StopOutput](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#stopoutput)
-  - [Profiles](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#profiles-1)
-    - [x] [SetCurrentProfile](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#setcurrentprofile)
-    - [x] [GetCurrentProfile](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#getcurrentprofile)
-    - [ ] [ListProfiles](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#listprofiles)
-  - [Recording](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#recording-1)
-    - [ ] [GetRecordingStatus](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#getrecordingstatus)
-    - [x] [StartStopRecording](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#startstoprecording)
-    - [x] [StartRecording](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#startrecording)
-    - [x] [StopRecording](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#stoprecording)
-    - [x] [PauseRecording](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#pauserecording)
-    - [x] [ResumeRecording](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#resumerecording)
-    - [ ] [SetRecordingFolder](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#setrecordingfolder)
-    - [ ] [GetRecordingFolder](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#getrecordingfolder)
-  - [Replay Buffer](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#replay-buffer-1)
-    - [ ] [GetReplayBufferStatus](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#getreplaybufferstatus)
-    - [ ] [StartStopReplayBuffer](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#startstopreplaybuffer)
-    - [ ] [StartReplayBuffer](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#startreplaybuffer)
-    - [ ] [StopReplayBuffer](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#stopreplaybuffer)
-    - [ ] [SaveReplayBuffer](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#savereplaybuffer)
-  - [Scene Collections](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#scene-collections)
-    - [ ] [SetCurrentSceneCollection](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#setcurrentscenecollection)
-    - [ ] [GetCurrentSceneCollection](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#getcurrentscenecollection)
-    - [ ] [ListSceneCollections](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#listscenecollections)
-  - [Scene Items](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#scene-items-1)
-    - [x] [GetSceneItemList](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#getsceneitemlist)
-    - [x] [GetSceneItemProperties](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#getsceneitemproperties)
-    - [ ] [SetSceneItemProperties](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#setsceneitemproperties)
-    - [ ] [ResetSceneItem](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#resetsceneitem)
-    - [x] [SetSceneItemRender](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#setsceneitemrender)
-    - [ ] [SetSceneItemPosition](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#setsceneitemposition)
-    - [ ] [SetSceneItemTransform](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#setsceneitemtransform)
-    - [ ] [SetSceneItemCrop](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#setsceneitemcrop)
-    - [ ] [DeleteSceneItem](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#deletesceneitem)
-    - [ ] [AddSceneItem](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#addsceneitem)
-    - [ ] [DuplicateSceneItem](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#duplicatesceneitem)
-  - [Scenes](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#scenes-1)
-    - [x] [SetCurrentScene](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#setcurrentscene)
-    - [x] [GetCurrentScene](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#getcurrentscene)
-    - [x] [GetSceneList](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#getscenelist)
-    - [ ] [CreateScene](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#createscene)
-    - [ ] [ReorderSceneItems](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#reordersceneitems)
-    - [ ] [SetSceneTransitionOverride](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#setscenetransitionoverride)
-    - [ ] [RemoveSceneTransitionOverride](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#removescenetransitionoverride)
-    - [ ] [GetSceneTransitionOverride](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#getscenetransitionoverride)
-  - [Streaming](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#streaming-1)
-    - [x] [GetStreamingStatus](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#getstreamingstatus)
-    - [x] [StartStopStreaming](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#startstopstreaming)
-    - [x] [StartStreaming](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#startstreaming)
-    - [x] [StopStreaming](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#stopstreaming)
-    - [x] [SetStreamSettings](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#setstreamsettings)
-    - [x] [GetStreamSettings](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#getstreamsettings)
-    - [x] [SaveStreamSettings](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#savestreamsettings)
-    - [ ] [SendCaptions](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#sendcaptions)
-  - [Studio Mode](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#studio-mode-1)
-    - [x] [GetStudioModeStatus](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#getstudiomodestatus)
-    - [ ] [GetPreviewScene](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#getpreviewscene)
-    - [ ] [SetPreviewScene](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#setpreviewscene)
-    - [ ] [TransitionToProgram](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#transitiontoprogram)
-    - [x] [EnableStudioMode](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#enablestudiomode)
-    - [ ] [DisableStudioMode](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#disablestudiomode)
-    - [ ] [ToggleStudioMode](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#togglestudiomode)
-  - [Transitions](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#transitions-1)
-    - [ ] [GetTransitionList](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#gettransitionlist)
-    - [ ] [GetCurrentTransition](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#getcurrenttransition)
-    - [ ] [SetCurrentTransition](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#setcurrenttransition)
-    - [ ] [SetTransitionDuration](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#settransitionduration)
-    - [ ] [GetTransitionDuration](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#gettransitionduration)
-    - [ ] [GetTransitionPosition](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#gettransitionposition)
-    - [ ] [GetTransitionSettings](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#gettransitionsettings)
-    - [ ] [SetTransitionSettings](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#settransitionsettings)
-    - [ ] [ReleaseTBar](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#releasetbar)
-    - [ ] [SetTBarPosition](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#settbarposition)
-  - [Virtual Cam](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#virtual-cam-1)
-    - [ ] [GetVirtualCamStatus](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#getvirtualcamstatus)
-    - [ ] [StartStopVirtualCam](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#startstopvirtualcam)
-    - [ ] [StartVirtualCam](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#startvirtualcam)
-    - [ ] [StopVirtualCam](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md#stopvirtualcam)
-
-## Breaking changes moving from v2.1.x to v2.2.x
-
-The `dart pub publish` analyzer wanted a file name change, so here it is.
-
-```dart
-//This no longer works
-//import 'package:obs_websocket/obsWebsocket.dart';
-
-//instead use
-import 'package:obs_websocket/obs_websocket.dart';
-```
-
-## Breaking changes moving from v2.0.x to v2.1.x
-
-The underlying [web_socket_channel](https://pub.dev/packages/web_socket_channel) library defaults to a very long timeout and attempting to connect to OBS when it is not actually running will not throw an catchable exception, there is more info about this available in the project github [issue](https://github.com/dart-lang/web_socket_channel/issues/61) tracker. To resolve this [issue](https://github.com/faithoflifedev/obsWebsocket/issues/2) in obs_websocket there has been a modification to the code used to connect to OBS.
-
-```dart
-//This will no longer work
-//ObsWebSocket obsWebSocket = ObsWebSocket(connectUrl: 'ws://[obs-studio host ip]:4444');
-//
-//alternatively you could use:
-//final websocket = await WebSocket.connect(connectUrl).timeout(timeout);
-//
-//final obsWebSocket = ObsWebSocket(channel: IOWebSocketChannel(websocket));
-//or
-//The new connect method also gives the option for a timeout and will throw a catchable exception in
-//the case that OBS is not running.  The default timeout is 30 seconds.
-final obsWebSocket =
-    await ObsWebSocket.connect(
-      connectUrl: 'ws://[obs-studio host ip]:4444',
-      timeout: const Duration(seconds: 5)
-    );
-```
-
-## Breaking changes moving from v1.x to v2.x
-
-I'm sorry to say that there are several, but it should be very easy to migrate over v1.0.0 code.
-
-```dart
-//This no longer works
-//import 'package:obs_websocket/obs_websocket.dart';
-
-//instead use
-import 'package:obs_websocket/obsWebsocket.dart';
-
-//This additional import is no longer necessary
-//import 'package:obs_websocket/response.dart';
-
-//SimpleResponse has gone away
-//SimpleResponse response = await obsWebSocket.command('StartStreaming');
-
-//It's been replaces with BaseResponse?
-BaseResponse? response = await obsWebSocket.command('StartStreaming');
-```
-
-## Known bugs
-
-~~I've submitted a [bug](https://github.com/Palakis/obs-websocket/issues/486) to the [obs-websocket](https://github.com/Palakis/obs-websocket) team for a bug that I am seeing when executing a websocket connecting program multiple times in sequence to start and stop steaming causes [OBS](https://obsproject.com/) to crash. For my use case I am able to work around this by stopping and restarting OBS itself before restarting streaming.~~
