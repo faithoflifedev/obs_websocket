@@ -1,4 +1,5 @@
-# obs_websocket
+
+## obs_websocket
 
 [![pub package](https://img.shields.io/pub/v/obs_websocket.svg)](https://pub.dartlang.org/packages/obs_websocket)
 
@@ -7,6 +8,22 @@ This package gives access to all of the methods and events outlined by the [obs-
 [![Build Status](https://github.com/faithoflifedev/obs_websocket/workflows/Dart/badge.svg)](https://github.com/faithoflifedev/obs_websocket/actions) [![github last commit](https://shields.io/github/last-commit/faithoflifedev/obs_websocket)](https://shields.io/github/last-commit/faithoflifedev/obs_websocket) [![github build](https://shields.io/github/workflow/status/faithoflifedev/obs_websocket/Dart)](https://shields.io/github/workflow/status/faithoflifedev/obs_websocket/Dart) [![github issues](https://shields.io/github/issues/faithoflifedev/obs_websocket)](https://shields.io/github/issues/faithoflifedev/obs_websocket)
 
 Please feel free to submit PRs for any additional helper methods, or report an [issue](https://github.com/faithoflifedev/obs_websocket/issues) for a missing helper method and I'll add it if I have time available.
+
+- [obs_websocket](#obs_websocket)
+- [Breaking changes from v2.4.3 (obs-websocket v4.9.1 protocol)](#breaking-changes-from-v243-obs-websocket-v491-protocol)
+- [Getting Started](#getting-started)
+  - [Requirements](#requirements)
+  - [Usage Example](#usage-example)
+  - [Opening a websocket Connection](#opening-a-websocket-connection)
+  - [Authenticating to OBS](#authenticating-to-obs)
+  - [Sending Commands to OBS](#sending-commands-to-obs)
+- [Supported high-level commands](#supported-high-level-commands)
+  - [Requests Table of Contents](#requests-table-of-contents)
+- [Sending Commands to OBS - low level](#sending-commands-to-obs---low-level)
+- [Events](#events)
+  - [Supported Events for `addHandler<T>`](#supported-events-for-addhandlert)
+  - [Handling events not yet supported](#handling-events-not-yet-supported)
+- [Closing the websocket](#closing-the-websocket)
 
 ## Breaking changes from v2.4.3 (obs-websocket v4.9.1 protocol)
 
