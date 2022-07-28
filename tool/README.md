@@ -1,12 +1,12 @@
-# easy_obs_websocket
+# obs_websocket
 
 [![pub package](https://img.shields.io/pub/v/obs_websocket.svg)](https://pub.dartlang.org/packages/obs_websocket)
 
-This package gives access to all of the methods and events outlined by the [obs-websocket 5.0.0 protocol reference](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md) through the `send` method documented below, but also has helper methods for many of the more popular [Requests](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#requests) that are made available through the protocol reference.
+This package gives access to all of the methods and events outlined by the [obs-websocket 5.0.0 protocol reference](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md) through the `send` method documented below, but also has helper methods for many of the more popular [requests](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#requests) that are made available through the protocol reference.
 
-[![Build Status](https://github.com/faithoflifedev/easy_obs_websocket/workflows/Dart/badge.svg)](https://github.com/faithoflifedev/easy_obs_websocket/actions) [![github last commit](https://shields.io/github/last-commit/faithoflifedev/easy_obs_websocket)](https://shields.io/github/last-commit/faithoflifedev/easy_obs_websocket) [![github build](https://shields.io/github/workflow/status/faithoflifedev/easy_obs_websocket/Dart)](https://shields.io/github/workflow/status/faithoflifedev/easy_obs_websocket/Dart) [![github issues](https://shields.io/github/issues/faithoflifedev/easy_obs_websocket)](https://shields.io/github/issues/faithoflifedev/easy_obs_websocket)
+[![Build Status](https://github.com/faithoflifedev/obs_websocket/workflows/Dart/badge.svg)](https://github.com/faithoflifedev/obs_websocket/actions) [![github last commit](https://shields.io/github/last-commit/faithoflifedev/obs_websocket)](https://shields.io/github/last-commit/faithoflifedev/obs_websocket) [![github build](https://shields.io/github/workflow/status/faithoflifedev/obs_websocket/Dart)](https://shields.io/github/workflow/status/faithoflifedev/obs_websocket/Dart) [![github issues](https://shields.io/github/issues/faithoflifedev/obs_websocket)](https://shields.io/github/issues/faithoflifedev/obs_websocket)
 
-Please feel free to submit PRs for any additional helper methods, or report an [issue](https://github.com/faithoflifedev/easy_obs_websocket/issues) for a missing helper method and I'll add it if I have time available.
+Please feel free to submit PRs for any additional helper methods, or report an [issue](https://github.com/faithoflifedev/obs_websocket/issues) for a missing helper method and I'll add it if I have time available.
 
 ## Breaking changes from v2.4.3 (obs-websocket v4.9.1 protocol)
 
@@ -29,7 +29,7 @@ dependencies:
 
 For help getting started with dart, check out these [guides](https://dart.dev/guides).
 
-## Usage Example
+### Usage Example
 
 Import the websocket connection library and the response library.
 
@@ -37,11 +37,11 @@ Import the websocket connection library and the response library.
 import 'package:obs_websocket/obs_websocket.dart';
 ```
 
-## Opening a websocket Connection
+### Opening a websocket Connection
 
 The WebSocket protocol, described in the specification [RFC 6455](https://tools.ietf.org/html/rfc6455) provides a way to exchange data between client and server via a persistent connection. The data can be passed in both directions as “packets”.
 
-Before a websocket connection can be made to a running instance of [OBS](https://obsproject.com/), you will need to have the [obs-websocket](https://obsproject.com/forum/resources/obs-websocket-remote-control-obs-studio-from-websockets.466/) plugin installed and configured.
+Before a websocket connection can be made to a running instance of [OBS](https://obsproject.com/), you will need to have the [obs-websocket](https://github.com/obsproject/obs-websocket) plugin installed and configured.  The instruction and links to downloaded and install are available on the project [Release](https://github.com/obsproject/obs-websocket) page.
 
 To open a websocket connection, we need to create new ObsWebSocket using the special protocol ws in the url:
 
@@ -58,11 +58,11 @@ final obsWebSocket =
 
 These settings are available to change and review through the OBS user interface by clicking `Tools, obs-websocket Settings`.
 
-## Authenticating to [OBS](https://obsproject.com/)
+### Authenticating to [OBS](https://obsproject.com/)
 
 If a `password` is supplied to the `connect` method, authentication will occur automatically assuming that it is enabled for OBS. 
 
-## Sending Commands to [OBS](https://obsproject.com/)
+### Sending Commands to [OBS](https://obsproject.com/)
 
 The available commands/requests are documented on the [protocol](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#requests) page of the [obs-websocket](https://github.com/obsproject/obs-websocket) github page. Note that not all commands listed on the protocol page have been implemented in code at this time. For any command not yet implemented, refer to the `low-level` method of sending commands, documented below.
 
@@ -79,7 +79,7 @@ if (!status.outputActive) {
 
 ## Supported high-level commands
 
-For any of the items that have an [x] from the list below, a high level command is available for that operation, i.e. `obsWebSocket.stream.status()` otherwise a low-level command can be used to perform the operation, `obsWebSocket.send('GetStreamStatus')`.
+For any of the items that have an [x] from the list below, a high level helper command is available for that operation, i.e. `obsWebSocket.general.version` or `obsWebSocket.general.getVersion()`.  Otherwise a low-level command can be used to perform the operation, i.e. `obsWebSocket.send('GetVersion')`.
 
 ### Requests Table of Contents
 
@@ -88,8 +88,8 @@ For any of the items that have an [x] from the list below, a high level command 
   - [x] [GetStats](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#getstats) - Gets statistics about OBS, obs-websocket, and the current session.
   - [ ] [BroadcastCustomEvent](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#broadcastcustomevent)
   - [ ] [CallVendorRequest](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#callvendorrequest)
-  - [ ] [GetHotkeyList](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#gethotkeylist)
-  - [ ] [TriggerHotkeyByName](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#triggerhotkeybyname)
+  - [x] [GetHotkeyList](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#gethotkeylist) - Gets an array of all hotkey names in OBS
+  - [x] [TriggerHotkeyByName](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#triggerhotkeybyname) - Triggers a hotkey using its name. See GetHotkeyList
   - [ ] [TriggerHotkeyByKeySequence](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#triggerhotkeybykeysequence)
   - [ ] [Sleep](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#sleep)
 - [Config Requests](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#config-1-requests) - `obsWebSocket.config`
@@ -99,9 +99,9 @@ For any of the items that have an [x] from the list below, a high level command 
   - [ ] [SetCurrentSceneCollection](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#setcurrentscenecollection)
   - [ ] [CreateSceneCollection](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#createscenecollection)
   - [ ] [GetProfileList](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#getprofilelist)
-  - [ ] [SetCurrentProfile](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#setcurrentprofile)
-  - [ ] [CreateProfile](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#createprofile)
-  - [ ] [RemoveProfile](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#removeprofile)
+  - [x] [SetCurrentProfile](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#setcurrentprofile) - Switches to a profile.
+  - [x] [CreateProfile](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#createprofile) - Creates a new profile, switching to it in the process
+  - [x] [RemoveProfile](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#removeprofile) - Removes a profile. If the current profile is chosen, it will change to a different profile first.
   - [ ] [GetProfileParameter](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#getprofileparameter)
   - [ ] [SetProfileParameter](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#setprofileparameter)
   - [x] [GetVideoSettings](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#getvideosettings) - Gets the current video settings.
@@ -218,9 +218,9 @@ For any of the items that have an [x] from the list below, a high level command 
   - [x] [ToggleRecordPause](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#togglerecordpause) - Toggles pause on the record output.
   - [x] [PauseRecord](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#pauserecord) - Pauses the record output.
   - [x] [ResumeRecord](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#resumerecord) - Resumes the record output.
-- [Media Inputs Requests](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#media-inputs-1-requests) - `obsWebSocket.media`
+- [Media Inputs Requests](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#media-inputs-1-requests) - `obsWebSocket.mediaInputs`
   - [ ] [GetMediaInputStatus](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#getmediainputstatus)
-  - [ ] [SetMediaInputCursor](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#setmediainputcursor)
+  - [x] [SetMediaInputCursor](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#setmediainputcursor) - Sets the cursor position of a media input.
   - [ ] [OffsetMediaInputCursor](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#offsetmediainputcursor)
   - [ ] [TriggerMediaInputAction](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#triggermediainputaction)
 - [Ui Requests](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#ui-1-requests) - `obsWebSocket.ui`

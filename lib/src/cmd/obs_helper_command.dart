@@ -1,7 +1,8 @@
 import 'dart:convert';
 
 import 'package:args/command_runner.dart';
-import 'package:obs_websocket/obs_websocket.dart';
+import 'package:obs_websocket/obs_websocket.dart' show ObsWebSocket;
+import 'package:obs_websocket/src/util/util.dart';
 import 'package:universal_io/io.dart';
 
 abstract class ObsHelperCommand extends Command {

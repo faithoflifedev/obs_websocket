@@ -4,6 +4,7 @@ import 'package:loggy/loggy.dart';
 import 'package:obs_websocket/obs_websocket.dart';
 import 'package:obs_websocket/src/connect.dart';
 import 'package:obs_websocket/request.dart' as request;
+import 'package:obs_websocket/src/util/util.dart';
 import 'package:web_socket_channel/status.dart' as status;
 import 'package:web_socket_channel/web_socket_channel.dart';
 
@@ -20,7 +21,15 @@ class ObsWebSocket with UiLoggy {
 
   request.Config? _config;
 
+  request.Filters? _filters;
+
   request.General? _general;
+
+  request.Inputs? _inputs;
+
+  request.MediaInputs? _mediaInputs;
+
+  request.Outputs? _outputs;
 
   request.Scenes? _scenes;
 
@@ -31,6 +40,10 @@ class ObsWebSocket with UiLoggy {
   request.Sources? _sources;
 
   request.Stream? _stream;
+
+  request.Transitions? _transitions;
+
+  request.Ui? _ui;
 
   bool handshakeComplete = false;
 
@@ -44,7 +57,15 @@ class ObsWebSocket with UiLoggy {
 
   request.Config get config => _config!;
 
+  request.Filters get filters => _filters!;
+
   request.General get general => _general!;
+
+  request.Inputs get inputs => _inputs!;
+
+  request.MediaInputs get mediaInputs => _mediaInputs!;
+
+  request.Outputs get outputs => _outputs!;
 
   request.Record get record => _record!;
 
@@ -55,6 +76,10 @@ class ObsWebSocket with UiLoggy {
   request.Sources get sources => _sources!;
 
   request.Stream get stream => _stream!;
+
+  request.Transitions get transitions => _transitions!;
+
+  request.Ui get ui => _ui!;
 
   static Map<int, int> opCodeResponseMap = {
     WebSocketOpCode.identify.code: WebSocketOpCode.identified.code,
@@ -74,7 +99,15 @@ class ObsWebSocket with UiLoggy {
   }) : broadcastStream = websocketChannel.stream.asBroadcastStream() {
     _config = request.Config(this);
 
+    _filters = request.Filters(this);
+
     _general = request.General(this);
+
+    _inputs = request.Inputs(this);
+
+    _mediaInputs = request.MediaInputs(this);
+
+    _outputs = request.Outputs(this);
 
     _record = request.Record(this);
 
@@ -85,6 +118,10 @@ class ObsWebSocket with UiLoggy {
     _sources = request.Sources(this);
 
     _stream = request.Stream(this);
+
+    _transitions = request.Transitions(this);
+
+    _ui = request.Ui(this);
 
     if (fallbackEventHandler != null) {
       addFallbackListener(fallbackEventHandler);

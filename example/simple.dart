@@ -16,13 +16,19 @@ main() async {
 
   await obs.listen(EventSubscription.all.code);
 
+  final versionResponse = await obs.general.version;
+
+  print(versionResponse.obsWebSocketVersion);
+
+  var response = await obs.send('GetHotkeyList');
+
   // use a helper method to make a request
   final streamStatusResponse = await obs.stream.status();
 
   print('is streaming: ${streamStatusResponse.outputActive}');
 
   // the low-level method of making a request
-  var response = await obs.send('GetStreamStatus');
+  response = await obs.send('GetStreamStatus');
 
   print('request status: ${response?.requestStatus.result}');
 
@@ -78,7 +84,7 @@ main() async {
 
   // await obs.scenes.setCurrentProgramScene('presentation');
 
-  final statsResponse = await obs.general.stats();
+  final statsResponse = await obs.general.stats;
 
   print('cpu usage: ${statsResponse.cpuUsage}');
 

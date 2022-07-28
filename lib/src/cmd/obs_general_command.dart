@@ -34,7 +34,7 @@ class ObsGetVersionCommand extends ObsHelperCommand {
   void run() async {
     await initializeObs();
 
-    final versionResponse = await obs.general.version();
+    final versionResponse = await obs.general.version;
 
     print(versionResponse);
 
@@ -55,7 +55,7 @@ class ObsGetStatsCommand extends ObsHelperCommand {
   void run() async {
     await initializeObs();
 
-    final statsResponse = await obs.general.stats();
+    final statsResponse = await obs.general.stats;
 
     print(statsResponse);
 

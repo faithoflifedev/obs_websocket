@@ -22,6 +22,7 @@ export 'src/model/event/ui/studio_mode_state_changed.dart';
 export 'src/model/response/current_preview_scene_response.dart';
 export 'src/model/response/current_program_scene_response.dart';
 export 'src/model/response/group_list_response.dart';
+export 'src/model/response/hotkey_list_response.dart';
 export 'src/model/response/record_status_response.dart';
 export 'src/model/response/scene_item_enabled_response.dart';
 export 'src/model/response/scene_item_id_response.dart';
@@ -53,4 +54,3 @@ export 'src/model/shared/transform.dart';
 
 export 'src/obs_websocket_base.dart';
 export 'src/util/enum.dart';
-export 'src/util/util.dart';

@@ -11,14 +11,14 @@ class General {
   /// - Complexity Rating: 1/5
   /// - Latest Supported RPC Version: 1
   /// - Added in v5.0.0
-  Future<VersionResponse> getVersion() async => await version();
+  Future<VersionResponse> get version async => await getVersion();
 
   /// Gets data about the current plugin and RPC version.
   ///
   /// - Complexity Rating: 1/5
   /// - Latest Supported RPC Version: 1
   /// - Added in v5.0.0
-  Future<VersionResponse> version() async {
+  Future<VersionResponse> getVersion() async {
     final response = await obsWebSocket.sendRequest(Request('GetVersion'));
 
     return VersionResponse.fromJson(response!.responseData!);
@@ -29,14 +29,14 @@ class General {
   /// - Complexity Rating: 2/5
   /// - Latest Supported RPC Version: 1
   /// - Added in v5.0.0
-  Future<StatsResponse> getStats() async => await stats();
+  Future<StatsResponse> get stats async => await getStats();
 
   /// Gets statistics about OBS, obs-websocket, and the current session.
   ///
   /// - Complexity Rating: 2/5
   /// - Latest Supported RPC Version: 1
   /// - Added in v5.0.0
-  Future<StatsResponse> stats() async {
+  Future<StatsResponse> getStats() async {
     final response = await obsWebSocket.sendRequest(Request('GetStats'));
 
     return StatsResponse.fromJson(response!.responseData!);
@@ -52,11 +52,33 @@ class General {
   // TODO:
   Future<void> callVendorRequest() async => throw UnimplementedError();
 
-  // TODO:
-  Future<void> getHotkeyList() async => throw UnimplementedError();
+  ///Gets an array of all hotkey names in OBS
+  ///
+  /// - Complexity Rating: 3/5
+  /// - Latest Supported RPC Version: 1
+  /// - Added in v5.0.0
+  Future<List<String>> get hotkeyList async => await getHotkeyList();
 
-  // TODO:
-  Future<void> triggerHotkeyByName() async => throw UnimplementedError();
+  ///Gets an array of all hotkey names in OBS
+  ///
+  /// - Complexity Rating: 3/5
+  /// - Latest Supported RPC Version: 1
+  /// - Added in v5.0.0
+  Future<List<String>> getHotkeyList() async {
+    final response = await obsWebSocket.sendRequest(Request('GetHotkeyList'));
+
+    final hotkeyListResponse =
+        HotkeyListResponse.fromJson(response!.responseData!);
+
+    return hotkeyListResponse.hotkeys;
+  }
+
+  Future<void> triggerHotkeyByName(String hotkeyName) async {
+    await obsWebSocket.sendRequest(Request(
+      'TriggerHotkeyByName',
+      requestData: {'hotkeyName': hotkeyName},
+    ));
+  }
 
   // TODO:
   Future<void> triggerHotkeyByKeySequence() async => throw UnimplementedError();

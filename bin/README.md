@@ -30,17 +30,19 @@ Available commands:
   config      Config Requests
   general     General commands
   listen      Generate OBS events to stdout
+  send        Send a low-level websocket request to OBS
   sources     Commands that manipulate OBS sources
   stream      Commands that manipulate OBS streaming
 ```
 
 | command | description |
 | --- | --- |
-| authorize | Generate an authentication file for an Onvif device|
+| authorize | Generate an authentication file for an Onvif device |
 | general | General commands - [documentation](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#general-requests) |
 | listen | Generate OBS events to stdout - [documentation](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#events-table-of-contents) |
-| sources | Commands that manipulate OBS sources, [documentation](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#sources-requests)|
-| stream | Commands that manipulate OBS streams, [documentation](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#stream-requests)|
+| send | Send a low-level websocket request to OBS - [commands](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#requests-table-of-contents) |
+| sources | Commands that manipulate OBS sources, [documentation](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#sources-requests) |
+| stream | Commands that manipulate OBS streams, [documentation](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#stream-requests) |
 
 Just like the main library, any responses provided by the above commands will be given in the JSON format.  So ideally, you will want to use a command line json parser to interpret the results.  The recommended json parser for this purpose is [_jq_](https://stedolan.github.io/jq/).  With _jq_ you can process the results of a command as follows:
 
@@ -58,8 +60,11 @@ obs stream  get-stream-status
 
 #or using the jq utility
 obs stream  get-stream-status | jq -r '.outputActive'
-#output is
-false
+#output is false
+
+#or use the low-level send functionality
+obs send --command GetStreamStatus | jq -r '.responseData.outputActive'
+#same output as before: false
 ```
 
 ## authorize

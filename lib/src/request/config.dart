@@ -6,6 +6,7 @@ class Config {
 
   Config(this.obsWebSocket);
 
+  Future<void> get persistentData async => getPersistentData;
   // TODO:
   Future<void> getPersistentData() async => throw UnimplementedError();
 
@@ -24,14 +25,38 @@ class Config {
   // TODO:
   Future<void> getProfileList() async => throw UnimplementedError();
 
-  // TODO:
-  Future<void> setCurrentProfile() async => throw UnimplementedError();
+  /// Switches to a profile.
+  ///
+  /// - Complexity Rating: 1/5
+  /// - Latest Supported RPC Version: 1
+  /// - Added in v5.0.0
+  Future<void> setCurrentProfile(String profileName) async =>
+      await obsWebSocket.sendRequest(Request(
+        'SetCurrentProfile',
+        requestData: {'profileName': profileName},
+      ));
 
-  // TODO:
-  Future<void> createProfile() async => throw UnimplementedError();
+  /// Creates a new profile, switching to it in the process
+  ///
+  /// - Complexity Rating: 1/5
+  /// - Latest Supported RPC Version: 1
+  /// - Added in v5.0.0
+  Future<void> createProfile(String profileName) async =>
+      await obsWebSocket.sendRequest(Request(
+        'CreateProfile',
+        requestData: {'profileName': profileName},
+      ));
 
-  // TODO:
-  Future<void> removeProfile() async => throw UnimplementedError();
+  /// Removes a profile. If the current profile is chosen, it will change to a different profile first.
+  ///
+  /// - Complexity Rating: 1/5
+  /// - Latest Supported RPC Version: 1
+  /// - Added in v5.0.0
+  Future<void> removeProfile(String profileName) async =>
+      await obsWebSocket.sendRequest(Request(
+        'RemoveProfile',
+        requestData: {'profileName': profileName},
+      ));
 
   // TODO:
   Future<void> getProfileParameter() async => throw UnimplementedError();

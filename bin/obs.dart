@@ -27,6 +27,7 @@ void main(List<String> arguments) async {
     ..addCommand(ObsListenCommand())
     ..addCommand(ObsGeneralCommand())
     ..addCommand(ObsConfigCommand())
+    ..addCommand(ObsSendCommand())
     ..addCommand(ObsSourcesCommand())
     // ..addCommand(ObsProfilesCommand())
     // ..addCommand(ObsRecordingCommand())
