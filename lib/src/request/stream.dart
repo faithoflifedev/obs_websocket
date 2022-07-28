@@ -11,14 +11,21 @@ class Stream {
   /// - Complexity Rating: 2/5
   /// - Latest Supported RPC Version: 1
   /// - Added in v5.0.0
-  Future<StreamStatusResponse> getStreamStatus() async => await status();
+  Future<StreamStatusResponse> get status async => await getStreamStatus();
 
   /// Gets the status of the stream output.
   ///
   /// - Complexity Rating: 2/5
   /// - Latest Supported RPC Version: 1
   /// - Added in v5.0.0
-  Future<StreamStatusResponse> status() async {
+  Future<StreamStatusResponse> get getStatus async => await getStreamStatus();
+
+  /// Gets the status of the stream output.
+  ///
+  /// - Complexity Rating: 2/5
+  /// - Latest Supported RPC Version: 1
+  /// - Added in v5.0.0
+  Future<StreamStatusResponse> getStreamStatus() async {
     final response = await obsWebSocket.sendRequest(Request('GetStreamStatus'));
 
     return StreamStatusResponse.fromJson(response!.responseData!);

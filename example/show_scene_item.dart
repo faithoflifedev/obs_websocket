@@ -21,10 +21,10 @@ void main(List<String> args) async {
   final currentScene = await obsWebSocket.scenes.getCurrentProgramScene();
 
   // get the id of the required sceneItem
-  final sceneItemId = await obsWebSocket.sceneItems.getSceneItemId(SceneItemId(
+  final sceneItemId = await obsWebSocket.sceneItems.getSceneItemId(
     sceneName: currentScene,
     sourceName: sceneItem,
-  ));
+  );
 
   // this handler will only run when a SceneItemEnableStateChanged event is generated
   obsWebSocket.addHandler<SceneItemEnableStateChanged>(
@@ -51,11 +51,10 @@ void main(List<String> args) async {
   });
 
 // get the current state of the sceneItem
-  final sceneItemEnabled =
-      await obsWebSocket.sceneItems.getSceneItemEnabled(SceneItemEnabled(
+  final sceneItemEnabled = await obsWebSocket.sceneItems.getSceneItemEnabled(
     sceneName: currentScene,
     sceneItemId: sceneItemId,
-  ));
+  );
 
 // if the sceneItem is hidden, show it
   if (!sceneItemEnabled) {

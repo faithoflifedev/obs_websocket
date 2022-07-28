@@ -23,7 +23,7 @@ main() async {
   var response = await obs.send('GetHotkeyList');
 
   // use a helper method to make a request
-  final streamStatusResponse = await obs.stream.status();
+  final streamStatusResponse = await obs.stream.status;
 
   print('is streaming: ${streamStatusResponse.outputActive}');
 

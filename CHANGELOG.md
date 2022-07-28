@@ -70,7 +70,7 @@
 
 ## 2.2.2
 
-- correction of soem class names in the readme
+- correction of some class names in the readme
 
 ## 2.2.1
 
@@ -106,7 +106,7 @@
 
 ## 2.0.4
 
-- using pendantic for static analysis, upgrade to some dependencies
+- using pedantic for static analysis, upgrade to some dependencies
 
 ## 2.0.3
 

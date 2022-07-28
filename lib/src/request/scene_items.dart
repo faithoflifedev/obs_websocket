@@ -75,8 +75,16 @@ class SceneItems {
   /// - Complexity Rating: 3/5
   /// - Latest Supported RPC Version: 1
   /// - Added in v5.0.0
-  Future<int> getSceneItemId(SceneItemId sceneItemId) async =>
-      await getId(sceneItemId);
+  Future<int> getId({
+    required String sceneName,
+    required String sourceName,
+    int? searchOffset,
+  }) async =>
+      await getId(
+        sceneName: sceneName,
+        sourceName: sourceName,
+        searchOffset: searchOffset,
+      );
 
   /// Searches a scene for a source, and returns its id.
   ///
@@ -85,10 +93,18 @@ class SceneItems {
   /// - Complexity Rating: 3/5
   /// - Latest Supported RPC Version: 1
   /// - Added in v5.0.0
-  Future<int> getId(SceneItemId sceneItemId) async {
+  Future<int> getSceneItemId({
+    required String sceneName,
+    required String sourceName,
+    int? searchOffset,
+  }) async {
     final response = await obsWebSocket.sendRequest(Request(
       'GetSceneItemId',
-      requestData: sceneItemId.toJson(),
+      requestData: {
+        'sceneName': sceneName,
+        'sourceName': sourceName,
+        'searchOffset': searchOffset,
+      }..removeWhere((key, value) => value == null),
     ));
 
     final sceneItemIdResponse =
@@ -104,8 +120,12 @@ class SceneItems {
   /// - Complexity Rating: 3/5
   /// - Latest Supported RPC Version: 1
   /// - Added in v5.0.0
-  Future<bool> getSceneItemEnabled(SceneItemEnabled sceneItemEnabled) async =>
-      getEnabled(sceneItemEnabled);
+  Future<bool> getSceneItemEnabled(
+          {required String sceneName, required int sceneItemId}) async =>
+      getEnabled(
+        sceneName: sceneName,
+        sceneItemId: sceneItemId,
+      );
 
   /// Gets the enable state of a scene item.
   ///
@@ -114,10 +134,16 @@ class SceneItems {
   /// - Complexity Rating: 3/5
   /// - Latest Supported RPC Version: 1
   /// - Added in v5.0.0
-  Future<bool> getEnabled(SceneItemEnabled sceneItemEnabled) async {
+  Future<bool> getEnabled({
+    required String sceneName,
+    required int sceneItemId,
+  }) async {
     final response = await obsWebSocket.sendRequest(Request(
       'GetSceneItemEnabled',
-      requestData: sceneItemEnabled.toJson(),
+      requestData: {
+        'sceneName': sceneName,
+        'sceneItemId': sceneItemId,
+      },
     ));
 
     final sceneItemEnabledResponse =

@@ -29,7 +29,7 @@ class ObsGetStreamStatusCommand extends ObsHelperCommand {
   void run() async {
     await initializeObs();
 
-    final streamStatusResponse = await obs.stream.status();
+    final streamStatusResponse = await obs.stream.status;
 
     print(streamStatusResponse);
 

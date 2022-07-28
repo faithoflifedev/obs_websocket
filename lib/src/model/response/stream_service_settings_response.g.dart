@@ -9,8 +9,8 @@ part of 'stream_service_settings_response.dart';
 StreamServiceSettingsResponse _$StreamServiceSettingsResponseFromJson(
         Map<String, dynamic> json) =>
     StreamServiceSettingsResponse(
-      streamServiceType: json['streamServiceType'],
-      streamServiceSettings: json['streamServiceSettings'],
+      streamServiceType: json['streamServiceType'] as String,
+      streamServiceSettings: json['streamServiceSettings'] as String,
     );
 
 Map<String, dynamic> _$StreamServiceSettingsResponseToJson(

@@ -11,14 +11,21 @@ class Record {
   /// - Complexity Rating: 2/5
   /// - Latest Supported RPC Version: 1
   /// - Added in v5.0.0
-  Future<RecordStatusResponse> getRecordStatus() async => await status();
+  Future<RecordStatusResponse> get status async => await getRecordStatus();
 
   /// Gets the status of the record output.
   ///
   /// - Complexity Rating: 2/5
   /// - Latest Supported RPC Version: 1
   /// - Added in v5.0.0
-  Future<RecordStatusResponse> status() async {
+  Future<RecordStatusResponse> getStatus() async => await getRecordStatus();
+
+  /// Gets the status of the record output.
+  ///
+  /// - Complexity Rating: 2/5
+  /// - Latest Supported RPC Version: 1
+  /// - Added in v5.0.0
+  Future<RecordStatusResponse> getRecordStatus() async {
     final response = await obsWebSocket.sendRequest(Request('GetRecordStatus'));
 
     return RecordStatusResponse.fromJson(response!.responseData!);
@@ -59,7 +66,7 @@ class Record {
   /// - Complexity Rating: 1/5
   /// - Latest Supported RPC Version: 1
   /// - Added in v5.0.0
-  Future<StopRecordResponse> stopStream() async => await stop();
+  Future<StopRecordResponse> stopRecord() async => await stop();
 
   /// Stops the record output.
   ///

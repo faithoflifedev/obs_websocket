@@ -156,10 +156,10 @@ class ObsSetStreamServiceSettingsCommand extends ObsHelperCommand {
   void run() async {
     await initializeObs();
 
-    await obs.config.setStreamServiceSettings(StreamServiceSettings(
+    await obs.config.setStreamServiceSettings(
         streamServiceType: argResults!['stream-service-type'],
         streamServiceSettings:
-            json.decode(argResults!['stream-service-settings'])));
+            json.decode(argResults!['stream-service-settings']));
 
     obs.close();
   }

@@ -1,24 +1,22 @@
 import 'dart:convert';
 
 import 'package:json_annotation/json_annotation.dart';
-import 'package:obs_websocket/obs_websocket.dart' show StreamServiceSettings;
 
 part 'stream_service_settings_response.g.dart';
 
 @JsonSerializable()
-class StreamServiceSettingsResponse extends StreamServiceSettings {
+class StreamServiceSettingsResponse {
+  final String streamServiceType;
+  final String streamServiceSettings;
+
   StreamServiceSettingsResponse({
-    required streamServiceType,
-    required streamServiceSettings,
-  }) : super(
-          streamServiceType: streamServiceType,
-          streamServiceSettings: streamServiceSettings,
-        );
+    required this.streamServiceType,
+    required this.streamServiceSettings,
+  });
 
   factory StreamServiceSettingsResponse.fromJson(Map<String, dynamic> json) =>
       _$StreamServiceSettingsResponseFromJson(json);
 
-  @override
   Map<String, dynamic> toJson() => _$StreamServiceSettingsResponseToJson(this);
 
   @override

@@ -8,8 +8,8 @@ part of 'stream_state_changed.dart';
 
 StreamStateChanged _$StreamStateChangedFromJson(Map<String, dynamic> json) =>
     StreamStateChanged(
-      outputActive: json['outputActive'],
-      outputState: json['outputState'],
+      outputActive: json['outputActive'] as String,
+      outputState: json['outputState'] as String,
     );
 
 Map<String, dynamic> _$StreamStateChangedToJson(StreamStateChanged instance) =>

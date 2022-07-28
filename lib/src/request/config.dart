@@ -6,7 +6,8 @@ class Config {
 
   Config(this.obsWebSocket);
 
-  Future<void> get persistentData async => getPersistentData;
+  Future<void> get persistentData async => await getPersistentData();
+
   // TODO:
   Future<void> getPersistentData() async => throw UnimplementedError();
 
@@ -125,10 +126,15 @@ class Config {
   /// - Complexity Rating: 4/5
   /// - Latest Supported RPC Version: 1
   /// - Added in v5.0.0
-  Future<void> setStreamServiceSettings(
-          StreamServiceSettings streamServiceSettings) async =>
+  Future<void> setStreamServiceSettings({
+    required String streamServiceType,
+    required Map<String, dynamic> streamServiceSettings,
+  }) async =>
       await obsWebSocket.sendRequest(Request(
         'SetStreamServiceSettings',
-        requestData: streamServiceSettings.toJson(),
+        requestData: {
+          'streamServiceType': streamServiceType,
+          'streamServiceSettings': streamServiceSettings,
+        },
       ));
 }
