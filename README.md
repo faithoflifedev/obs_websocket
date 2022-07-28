@@ -1,4 +1,4 @@
-# easy_obs_websocket
+# obs_websocket
 
 [![pub package](https://img.shields.io/pub/v/obs_websocket.svg)](https://pub.dartlang.org/packages/obs_websocket)
 
