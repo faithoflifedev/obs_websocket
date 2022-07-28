@@ -1,8 +1,8 @@
 name: obs_websocket
-version: 2.4.3
-description: obs_websocket allows dart-based connections to the Open Broadcaster plugin obs-websocket
-repository: https://github.com/faithoflifedev/easy_obs_websocket
-homepage: https://github.com/faithoflifedev/easy_obs_websocket
+version: 2.4.4
+description: obs_websocket allows dart-based connections to the OBS (Open Broadcaster Software) plugin obs-websocket
+repository: https://github.com/faithoflifedev/obs_websocket
+homepage: https://github.com/faithoflifedev/obs_websocket
 
 environment:
   sdk: ">=2.12.0 <3.0.0"

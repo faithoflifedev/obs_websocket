@@ -1,5 +1,8 @@
 # Changelog
 
+## 2.4.4
+
+- fix missing parameter for refreshBrowser https:&#x2F;&#x2F;github.com&#x2F;faithoflifedev&#x2F;obs_websocket&#x2F;pull&#x2F;15
 ## 2.4.3
 
 - README fix and grind improvement
@@ -66,7 +69,7 @@
 
 ## 2.2.2
 
-- correction of soem class names in the readme
+- correction of some class names in the readme
 
 ## 2.2.1
 
@@ -102,7 +105,7 @@
 
 ## 2.0.4
 
-- using pendantic for static analysis, upgrade to some dependencies
+- using pedantic for static analysis, upgrade to some dependencies
 
 ## 2.0.3
 
