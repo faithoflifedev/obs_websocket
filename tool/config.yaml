@@ -1,3 +1,4 @@
+repo: faithoflifedev/obs_websocket
 templates:
   - name: README.md
     type: overwrite
