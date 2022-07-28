@@ -90,7 +90,7 @@ class ObsWebSocket with UiLoggy {
 
   ///When the object is created we open the websocket connection and create a
   ///broadcast stream so that we can have multiple listeners providing responses
-  ///to commands. [channel] is an existing [WebSocketChannel].
+  ///to commands. [websocketChannel] is an existing [WebSocketChannel].
   ObsWebSocket(
     this.websocketChannel, {
     this.password,

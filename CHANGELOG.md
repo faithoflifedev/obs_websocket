@@ -1,5 +1,9 @@
 # Changelog
 
+## 5.0.0-dev.1
+
+- new release for obs websocket v5.0.0 protocol
+
 ## 2.4.3
 
 - README fix and grind improvement

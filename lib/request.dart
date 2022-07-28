@@ -1,4 +1,7 @@
-library obs_websocket;
+///Messages are exchanged between the client and the server as JSON objects.
+/// The protocol is based on the original OBS Remote protocol created by Bill
+/// Hamilton, with new commands specific to OBS Studio.
+library obs_websocket_request;
 
 export 'src/request/config.dart';
 export 'src/request/filters.dart';

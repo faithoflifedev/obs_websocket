@@ -4,5 +4,5 @@ templates:
   - name: CHANGELOG.md
     type: prepend
 
-version: 2.4.3
-change: "README fix and grind improvement"
+version: 5.0.0-dev.1
+change: "new release for obs websocket v5.0.0 protocol"

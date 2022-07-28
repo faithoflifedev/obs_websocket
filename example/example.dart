@@ -1,65 +1,92 @@
+import 'package:loggy/loggy.dart';
 import 'package:obs_websocket/obs_websocket.dart';
 import 'package:universal_io/io.dart';
 import 'package:yaml/yaml.dart';
 
-void main(List<String> args) async {
-  // get connection information from the config.yaml file
+main() async {
   final config = loadYaml(File('config.yaml').readAsStringSync());
 
-  ObsWebSocket obsWebSocket = await ObsWebSocket.connect(
+  final obs = await ObsWebSocket.connect(
     config['host'],
     password: config['password'],
-    fallbackEventHandler: (Event event) {
-      print('event: ${event.eventData}');
-    },
+    logOptions: LogOptions(LogLevel.debug),
+    fallbackEventHandler: (Event event) =>
+        print('type: ${event.eventType} data: ${event.eventData}'),
   );
 
-  obsWebSocket.addHandler<RecordStateChanged>(
-      (RecordStateChanged recordStateChanged) =>
-          print('recording output active: ${recordStateChanged.outputActive}'));
+  await obs.listen(EventSubscription.all.code);
 
-  obsWebSocket.addHandler<SceneItemSelected>(
-      (SceneItemSelected sceneItemSelected) =>
-          print('scene item: ${sceneItemSelected.sceneName}'));
+  final versionResponse = await obs.general.version;
 
-  obsWebSocket.addHandler<SceneItemEnableStateChanged>(
-      (SceneItemEnableStateChanged sceneItemEnableStateChanged) => print(
-          'scene item state: ${sceneItemEnableStateChanged.sceneItemEnabled}'));
+  print(versionResponse.obsWebSocketVersion);
 
-  obsWebSocket.addHandler<StreamStateChanged>(
-      (StreamStateChanged streamStateEvent) =>
-          print('stream state: ${streamStateEvent.outputState}'));
+  var response = await obs.send('GetHotkeyList');
 
-  // obsWebSocket.addHandler<StreamStatusEvent>((StreamStatusEvent streamStatus) =>
-  //     print('stream status (total frames): ${streamStatus.numTotalFrames}'));
+  // use a helper method to make a request
+  final streamStatusResponse = await obs.stream.status();
 
-  final status = await obsWebSocket.stream.status();
+  print('is streaming: ${streamStatusResponse.outputActive}');
 
-  if (!status.outputActive) {
-    final streamServiceSettings = StreamServiceSettings(
-        streamServiceType: 'rtmp_custom',
-        streamServiceSettings: {'server': '[rtmp_url]', 'key': '[stream_key]'});
+  // the low-level method of making a request
+  response = await obs.send('GetStreamStatus');
 
-    await obsWebSocket.config.setStreamServiceSettings(streamServiceSettings);
+  print('request status: ${response?.requestStatus.result}');
 
-    obsWebSocket.stream.start();
-  }
+  print('is streaming: ${response?.responseData?['outputActive']}');
 
-  // final streamServiceSettings = await obsWebSocket.getStreamServiceSettings();
+  response = await obs.send('GetSceneList');
 
-  await obsWebSocket.record.toggle();
+  // helper equivalent
+  // final sceneListResponse = await obs.scenes.list();
 
-  //using the old v1.x lower level methods
-  // final response = await obsWebSocket.command('StopStreaming');
+  var scenes = response?.responseData?['scenes'];
 
-  // if (response != null) {
-  //   print(response.status);
+  scenes.forEach(
+      (scene) => print('${scene['sceneName']} - ${scene['sceneIndex']}'));
+
+  // helper equivalent...
+  // for (var scene in sceneListResponse.scenes) {
+  //   print('${scene.sceneName} - ${scene.sceneIndex}');
   // }
 
-  //Alternatively, the helper method could be used
-  // await obsWebSocket.stopStreaming();
+  var groups = await obs.scenes.getGroupList();
 
-  // print(streamSettings.settings.toString());
+  for (var group in groups) {
+    print(group);
+  }
 
-  obsWebSocket.close();
+  var sceneItems = await obs.sceneItems.getSceneItemList('Scene');
+
+  for (var sceneItem in sceneItems) {
+    print('id: ${sceneItem.sceneItemId}, sourceName ${sceneItem.sourceName}');
+  }
+
+  var groupSceneItems = await obs.sceneItems.groupList('Group');
+
+  for (var groupSceneItem in groupSceneItems) {
+    print(
+        'id: ${groupSceneItem.sceneItemId}, sourceName ${groupSceneItem.sourceName}');
+  }
+
+  var newSettings =
+      Map<String, dynamic>.from(response?.responseData as Map<String, dynamic>);
+
+  newSettings.addAll({
+    'baseWidth': 1440,
+    'baseHeight': 1080,
+    'outputWidth': 1440,
+    'outputHeight': 1080
+  });
+
+  response = await obs.send('SetVideoSettings', newSettings);
+
+  print('$response');
+
+  // await obs.scenes.setCurrentProgramScene('presentation');
+
+  final statsResponse = await obs.general.stats;
+
+  print('cpu usage: ${statsResponse.cpuUsage}');
+
+  await obs.close();
 }
