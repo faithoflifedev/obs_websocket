@@ -8,34 +8,16 @@ part of 'boolean_response.dart';
 
 BooleanResponse _$BooleanResponseFromJson(Map<String, dynamic> json) =>
     BooleanResponse(
-      enabled: json['enabled'] as bool,
+      outputActive: json['outputActive'] as bool?,
+      sceneItemEnabled: json['sceneItemEnabled'] as bool?,
+      studioModeEnabled: json['studioModeEnabled'] as bool?,
+      inputMuted: json['inputMuted'] as bool?,
     );
 
-OutputActive _$OutputActiveFromJson(Map<String, dynamic> json) => OutputActive(
-      outputActive: json['outputActive'] as bool,
-    );
-
-Map<String, dynamic> _$OutputActiveToJson(OutputActive instance) =>
+Map<String, dynamic> _$BooleanResponseToJson(BooleanResponse instance) =>
     <String, dynamic>{
       'outputActive': instance.outputActive,
-    };
-
-SceneItemEnabled _$SceneItemEnabledFromJson(Map<String, dynamic> json) =>
-    SceneItemEnabled(
-      sceneItemEnabled: json['sceneItemEnabled'] as bool,
-    );
-
-Map<String, dynamic> _$SceneItemEnabledToJson(SceneItemEnabled instance) =>
-    <String, dynamic>{
       'sceneItemEnabled': instance.sceneItemEnabled,
-    };
-
-StudioModeEnabled _$StudioModeEnabledFromJson(Map<String, dynamic> json) =>
-    StudioModeEnabled(
-      sceneItemEnabled: json['sceneItemEnabled'] as bool,
-    );
-
-Map<String, dynamic> _$StudioModeEnabledToJson(StudioModeEnabled instance) =>
-    <String, dynamic>{
-      'sceneItemEnabled': instance.sceneItemEnabled,
+      'studioModeEnabled': instance.studioModeEnabled,
+      'inputMuted': instance.inputMuted,
     };

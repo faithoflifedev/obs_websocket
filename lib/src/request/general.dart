@@ -66,7 +66,7 @@ class General {
   Future<List<String>> getHotkeyList() async {
     final response = await obsWebSocket.sendRequest(Request('GetHotkeyList'));
 
-    return Hotkeys.fromJson(response!.responseData!).items;
+    return StringListResponse.fromJson(response!.responseData!).items;
   }
 
   Future<void> triggerHotkeyByName(String hotkeyName) async {

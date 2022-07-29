@@ -4,60 +4,32 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'string_response.g.dart';
 
-@JsonSerializable(createToJson: false)
+/// Maps to a string response form the websocket.  `string?` fields are added to the class for each Response type needed.
+@JsonSerializable()
 class StringResponse {
-  final String value;
+  final String? outputPath;
+  final String? currentProgramSceneName;
+  final String? currentPreviewSceneName;
+
+  String get value {
+    final String? check =
+        outputPath ?? currentProgramSceneName ?? currentPreviewSceneName;
+
+    if (check == null) throw Exception();
+
+    return check;
+  }
 
   StringResponse({
-    required this.value,
+    this.outputPath,
+    this.currentProgramSceneName,
+    this.currentPreviewSceneName,
   });
 
   factory StringResponse.fromJson(Map<String, dynamic> json) =>
       _$StringResponseFromJson(json);
-}
 
-@JsonSerializable()
-class OutputPath extends StringResponse {
-  final String outputPath;
-
-  OutputPath({required this.outputPath}) : super(value: outputPath);
-
-  factory OutputPath.fromJson(Map<String, dynamic> json) =>
-      _$OutputPathFromJson(json);
-
-  Map<String, dynamic> toJson() => _$OutputPathToJson(this);
-
-  @override
-  String toString() => json.encode(toJson());
-}
-
-@JsonSerializable()
-class CurrentProgramSceneName extends StringResponse {
-  final String currentProgramSceneName;
-
-  CurrentProgramSceneName({required this.currentProgramSceneName})
-      : super(value: currentProgramSceneName);
-
-  factory CurrentProgramSceneName.fromJson(Map<String, dynamic> json) =>
-      _$CurrentProgramSceneNameFromJson(json);
-
-  Map<String, dynamic> toJson() => _$CurrentProgramSceneNameToJson(this);
-
-  @override
-  String toString() => json.encode(toJson());
-}
-
-@JsonSerializable()
-class CurrentPreviewSceneName extends StringResponse {
-  final String currentPreviewSceneName;
-
-  CurrentPreviewSceneName({required this.currentPreviewSceneName})
-      : super(value: currentPreviewSceneName);
-
-  factory CurrentPreviewSceneName.fromJson(Map<String, dynamic> json) =>
-      _$CurrentPreviewSceneNameFromJson(json);
-
-  Map<String, dynamic> toJson() => _$CurrentPreviewSceneNameToJson(this);
+  Map<String, dynamic> toJson() => _$StringResponseToJson(this);
 
   @override
   String toString() => json.encode(toJson());

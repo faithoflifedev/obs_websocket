@@ -8,23 +8,14 @@ part of 'string_list_response.dart';
 
 StringListResponse _$StringListResponseFromJson(Map<String, dynamic> json) =>
     StringListResponse(
-      items: (json['items'] as List<dynamic>).map((e) => e as String).toList(),
-    );
-
-Hotkeys _$HotkeysFromJson(Map<String, dynamic> json) => Hotkeys(
       hotkeys:
-          (json['hotkeys'] as List<dynamic>).map((e) => e as String).toList(),
-    );
-
-Map<String, dynamic> _$HotkeysToJson(Hotkeys instance) => <String, dynamic>{
-      'hotkeys': instance.hotkeys,
-    };
-
-Groups _$GroupsFromJson(Map<String, dynamic> json) => Groups(
+          (json['hotkeys'] as List<dynamic>?)?.map((e) => e as String).toList(),
       groups:
-          (json['groups'] as List<dynamic>).map((e) => e as String).toList(),
+          (json['groups'] as List<dynamic>?)?.map((e) => e as String).toList(),
     );
 
-Map<String, dynamic> _$GroupsToJson(Groups instance) => <String, dynamic>{
+Map<String, dynamic> _$StringListResponseToJson(StringListResponse instance) =>
+    <String, dynamic>{
+      'hotkeys': instance.hotkeys,
       'groups': instance.groups,
     };

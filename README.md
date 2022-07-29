@@ -25,6 +25,8 @@ Please feel free to submit PRs for any additional helper methods, or report an [
   - [Handling events not yet supported](#handling-events-not-yet-supported)
 - [Closing the websocket](#closing-the-websocket)
 
+[![A test image](https://www.buymeacoffee.com/assets/img/guidelines/download-assets-1.svg)](https://www.buymeacoffee.com/faithoflif2)
+
 ## Breaking changes from v2.4.3 (obs-websocket v4.9.1 protocol)
 
 The short answer is that everything has changed.  The obs-websocket [v5.0.0 protocol](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md) is very different from the older [v4.9.1 protocol](https://github.com/obsproject/obs-websocket/blob/4.x-current/docs/generated/protocol.md).  Any code written for the v4.9.1 protocol needs to be re-written for v5.0.0
@@ -41,7 +43,7 @@ In your project add the dependency:
 ```yml
 dependencies:
   ...
-  obs_websocket: ^5.0.0-dev.2
+  obs_websocket: ^5.0.0-dev.3
 ```
 
 For help getting started with dart, check out these [guides](https://dart.dev/guides).
@@ -151,9 +153,9 @@ For any of the items that have an [x] from the list below, a high level helper c
   - [ ] [GetInputDefaultSettings](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#getinputdefaultsettings)
   - [ ] [GetInputSettings](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#getinputsettings)
   - [ ] [SetInputSettings](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#setinputsettings)
-  - [ ] [GetInputMute](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#getinputmute)
-  - [ ] [SetInputMute](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#setinputmute)
-  - [ ] [ToggleInputMute](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#toggleinputmute)
+  - [x] [GetInputMute](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#getinputmute) - Gets the audio mute state of an input.
+  - [x] [SetInputMute](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#setinputmute) - Sets the audio mute state of an input.
+  - [x] [ToggleInputMute](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#toggleinputmute) - Toggles the audio mute state of an input.
   - [ ] [GetInputVolume](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#getinputvolume)
   - [ ] [SetInputVolume](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#setinputvolume)
   - [ ] [GetInputAudioBalance](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#getinputaudiobalance)
@@ -216,7 +218,7 @@ For any of the items that have an [x] from the list below, a high level helper c
   - [ ] [GetLastReplayBufferReplay](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#getlastreplaybufferreplay)
   - [ ] [GetOutputList](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#getoutputlist)
   - [ ] [GetOutputStatus](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#getoutputstatus)
-  - [ ] [ToggleOutput](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#toggleoutput)
+  - [x] [ToggleOutput](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#toggleoutput)
   - [x] [StartOutput](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#startoutput) - Starts an output.
   - [x] [StopOutput](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#stopoutput) - Stops an output.
   - [ ] [GetOutputSettings](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#getoutputsettings)

@@ -15,7 +15,7 @@ class Outputs {
     final response =
         await obsWebSocket.sendRequest(Request('GetVirtualCamStatus'));
 
-    return OutputActive.fromJson(response!.responseData!).enabled;
+    return BooleanResponse.fromJson(response!.responseData!).enabled;
   }
 
   /// Toggles the state of the virtualcam output.
@@ -27,7 +27,7 @@ class Outputs {
     final response =
         await obsWebSocket.sendRequest(Request('ToggleVirtualCam'));
 
-    return OutputActive.fromJson(response!.responseData!).enabled;
+    return BooleanResponse.fromJson(response!.responseData!).enabled;
   }
 
   /// Starts the virtualcam output.
@@ -55,7 +55,26 @@ class Outputs {
     final response =
         await obsWebSocket.sendRequest(Request('ToggleVirtualCam'));
 
-    return OutputActive.fromJson(response!.responseData!).enabled;
+    return BooleanResponse.fromJson(response!.responseData!).enabled;
+  }
+
+  /// Toggles the status of an output.
+  ///
+  /// - Complexity Rating: 4/5
+  /// - Latest Supported RPC Version: 1
+  /// - Added in v5.0.0
+  Future<bool> toggle(String outputName) async =>
+      await toggleOutput(outputName);
+
+  /// Toggles the status of an output.
+  ///
+  /// - Complexity Rating: 4/5
+  /// - Latest Supported RPC Version: 1
+  /// - Added in v5.0.0
+  Future<bool> toggleOutput(String outputName) async {
+    final response = await obsWebSocket.sendRequest(Request('ToggleOutput'));
+
+    return BooleanResponse.fromJson(response!.responseData!).enabled;
   }
 
   /// Starts an output.

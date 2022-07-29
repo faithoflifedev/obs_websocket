@@ -76,7 +76,7 @@ class Record {
   Future<String> stop() async {
     final response = await obsWebSocket.sendRequest(Request('StopRecord'));
 
-    return OutputPath.fromJson(response!.responseData!).value;
+    return StringResponse.fromJson(response!.responseData!).value;
   }
 
   /// Toggles pause on the record output.

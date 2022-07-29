@@ -1,5 +1,8 @@
 # Changelog
 
+## 5.0.0-dev.3
+
+- typed responses, additional helper methods
 ## 5.0.0-dev.2
 
 - bug fixes (mostly events), additional helper methods

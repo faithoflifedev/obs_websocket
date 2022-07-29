@@ -8,14 +8,10 @@ part of 'integer_response.dart';
 
 IntegerResponse _$IntegerResponseFromJson(Map<String, dynamic> json) =>
     IntegerResponse(
-      itemId: json['itemId'] as int,
+      sceneItemId: json['sceneItemId'] as int?,
     );
 
-SceneItemId _$SceneItemIdFromJson(Map<String, dynamic> json) => SceneItemId(
-      sceneItemId: json['sceneItemId'] as int,
-    );
-
-Map<String, dynamic> _$SceneItemIdToJson(SceneItemId instance) =>
+Map<String, dynamic> _$IntegerResponseToJson(IntegerResponse instance) =>
     <String, dynamic>{
       'sceneItemId': instance.sceneItemId,
     };

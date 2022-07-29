@@ -47,7 +47,68 @@ class Inputs {
       {required String inputName, required String newInputName}) async {
     await obsWebSocket.sendRequest(Request(
       'SetInputName',
+      requestData: {'inputName': inputName, 'newInputName': newInputName},
+    ));
+  }
+
+  /// Gets the audio mute state of an input.
+  ///
+  /// - Complexity Rating: 2/5
+  /// - Latest Supported RPC Version: 1
+  /// - Added in v5.0.0
+  Future<bool> getMute(String inputName) async => getInputMute(inputName);
+
+  /// Gets the audio mute state of an input.
+  ///
+  /// - Complexity Rating: 2/5
+  /// - Latest Supported RPC Version: 1
+  /// - Added in v5.0.0
+  Future<bool> getInputMute(String inputName) async {
+    final response = await obsWebSocket.sendRequest(Request(
+      'GetInputMute',
       requestData: {'inputName': inputName},
     ));
+
+    return BooleanResponse.fromJson(response!.responseData!).enabled;
+  }
+
+  /// Sets the audio mute state of an input.
+  ///
+  /// - Complexity Rating: 2/5
+  /// - Latest Supported RPC Version: 1
+  /// - Added in v5.0.0
+  Future<void> setMute(String inputName, bool inputMuted) async =>
+      setInputMute(inputName, inputMuted);
+
+  /// Sets the audio mute state of an input.
+  ///
+  /// - Complexity Rating: 2/5
+  /// - Latest Supported RPC Version: 1
+  /// - Added in v5.0.0
+  Future<void> setInputMute(String inputName, bool inputMuted) async =>
+      await obsWebSocket.sendRequest(Request(
+        'SetInputMute',
+        requestData: {'inputName': inputName, 'inputMuted': inputMuted},
+      ));
+
+  /// Toggles the audio mute state of an input.
+  ///
+  /// - Complexity Rating: 2/5
+  /// - Latest Supported RPC Version: 1
+  /// - Added in v5.0.0
+  Future<bool> toggleMute(String inputName) async => toggleInputMute(inputName);
+
+  /// Toggles the audio mute state of an input.
+  ///
+  /// - Complexity Rating: 2/5
+  /// - Latest Supported RPC Version: 1
+  /// - Added in v5.0.0
+  Future<bool> toggleInputMute(String inputName) async {
+    final response = await obsWebSocket.sendRequest(Request(
+      'ToggleInputMute',
+      requestData: {'inputName': inputName},
+    ));
+
+    return BooleanResponse.fromJson(response!.responseData!).enabled;
   }
 }

@@ -4,30 +4,21 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'integer_response.g.dart';
 
-@JsonSerializable(createToJson: false)
+/// Maps to a integer response form the websocket.  `int?` fields are added to the class for each Response type needed.
+@JsonSerializable()
 class IntegerResponse {
-  final int itemId;
+  final int? sceneItemId;
+
+  int get itemId => sceneItemId != null ? sceneItemId! : throw Exception();
 
   IntegerResponse({
-    required this.itemId,
+    this.sceneItemId,
   });
 
   factory IntegerResponse.fromJson(Map<String, dynamic> json) =>
       _$IntegerResponseFromJson(json);
-}
 
-@JsonSerializable()
-class SceneItemId extends IntegerResponse {
-  final int sceneItemId;
-
-  SceneItemId({
-    required this.sceneItemId,
-  }) : super(itemId: sceneItemId);
-
-  factory SceneItemId.fromJson(Map<String, dynamic> json) =>
-      _$SceneItemIdFromJson(json);
-
-  Map<String, dynamic> toJson() => _$SceneItemIdToJson(this);
+  Map<String, dynamic> toJson() => _$IntegerResponseToJson(this);
 
   @override
   String toString() => json.encode(toJson());

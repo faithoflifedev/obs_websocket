@@ -4,5 +4,5 @@ templates:
   - name: CHANGELOG.md
     type: prepend
 
-version: 5.0.0-dev.2
-change: "bug fixes (mostly events), additional helper methods"
+version: 5.0.0-dev.3
+change: "typed responses, additional helper methods"
