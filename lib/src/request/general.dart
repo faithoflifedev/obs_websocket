@@ -42,7 +42,6 @@ class General {
     return StatsResponse.fromJson(response!.responseData!);
   }
 
-  // TODO:
   Future<void> broadcastCustomEvent(Map<String, dynamic> arg) async =>
       await obsWebSocket.sendRequest(Request(
         'BroadcastCustomEvent',
