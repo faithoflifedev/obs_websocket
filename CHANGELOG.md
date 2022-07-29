@@ -1,5 +1,8 @@
 # Changelog
 
+## 5.0.0-dev.2
+
+- bug fixes (mostly events), additional helper methods
 ## 5.0.0-dev.1
 
 - new release for obs websocket v5.0.0 protocol

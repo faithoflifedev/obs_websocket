@@ -4,5 +4,5 @@ templates:
   - name: CHANGELOG.md
     type: prepend
 
-version: 5.0.0-dev.1
-change: "new release for obs websocket v5.0.0 protocol"
+version: 5.0.0-dev.2
+change: "bug fixes (mostly events), additional helper methods"

@@ -107,10 +107,7 @@ class SceneItems {
       }..removeWhere((key, value) => value == null),
     ));
 
-    final sceneItemIdResponse =
-        SceneItemIdResponse.fromJson(response!.responseData!);
-
-    return sceneItemIdResponse.sceneItemId;
+    return SceneItemId.fromJson(response!.responseData!).itemId;
   }
 
   /// Gets the enable state of a scene item.
@@ -146,10 +143,7 @@ class SceneItems {
       },
     ));
 
-    final sceneItemEnabledResponse =
-        SceneItemEnabledResponse.fromJson(response!.responseData!);
-
-    return sceneItemEnabledResponse.sceneItemEnabled;
+    return SceneItemEnabled.fromJson(response!.responseData!).enabled;
   }
 
   /// Sets the enable state of a scene item.

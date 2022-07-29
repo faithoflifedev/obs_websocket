@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:typed_data';
 
 import 'package:json_annotation/json_annotation.dart';
 
@@ -8,7 +9,11 @@ part 'source_screenshot_response.g.dart';
 @JsonSerializable()
 class SourceScreenshotResponse {
   /// Base64-encoded screenshot
-  final bool imageData;
+  final String imageData;
+
+  Uint8List get bytes => base64Decode(base64Raw);
+
+  String get base64Raw => imageData.split(',')[1];
 
   SourceScreenshotResponse({
     required this.imageData,

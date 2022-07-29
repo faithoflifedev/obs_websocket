@@ -114,7 +114,7 @@ class ObsSaveSourceScreenshotCommand extends ObsHelperCommand {
     await initializeObs();
 
     final sourceScreenshotResponse =
-        await obs.sources.getScreenshot(SourceScreenshot(
+        await obs.sources.screenshot(SourceScreenshot(
       sourceName: argResults!['source-name'],
       imageFormat: argResults!['image-format'],
       imageFilePath: argResults!['image-file-path'],

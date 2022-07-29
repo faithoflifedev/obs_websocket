@@ -40,7 +40,7 @@ class Sources {
   /// - Added in v5.0.0
   Future<SourceScreenshotResponse> getSourceScreenshot(
           SourceScreenshot sourceScreenshot) async =>
-      await getScreenshot(sourceScreenshot);
+      await screenshot(sourceScreenshot);
 
   /// Gets a Base64-encoded screenshot of a source.
   ///
@@ -51,10 +51,10 @@ class Sources {
   /// - Complexity Rating: 4/5
   /// - Latest Supported RPC Version: 1
   /// - Added in v5.0.0
-  Future<SourceScreenshotResponse> getScreenshot(
+  Future<SourceScreenshotResponse> screenshot(
       SourceScreenshot sourceScreenshot) async {
     final response = await obsWebSocket.sendRequest(Request(
-      'GetSourceActive',
+      'GetSourceScreenshot',
       requestData: sourceScreenshot.toJson(),
     ));
 
@@ -86,7 +86,7 @@ class Sources {
   Future<SourceScreenshotResponse> saveScreenshot(
       SourceScreenshot sourceScreenshot) async {
     final response = await obsWebSocket.sendRequest(Request(
-      'GetSourceActive',
+      'SaveSourceScreenshot',
       requestData: sourceScreenshot.toJson(),
     ));
 

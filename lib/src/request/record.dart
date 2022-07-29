@@ -66,17 +66,17 @@ class Record {
   /// - Complexity Rating: 1/5
   /// - Latest Supported RPC Version: 1
   /// - Added in v5.0.0
-  Future<StopRecordResponse> stopRecord() async => await stop();
+  Future<String> stopRecord() async => await stop();
 
   /// Stops the record output.
   ///
   /// - Complexity Rating: 1/5
   /// - Latest Supported RPC Version: 1
   /// - Added in v5.0.0
-  Future<StopRecordResponse> stop() async {
+  Future<String> stop() async {
     final response = await obsWebSocket.sendRequest(Request('StopRecord'));
 
-    return StopRecordResponse.fromJson(response!.responseData!);
+    return OutputPath.fromJson(response!.responseData!).value;
   }
 
   /// Toggles pause on the record output.

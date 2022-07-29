@@ -11,7 +11,7 @@ part 'event.g.dart';
 class Event {
   final String eventType;
   final int eventIntent;
-  final Map<String, dynamic> eventData;
+  final Map<String, dynamic>? eventData;
 
   Event({
     required this.eventType,

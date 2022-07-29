@@ -88,5 +88,20 @@ main() async {
 
   print('cpu usage: ${statsResponse.cpuUsage}');
 
-  await obs.close();
+  final sourceScreenshotResponse =
+      await obs.sources.screenshot(SourceScreenshot(
+    sourceName: 'my face',
+    imageFormat: 'jpeg',
+  ));
+
+  File('screen_shot.jpeg').writeAsBytesSync(sourceScreenshotResponse.bytes);
+
+  // don't close the connection since we want to continue to receive events
+  // only close once OBS is exited.
+  obs.addHandler<ExitStarted>(() async {
+    print('obs exiting');
+
+    //not really necessary since OBS is going away anyway
+    await obs.close();
+  });
 }

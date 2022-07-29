@@ -15,10 +15,7 @@ class Ui {
     final response =
         await obsWebSocket.sendRequest(Request('GetStudioModeEnabled'));
 
-    final studioModeEnabled =
-        StudioModeEnabledResponse.fromJson(response!.responseData!);
-
-    return studioModeEnabled.studioModeEnabled;
+    return StudioModeEnabled.fromJson(response!.responseData!).enabled;
   }
 
   /// Enables or disables studio mode

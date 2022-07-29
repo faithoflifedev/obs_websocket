@@ -272,9 +272,67 @@ class ObsWebSocket with UiLoggy {
 
     if (listeners.isNotEmpty) {
       switch (event.eventType) {
+        // General Events
+        case 'ExitStarted':
+          for (var handler in listeners) {
+            handler();
+          }
+
+          break;
+
+        case 'VendorEvent':
+          for (var handler in listeners) {
+            if (event.eventData != null) {
+              handler(VendorEvent.fromJson(event.eventData!));
+            }
+          }
+
+          break;
+
+        // Scene Items Events
         case 'SceneItemEnableStateChanged':
           for (var handler in listeners) {
-            handler(SceneItemEnableStateChanged.fromJson(event.eventData));
+            if (event.eventData != null) {
+              handler(SceneItemEnableStateChanged.fromJson(event.eventData!));
+            }
+          }
+
+          break;
+
+        case 'SceneItemSelected':
+          for (var handler in listeners) {
+            if (event.eventData != null) {
+              handler(SceneItemSelected.fromJson(event.eventData!));
+            }
+          }
+
+          break;
+
+        // Outputs Events
+        case 'StreamStateChanged':
+          for (var handler in listeners) {
+            if (event.eventData != null) {
+              handler(StreamStateChanged.fromJson(event.eventData!));
+            }
+          }
+
+          break;
+
+        case 'RecordStateChanged':
+          for (var handler in listeners) {
+            if (event.eventData != null) {
+              handler(RecordStateChanged.fromJson(event.eventData!));
+            }
+          }
+
+          break;
+
+        // Ui Events
+        case 'StudioModeStateChanged':
+          for (var handler in listeners) {
+            if (event.eventData != null) {
+              handler(StudioModeStateChanged.fromJson(event.eventData!));
+            }
           }
 
           break;

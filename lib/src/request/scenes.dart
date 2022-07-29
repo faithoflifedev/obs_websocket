@@ -56,10 +56,7 @@ class Scenes {
   Future<List<String>> groupList() async {
     final response = await obsWebSocket.sendRequest(Request('GetGroupList'));
 
-    final groupListResponse =
-        GroupListResponse.fromJson(response!.responseData!);
-
-    return groupListResponse.groups;
+    return Groups.fromJson(response!.responseData!).items;
   }
 
   /// Gets the current program scene.
@@ -78,10 +75,7 @@ class Scenes {
     final response =
         await obsWebSocket.sendRequest(Request('GetCurrentProgramScene'));
 
-    final currentProgramSceneResponse =
-        CurrentProgramSceneResponse.fromJson(response!.responseData!);
-
-    return currentProgramSceneResponse.currentProgramSceneName;
+    return CurrentProgramSceneName.fromJson(response!.responseData!).value;
   }
 
   /// Sets the current program scene.
@@ -119,10 +113,7 @@ class Scenes {
     final response =
         await obsWebSocket.sendRequest(Request('GetCurrentPreviewScene'));
 
-    final currentProgramSceneResponse =
-        CurrentPreviewSceneResponse.fromJson(response!.responseData!);
-
-    return currentProgramSceneResponse.currentPreviewSceneName;
+    return CurrentPreviewSceneName.fromJson(response!.responseData!).value;
   }
 
   /// Sets the current preview scene.

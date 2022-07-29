@@ -6,10 +6,18 @@ class Config {
 
   Config(this.obsWebSocket);
 
-  Future<void> get persistentData async => await getPersistentData();
+  Future<Map<String, dynamic>> getPersistentData(
+      {required String realm, required String slotName}) async {
+    final response = await obsWebSocket.sendRequest(Request(
+      'GetPersistentData',
+      requestData: {
+        'realm': realm,
+        'slotName': slotName,
+      },
+    ));
 
-  // TODO:
-  Future<void> getPersistentData() async => throw UnimplementedError();
+    return response!.responseData!;
+  }
 
   // TODO:
   Future<void> setPersistentData() async => throw UnimplementedError();

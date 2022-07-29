@@ -9,7 +9,7 @@ part of 'source_screenshot_response.dart';
 SourceScreenshotResponse _$SourceScreenshotResponseFromJson(
         Map<String, dynamic> json) =>
     SourceScreenshotResponse(
-      imageData: json['imageData'] as bool,
+      imageData: json['imageData'] as String,
     );
 
 Map<String, dynamic> _$SourceScreenshotResponseToJson(

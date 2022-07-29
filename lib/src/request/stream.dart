@@ -47,10 +47,7 @@ class Stream {
     final response = await obsWebSocket
         .sendRequest(Request('ToggleStream', expectResponse: true));
 
-    final toggleStreamResponse =
-        ToggleStreamResponse.fromJson(response!.responseData!);
-
-    return toggleStreamResponse.outputActive;
+    return OutputActive.fromJson(response!.responseData!).enabled;
   }
 
   /// Starts the stream output.

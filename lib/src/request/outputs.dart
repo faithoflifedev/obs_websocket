@@ -6,6 +6,58 @@ class Outputs {
 
   Outputs(this.obsWebSocket);
 
+  /// Gets the status of the virtualcam output.
+  ///
+  /// - Complexity Rating: 1/5
+  /// - Latest Supported RPC Version: 1
+  /// - Added in v5.0.0
+  Future<bool> getVirtualCamStatus() async {
+    final response =
+        await obsWebSocket.sendRequest(Request('GetVirtualCamStatus'));
+
+    return OutputActive.fromJson(response!.responseData!).enabled;
+  }
+
+  /// Toggles the state of the virtualcam output.
+  ///
+  /// - Complexity Rating: 1/5
+  /// - Latest Supported RPC Version: 1
+  /// - Added in v5.0.0
+  Future<bool> toggleVirtualCam() async {
+    final response =
+        await obsWebSocket.sendRequest(Request('ToggleVirtualCam'));
+
+    return OutputActive.fromJson(response!.responseData!).enabled;
+  }
+
+  /// Starts the virtualcam output.
+  ///
+  /// - Complexity Rating: 1/5
+  /// - Latest Supported RPC Version: 1
+  /// - Added in v5.0.0
+  Future<void> startVirtualCam() async =>
+      await obsWebSocket.sendRequest(Request('StartVirtualCam'));
+
+  /// Stops the virtualcam output.
+  ///
+  /// - Complexity Rating: 1/5
+  /// - Latest Supported RPC Version: 1
+  /// - Added in v5.0.0
+  Future<void> stopVirtualCam() async =>
+      await obsWebSocket.sendRequest(Request('StopVirtualCam'));
+
+  /// Gets the status of the replay buffer output.
+  ///
+  /// - Complexity Rating: 1/5
+  /// - Latest Supported RPC Version: 1
+  /// - Added in v5.0.0
+  Future<bool> getReplayBufferStatus() async {
+    final response =
+        await obsWebSocket.sendRequest(Request('ToggleVirtualCam'));
+
+    return OutputActive.fromJson(response!.responseData!).enabled;
+  }
+
   /// Starts an output.
   ///
   /// - Complexity Rating: 4/5
