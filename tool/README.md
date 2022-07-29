@@ -84,7 +84,7 @@ If a `password` is supplied to the `connect` method, authentication will occur a
 The available commands/requests are documented on the [protocol](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#requests) page of the [obs-websocket](https://github.com/obsproject/obs-websocket) github page. Note that not all commands listed on the protocol page have been implemented in code at this time. For any command not yet implemented, refer to the `low-level` method of sending commands, documented below.
 
 ```dart
-final status = await obs.stream.status();
+final status = await obs.stream.status;
 
 // or this works too
 // final status = await obs.stream.getStreamStatus();
