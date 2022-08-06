@@ -1,5 +1,8 @@
 # Changelog
 
+## 5.0.0-dev.4
+
+-  - SceneListResponse fix null currentPreviewSceneName - batch operations now supported - add batch.dart example
 ## 5.0.0-dev.3
 
 - typed responses, additional helper methods

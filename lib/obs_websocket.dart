@@ -11,6 +11,8 @@ export 'src/model/comm/identify.dart';
 export 'src/model/comm/opcode.dart';
 export 'src/model/comm/reidentify.dart';
 export 'src/model/comm/request.dart';
+export 'src/model/comm/request_batch.dart';
+export 'src/model/comm/request_batch_response.dart';
 export 'src/model/comm/request_response.dart';
 
 export 'src/model/event/general/exit_started.dart';

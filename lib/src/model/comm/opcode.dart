@@ -85,3 +85,23 @@ class RequestResponseOpcode extends Opcode {
           d: requestResponse.toJson(),
         );
 }
+
+class RequestBatchOpcode extends Opcode {
+  final RequestBatch requestBatch;
+
+  RequestBatchOpcode(this.requestBatch)
+      : super(
+          op: WebSocketOpCode.requestBatch.code,
+          d: requestBatch.toJson(),
+        );
+}
+
+class RequestBatchResponseOpcode extends Opcode {
+  final RequestBatch requestBatchResponse;
+
+  RequestBatchResponseOpcode(this.requestBatchResponse)
+      : super(
+          op: WebSocketOpCode.requestBatchResponse.code,
+          d: requestBatchResponse.toJson(),
+        );
+}

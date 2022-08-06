@@ -344,7 +344,7 @@ class ObsWebSocket with UiLoggy {
 
   ///Before execution finished the websocket needs to be closed
   Future<void> close() async {
-    await websocketChannel.sink.close(status.goingAway);
+    await websocketChannel.sink.close(status.normalClosure);
   }
 
   ///Add an event handler for the event type [T]
@@ -385,6 +385,39 @@ class ObsWebSocket with UiLoggy {
         requestData: args,
       ));
 
+  Future<RequestBatchResponse> sendBatch(List<Request> requests) async {
+    RequestBatchResponse? requestBatchResponse;
+
+    final requestBatch = RequestBatch(requests: requests);
+
+    final requestBatchOpcode = requestBatch.toOpcode();
+
+    loggy.debug('send batch: $requestBatchOpcode');
+
+    websocketChannel.sink.add(requestBatchOpcode.toString());
+
+    await for (String message in broadcastStream) {
+      final response = Opcode.fromJson(json.decode(message));
+
+      loggy.debug('response raw: $message');
+
+      if (response.op == WebSocketOpCode.requestBatchResponse.code) {
+        requestBatchResponse = RequestBatchResponse.fromJson(response.d);
+
+        loggy.debug(
+            'batch response size: ${requestBatchResponse.results.length}');
+
+        if (requestBatchResponse.requestId == requestBatch.requestId) break;
+      }
+    }
+
+    if (requestBatchResponse == null) {
+      throw Exception('Problem retrieving batch response.');
+    }
+
+    return requestBatchResponse;
+  }
+
   Future<RequestResponse?> sendRequest(Request request) async {
     RequestResponse? requestResponse;
 
@@ -396,11 +429,13 @@ class ObsWebSocket with UiLoggy {
       final response = Opcode.fromJson(json.decode(message));
 
       loggy.debug('response raw: $message');
+
       if (response.op == WebSocketOpCode.requestResponse.code) {
         requestResponse = RequestResponse.fromJson(response.d);
 
         loggy.debug(
             'response status: ${requestResponse.requestType} ${requestResponse.requestStatus}');
+
         if (request.requestId == request.requestId) {
           _checkResponse(request, requestResponse);
 
