@@ -1,16 +1,20 @@
 # Changelog
 
 ## 5.0.0-dev.4
+
  - SceneListResponse fix null currentPreviewSceneName 
  - batch operations now supported
  - add batch.dart example
+ - fix Flutter web `Enum` error Issue #16
  
 ## 5.0.0-dev.3
 
 - typed responses, additional helper methods
+  
 ## 5.0.0-dev.2
 
 - bug fixes (mostly events), additional helper methods
+  
 ## 5.0.0-dev.1
 
 - new release for obs websocket v5.0.0 protocol
