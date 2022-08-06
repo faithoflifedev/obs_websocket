@@ -9,7 +9,7 @@ part of 'scene_list_response.dart';
 SceneListResponse _$SceneListResponseFromJson(Map<String, dynamic> json) =>
     SceneListResponse(
       currentProgramSceneName: json['currentProgramSceneName'] as String,
-      currentPreviewSceneName: json['currentPreviewSceneName'] as String,
+      currentPreviewSceneName: json['currentPreviewSceneName'] as String?,
       scenes: (json['scenes'] as List<dynamic>)
           .map((e) => Scene.fromJson(e as Map<String, dynamic>))
           .toList(),

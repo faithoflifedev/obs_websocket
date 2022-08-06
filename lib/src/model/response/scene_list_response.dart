@@ -8,12 +8,12 @@ part 'scene_list_response.g.dart';
 @JsonSerializable()
 class SceneListResponse {
   final String currentProgramSceneName;
-  final String currentPreviewSceneName;
+  final String? currentPreviewSceneName;
   final List<Scene> scenes;
 
   SceneListResponse({
     required this.currentProgramSceneName,
-    required this.currentPreviewSceneName,
+    this.currentPreviewSceneName,
     required this.scenes,
   });
 
