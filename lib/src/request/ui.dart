@@ -29,18 +29,80 @@ class Ui {
         requestData: {'studioModeEnabled': studioModeEnabled},
       ));
 
-  // TODO:
-  Future<void> openInputPropertiesDialog() async => throw UnimplementedError();
+  /// Opens the properties dialog of an input.
+  ///
+  ///  - Complexity Rating: 1/5
+  ///  - Latest Supported RPC Version: 1
+  ///  - Added in v5.0.0
+  Future<void> openInputPropertiesDialog(String inputName) async =>
+      await obsWebSocket.sendRequest(Request(
+        'OpenInputPropertiesDialog',
+        requestData: {'inputName': inputName},
+      ));
 
-  // TODO:
-  Future<void> openInputInteractDialog() async => throw UnimplementedError();
+  /// Opens the filters dialog of an input.
+  ///
+  ///  - Complexity Rating: 1/5
+  ///  - Latest Supported RPC Version: 1
+  ///  - Added in v5.0.0
+  Future<void> openInputFiltersDialog(String inputName) async =>
+      await obsWebSocket.sendRequest(Request(
+        'OpenInputFiltersDialog',
+        requestData: {'inputName': inputName},
+      ));
+
+  /// Opens the interact dialog of an input.
+  ///
+  ///  - Complexity Rating: 1/5
+  ///  - Latest Supported RPC Version: 1
+  ///  - Added in v5.0.0
+  Future<void> openInputInteractDialog(String inputName) async =>
+      await obsWebSocket.sendRequest(Request(
+        'OpenInputInteractDialog',
+        requestData: {'inputName': inputName},
+      ));
 
   // TODO:
   Future<void> getMonitorList() async => throw UnimplementedError();
 
-  // TODO:
-  Future<void> openVideoMixProjector() async => throw UnimplementedError();
+  /// Opens a projector for a specific output video mix.
+  ///
+  /// Mix types:
+  /// - OBS_WEBSOCKET_VIDEO_MIX_TYPE_PREVIEW
+  /// - OBS_WEBSOCKET_VIDEO_MIX_TYPE_PROGRAM
+  /// - OBS_WEBSOCKET_VIDEO_MIX_TYPE_MULTIVIEW
+  ///
+  /// Note: This request serves to provide feature parity with 4.x. It is very likely to be changed/deprecated in a future release.
+  ///
+  /// - Complexity Rating: 3/5
+  /// - Latest Supported RPC Version: 1
+  /// - Added in v5.0.0
+  Future<void> openVideoMixProjector(String videoMixType,
+          {int? monitorIndex = -1, String? projectorGeometry}) async =>
+      await obsWebSocket.sendRequest(Request(
+        'OpenVideoMixProjector',
+        requestData: {
+          'videoMixType': videoMixType,
+          'monitorIndex': monitorIndex,
+          'projectorGeometry': projectorGeometry,
+        }..removeWhere((key, value) => value == null),
+      ));
 
-  // TODO:
-  Future<void> openSourceProjector() async => throw UnimplementedError();
+  /// Opens a projector for a source.
+  ///
+  /// Note: This request serves to provide feature parity with 4.x. It is very likely to be changed/deprecated in a future release.
+  ///
+  /// - Complexity Rating: 3/5
+  /// - Latest Supported RPC Version: 1
+  /// - Added in v5.0.0
+  Future<void> openSourceProjector(String sourceName,
+          {int? monitorIndex = -1, String? projectorGeometry}) async =>
+      await obsWebSocket.sendRequest(Request(
+        'OpenSourceProjector',
+        requestData: {
+          'sourceName': sourceName,
+          'monitorIndex': monitorIndex,
+          'projectorGeometry': projectorGeometry,
+        }..removeWhere((key, value) => value == null),
+      ));
 }

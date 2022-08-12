@@ -1,5 +1,10 @@
 # Changelog
 
+## 5.0.0-dev.6
+
+* ui module now supports: OpenInputPropertiesDialog, OpenInputFiltersDialog, OpenInputInteractDialog, OpenVideoMixProjector, OpenSourceProjector
+* changed LICENSE
+
 ## 5.0.0-dev.5
 
 * obs at the command prompt

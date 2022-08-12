@@ -20,7 +20,8 @@ build() {
 }
 
 @Task('publish')
-@Depends(analyze, version, test, doc, commit, dryrun)
+@Depends(analyze, version, doc, commit, dryrun)
+// @Depends(analyze, version, test, doc, commit, dryrun)
 publish() {
   log('''
 Use the command:
@@ -46,7 +47,7 @@ analyze() {
   Analyzer.analyze('.', fatalWarnings: true);
 }
 
-@Task('version bump')
+@Task('version')
 version() async {
   final metaUpdate = MetaUpdate('pubspec.yaml');
 
