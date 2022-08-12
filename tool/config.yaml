@@ -4,7 +4,8 @@ templates:
   - name: CHANGELOG.md
     type: prepend
 
-version: 5.0.0-dev.4
-change: " - SceneListResponse fix null currentPreviewSceneName
-  - batch operations now supported
-  - add batch.dart example"
+version: 5.0.0-dev.5
+change: |
+  * obs at the command prompt
+  * updated README
+  * `obs version` to confirm installed package from cli

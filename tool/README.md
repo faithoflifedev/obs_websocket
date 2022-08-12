@@ -1,5 +1,5 @@
 
-## obs_websocket
+# obs_websocket
 
 [![pub package](https://img.shields.io/pub/v/obs_websocket.svg)](https://pub.dartlang.org/packages/obs_websocket)
 
@@ -9,7 +9,6 @@ This package gives access to all of the methods and events outlined by the [obs-
 
 Please feel free to submit PRs for any additional helper methods, or report an [issue](https://github.com/faithoflifedev/obs_websocket/issues) for a missing helper method and I'll add it if I have time available.
 
-- [obs_websocket](#obs_websocket)
 - [Breaking changes from v2.4.3 (obs-websocket v4.9.1 protocol)](#breaking-changes-from-v243-obs-websocket-v491-protocol)
 - [Getting Started](#getting-started)
   - [Requirements](#requirements)
@@ -24,8 +23,9 @@ Please feel free to submit PRs for any additional helper methods, or report an [
   - [Supported Events for `addHandler<T>`](#supported-events-for-addhandlert)
   - [Handling events not yet supported](#handling-events-not-yet-supported)
 - [Closing the websocket](#closing-the-websocket)
+- [obs_websocket cli (OBS at the command prompt)](#obs_websocket-cli-obs-at-the-command-prompt)
 
-[![A test image](https://www.buymeacoffee.com/assets/img/guidelines/download-assets-1.svg)](https://www.buymeacoffee.com/faithoflif2)
+[![Buy me a coffee](https://www.buymeacoffee.com/assets/img/guidelines/download-assets-1.svg)](https://www.buymeacoffee.com/faithoflif2)
 
 ## Breaking changes from v2.4.3 (obs-websocket v4.9.1 protocol)
 
@@ -448,3 +448,54 @@ Finally before your code completes, you will should close the websocket connecti
 ```dart
 obsWebSocket.close();
 ```
+
+
+## obs_websocket cli (OBS at the command prompt)
+
+A command line interface for controlling an OBS with cli commands
+
+Install using `dart pub`:
+
+```sh
+dart pub global activate easy_obs_websocket
+```
+
+Install using `brew`:
+
+```sh
+brew tap faithoflifedev/obs_websocket
+brew install obs
+```
+
+Run the following command to see help:
+
+```sh
+obs --help
+```
+
+Result,
+
+```text
+A command line interface for controlling OBS.
+
+Usage: obs <command> [arguments]
+
+Global options:
+-h, --help                        Print this usage information.
+-u, --uri=<ws://[host]:[port]>    The url and port for OBS websocket
+-t, --timeout=<int>               The timeout in seconds for the web socket connection.
+-l, --log-level                   [all, debug, info, warning, error, off (default)]
+-p, --passwd=<string>             The OBS websocket password, only required if enabled in OBS
+
+Available commands:
+  authorize   Generate an authentication file for an OBS connection
+  config      Config Requests
+  general     General commands
+  listen      Generate OBS events to stdout
+  send        Send a low-level websocket request to OBS
+  sources     Commands that manipulate OBS sources
+  stream      Commands that manipulate OBS streams
+  version     Display the package name and version
+```
+
+Please see the cli documentation [README.md](https://github.com/faithoflifedev/obs_websocket/blob/protocol_5/bin/) for more detailed usage information.

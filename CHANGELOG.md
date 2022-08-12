@@ -1,5 +1,11 @@
 # Changelog
 
+## 5.0.0-dev.5
+
+* obs at the command prompt
+* updated README
+* `obs version` to confirm installed package from cli
+
 ## 5.0.0-dev.4
 
  - SceneListResponse fix null currentPreviewSceneName 

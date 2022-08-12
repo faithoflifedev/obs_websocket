@@ -1,18 +1,38 @@
+
 # Easy OBS WebSocket CLI
 
 A command line interface for controlling OBS with cli commands
 
-To install:
+- [Easy OBS WebSocket CLI](#easy-obs-websocket-cli)
+  - [Quick start](#quick-start)
+  - [authorize](#authorize)
+  - [general](#general)
+    - [general get-stats](#general-get-stats)
+    - [general get-version](#general-get-version)
+  - [more to come](#more-to-come)
+  - [version](#version)
+
+## Installation
+
+Install using `dart pub`:
 
 ```sh
-pub global activate obs_websocket
+dart pub global activate obs_websocket
 ```
 
-Usage:
+Install using `brew`:
 
 ```sh
-prompt>obs --help
+brew tap faithoflifedev/obs_websocket
+brew install obs
 ```
+
+```sh
+obs --help
+```
+
+Result,
+
 ```text
 A command line interface for controlling OBS.
 
@@ -33,6 +53,7 @@ Available commands:
   send        Send a low-level websocket request to OBS
   sources     Commands that manipulate OBS sources
   stream      Commands that manipulate OBS streaming
+  version     Display the package name version
 ```
 
 | command | description |
@@ -43,6 +64,7 @@ Available commands:
 | send | Send a low-level websocket request to OBS - [commands](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#requests-table-of-contents) |
 | sources | Commands that manipulate OBS sources, [documentation](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#sources-requests) |
 | stream | Commands that manipulate OBS streams, [documentation](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#stream-requests) |
+| version | The current package and version for this tool. |
 
 Just like the main library, any responses provided by the above commands will be given in the JSON format.  So ideally, you will want to use a command line json parser to interpret the results.  The recommended json parser for this purpose is [_jq_](https://stedolan.github.io/jq/).  With _jq_ you can process the results of a command as follows:
 
@@ -84,4 +106,64 @@ The authorize command is used to create the credentials that can be used as the 
 
 ```json
 {"uri":"ws://[ip address or hostname]:[port]","password":"[password]"}
+```
+
+## general
+
+```sh
+prompt>obs general --help
+```
+
+```text
+General commands
+
+Usage: obs general <subcommand> [arguments]
+-h, --help    Print this usage information.
+
+Available subcommands:
+  get-stats     Gets statistics about OBS, obs-websocket, and the current session.
+  get-version   Gets data about the current plugin and RPC version.
+```
+
+### general get-stats
+
+```sh
+prompt>obs general get-stats --help
+```
+
+```text
+Gets statistics about OBS, obs-websocket, and the current session.
+
+Usage: obs general get-stats [arguments]
+-h, --help    Print this usage information.
+```
+
+### general get-version
+
+```sh
+prompt>obs general get-version --help
+```
+
+```text
+Gets data about the current plugin and RPC version.
+
+Usage: obs general get-version [arguments]
+-h, --help    Print this usage information.
+```
+
+## more to come
+
+...
+
+## version
+
+```sh
+prompt>obs version --help
+```
+
+```text
+Display the package name and version
+
+Usage: obs version [arguments]
+-h, --help    Print this usage information.
 ```
