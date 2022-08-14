@@ -32,7 +32,6 @@ abstract class ObsHelperCommand extends Command {
     _obs = await ObsWebSocket.connect(
       config['uri']!,
       password: config['password'],
-      fallbackEventHandler: (event) => print(event),
       timeout: Duration(
         seconds: globalResults?['timeout'] == null
             ? 5
