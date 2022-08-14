@@ -4,7 +4,8 @@ templates:
   - name: CHANGELOG.md
     type: prepend
 
-version: 5.0.0-dev.6
+version: 5.0.0
 change: |
-  * ui module now supports: OpenInputPropertiesDialog, OpenInputFiltersDialog, OpenInputInteractDialog, OpenVideoMixProjector, OpenSourceProjector
-  * changed LICENSE
+  * production release
+  * obs cli can run shell commands with `listen`
+  * improved cli README

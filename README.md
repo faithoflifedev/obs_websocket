@@ -43,7 +43,7 @@ In your project add the dependency:
 ```yml
 dependencies:
   ...
-  obs_websocket: ^5.0.0-dev.6
+  obs_websocket: ^5.0.0
 ```
 
 For help getting started with dart, check out these [guides](https://dart.dev/guides).
@@ -449,10 +449,11 @@ Finally before your code completes, you will should close the websocket connecti
 obsWebSocket.close();
 ```
 
-
 ## obs_websocket cli (OBS at the command prompt)
 
 A command line interface for controlling an OBS with cli commands
+
+Please see the cli documentation [README.md](https://github.com/faithoflifedev/obs_websocket/blob/protocol_5/bin/) for more detailed usage information.
 
 Install using `dart pub`:
 
@@ -497,5 +498,3 @@ Available commands:
   stream      Commands that manipulate OBS streams
   version     Display the package name and version
 ```
-
-Please see the cli documentation [README.md](https://github.com/faithoflifedev/obs_websocket/blob/protocol_5/bin/) for more detailed usage information.

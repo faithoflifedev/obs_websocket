@@ -1,5 +1,11 @@
 # Changelog
 
+## 5.0.0
+
+* production release
+* obs cli can run shell commands with `listen`
+* improved cli README
+
 ## 5.0.0-dev.6
 
 * ui module now supports: OpenInputPropertiesDialog, OpenInputFiltersDialog, OpenInputInteractDialog, OpenVideoMixProjector, OpenSourceProjector
