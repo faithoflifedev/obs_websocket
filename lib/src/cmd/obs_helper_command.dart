@@ -1,7 +1,8 @@
 import 'dart:convert';
 
 import 'package:args/command_runner.dart';
-import 'package:obs_websocket/obs_websocket.dart';
+import 'package:obs_websocket/obs_websocket.dart' show ObsWebSocket;
+import 'package:obs_websocket/src/util/util.dart';
 import 'package:universal_io/io.dart';
 
 abstract class ObsHelperCommand extends Command {
@@ -23,28 +24,20 @@ abstract class ObsHelperCommand extends Command {
     } else {
       config['uri'] = globalResults!['uri'];
 
-      if (globalResults?['passwd'] == null) {
+      if (globalResults?['passwd'] != null) {
         config['password'] = globalResults!['passwd'];
       }
     }
 
     _obs = await ObsWebSocket.connect(
-      connectUrl: config['uri']!,
-      timeout: const Duration(seconds: 5),
+      config['uri']!,
+      password: config['password'],
+      timeout: Duration(
+        seconds: globalResults?['timeout'] == null
+            ? 5
+            : int.parse(globalResults!['timeout']),
+      ),
+      logOptions: ObsUtil.convertToLogOptions(globalResults!['log-level']),
     );
-
-    final authRequired = await obs.getAuthRequired();
-
-    if (!authRequired.status) {
-      throw Exception('Could not determine authentication requirements');
-    }
-
-    if (authRequired.status && config['password'] != null) {
-      await obs.authenticate(authRequired, config['password']!);
-    } else {
-      throw UsageException(
-          'OBS authentication has been enabled. A password is required for a successful connection, use --help for more options',
-          usage);
-    }
   }
 }

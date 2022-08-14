@@ -9,21 +9,25 @@ part of 'stream_status_response.dart';
 StreamStatusResponse _$StreamStatusResponseFromJson(
         Map<String, dynamic> json) =>
     StreamStatusResponse(
-      json['message-id'] as String,
-      json['preview-only'] as bool,
-      json['recording'] as bool,
-      json['recording-paused'] as bool,
-      json['status'] as String,
-      json['streaming'] as bool,
+      outputActive: json['outputActive'] as bool,
+      outputReconnecting: json['outputReconnecting'] as bool,
+      outputTimecode: json['outputTimecode'] as String,
+      outputDuration: json['outputDuration'] as int,
+      outputCongestion: (json['outputCongestion'] as num).toDouble(),
+      outputBytes: json['outputBytes'] as int,
+      outputSkippedFrames: json['outputSkippedFrames'] as int,
+      outputTotalFrames: json['outputTotalFrames'] as int,
     );
 
 Map<String, dynamic> _$StreamStatusResponseToJson(
         StreamStatusResponse instance) =>
     <String, dynamic>{
-      'message-id': instance.messageId,
-      'preview-only': instance.previewOnly,
-      'recording': instance.recording,
-      'recording-paused': instance.recordingPaused,
-      'status': instance.status,
-      'streaming': instance.streaming,
+      'outputActive': instance.outputActive,
+      'outputReconnecting': instance.outputReconnecting,
+      'outputTimecode': instance.outputTimecode,
+      'outputDuration': instance.outputDuration,
+      'outputCongestion': instance.outputCongestion,
+      'outputBytes': instance.outputBytes,
+      'outputSkippedFrames': instance.outputSkippedFrames,
+      'outputTotalFrames': instance.outputTotalFrames,
     };

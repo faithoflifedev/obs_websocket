@@ -1,17 +1,64 @@
+
 # Easy OBS WebSocket CLI
 
 A command line interface for controlling OBS with cli commands
 
-To install:
+- [Installation](#installation)
+- [Quick start](#quick-start)
+- [Available Commands](#available-commands)
+  - [authorize](#authorize)
+  - [config](#config)
+    - [config get-stream-service-settings](#config-get-stream-service-settings)
+    - [config get-video-settings](#config-get-video-settings)
+    - [config set-stream-service-settings](#config-set-stream-service-settings)
+    - [config set-video-settings](#config-set-video-settings)
+  - [general](#general)
+    - [general get-stats](#general-get-stats)
+    - [general get-version](#general-get-version)
+  - [listen](#listen)
+  - [send](#send)
+  - [sources](#sources)
+    - [sources get-source-active](#sources-get-source-active)
+    - [sources get-source-screenshot](#sources-get-source-screenshot)
+    - [sources save-source-screenshot](#sources-save-source-screenshot)
+  - [stream](#stream)
+    - [stream get-stream-status](#stream-get-stream-status)
+    - [stream start-streaming](#stream-start-streaming)
+    - [stream stop-streaming](#stream-stop-streaming)
+    - [stream toggle-stream](#stream-toggle-stream)
+  - [version](#version)
+- [Advanced Usage](#advanced-usage)
+  - [Subscribing to an OBS event](#subscribing-to-an-obs-event)
+  - [Trigger a shell command for an OBS event](#trigger-a-shell-command-for-an-obs-event)
+
+## Installation
+
+Install using `dart pub`:
+
+For more information about `dart` and how to install it, check out [dart.dev](https://dart.dev/get-dart) 
 
 ```sh
-pub global activate obs_websocket
+dart pub global activate obs_websocket
 ```
 
-Usage:
+Install using `brew`:
+
+For more information about the `brew` package manager and how to install it, check out [brew.sh](https://brew.sh/) 
 
 ```sh
-prompt>obs --help
+brew tap faithoflifedev/obs_websocket
+brew install obs
+```
+
+Then check the install with,
+
+```sh
+obs --help
+```
+
+Result,
+
+```text
 A command line interface for controlling OBS.
 
 Usage: obs <command> [arguments]
@@ -19,46 +66,79 @@ Usage: obs <command> [arguments]
 Global options:
 -h, --help                        Print this usage information.
 -u, --uri=<ws://[host]:[port]>    The url and port for OBS websocket
+-t, --timeout=<int>               The timeout in seconds for the web socket connection.
+-l, --log-level                   [all, debug, info, warning, error, off (default)]
 -p, --passwd=<string>             The OBS websocket password, only required if enabled in OBS
 
 Available commands:
-  authorize   Generate an authentication file for an Onvif device
-  general     General commands.
-  sources     General commands.
-  streaming   Streaming commands.
+  authorize   Generate an authentication file for an OBS connection
+  config      Config Requests
+  general     General commands
+  listen      Generate OBS events to stdout
+  send        Send a low-level websocket request to OBS
+  sources     Commands that manipulate OBS sources
+  stream      Commands that manipulate OBS streaming
+  version     Display the package name version
 ```
 
-|command|description|
-|--- |--- |
-|[authorize](#authorize)|Generate an authentication file for an Onvif device|
-|[general](#device-management)|General commands, [documentation](https://github.com/obsproject/obs-websocket/blob/4.x-current/docs/generated/protocol.md#general-1)|
-|[sources](#media)|Commands that manipulate OBS sources, [documentation](https://github.com/obsproject/obs-websocket/blob/4.x-current/docs/generated/protocol.md#sources-1)|
-|[streaming](#ptz)|Commands that manipulate OBS streaming, [documentation](https://github.com/obsproject/obs-websocket/blob/4.x-current/docs/generated/protocol.md#streaming-1)|
+| command | description |
+| --- | --- |
+| authorize | Generate an authentication file for an Onvif device |
+| config | Config Requests - [documentation](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#config-requests) |
+| general | General commands - [documentation](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#general-requests) |
+| listen | Generate OBS events to stdout - [documentation](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#events-table-of-contents) |
+| send | Send a low-level websocket request to OBS - [commands](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#requests-table-of-contents) |
+| sources | Commands that manipulate OBS sources, [documentation](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#sources-requests) |
+| stream | Commands that manipulate OBS streams, [documentation](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#stream-requests) |
+| version | The current package and version for this tool. |
 
-Just like the main library, any responses provided by the above commands will be given in the JSON format.  So ideally, you will want to use a command line json parser to interpret the results.  The recommended json parser for this purpose is [_jq_](https://stedolan.github.io/jq/).  With _jq_ you can process the results of a command as follows:
+Just like the main dart library, any responses provided through the above commands will be given in JSON format.  So ideally, you will want to use a command line json parser to interpret the results.  The recommended json parser for this purpose is [_jq_](https://stedolan.github.io/jq/).
 
 ## Quick start
 
 ```sh
-#step 1
+# step 1
 obs authorize
-#follow prompts
-
-#step 2
-obs streaming get-stream-status
-#output would be
-{"message-id":"3","preview-only":false,"recording":false,"recording-paused":false,"status":"ok","streaming":true}
-
-#or using the jq utility
-obs streaming get-stream-status | jq -r '.streaming'
-#output is
-true
+# follow prompts
 ```
 
-## authorize
+```sh
+# step 2
+obs stream get-stream-status
+```
+
+Gives result,
+
+```text
+{"outputActive":false,"outputReconnecting":false,"outputTimecode":"00:00:00.000","outputDuration":0,"outputCongestion":0.0,"outputBytes":0,"outputSkippedFrames":0,"outputTotalFrames":0}
+```
 
 ```sh
-prompt>obs authorize --help
+# or using the jq utility
+obs stream get-stream-status | jq -r '.outputActive'
+```
+
+Result is,
+
+```text
+false
+```
+
+```sh
+# or alternatively use the low-level send command
+obs send --command GetStreamStatus | jq -r '.responseData.outputActive'
+# same output as before: false
+```
+
+## Available Commands
+
+### authorize
+
+```sh
+obs authorize --help
+```
+
+```text
 Generate an authentication file for an OBS connection
 
 Usage: obs authorize [arguments]
@@ -71,206 +151,360 @@ The authorize command is used to create the credentials that can be used as the 
 {"uri":"ws://[ip address or hostname]:[port]","password":"[password]"}
 ```
 
-## general
+### config
 
 ```sh
-prompt>obs general --help
+obs config --help
+```
+
+```text
+Config Requests
+
+Usage: obs config <subcommand> [arguments]
+-h, --help    Print this usage information.
+
+Available subcommands:
+  get-stream-service-settings   Gets the current stream service settings (stream destination).
+  get-video-settings            Gets the current video settings.
+  set-stream-service-settings   Sets the current stream service settings (stream destination).
+  set-video-settings            Sets the current video settings.
+```
+
+#### config get-stream-service-settings
+
+```sh
+obs config get-stream-service-settings --help
+```
+
+```text
+Gets the current stream service settings (stream destination).
+
+Usage: obs config get-stream-service-settings [arguments]
+```
+
+#### config get-video-settings
+
+```sh
+obs config get-video-settings --help
+```
+
+```text
+Gets the current video settings.
+
+Usage: obs config get-video-settings [arguments]
+```
+
+#### config set-stream-service-settings
+
+```sh
+obs config set-stream-service-settings --help
+```
+
+```text
+Sets the current stream service settings (stream destination).
+
+Usage: obs config set-stream-service-settings [arguments]
+-h, --help                                          Print this usage information.
+    --stream-service-type=<string> (mandatory)      Type of stream service to apply. Example: rtmp_common or rtmp_custom
+    --stream-service-settings=<json> (mandatory)    Settings to apply to the service
+```
+
+#### config set-video-settings
+
+```sh
+obs config set-video-settings --help
+```
+
+```text
+Sets the current video settings.
+
+Usage: obs config set-video-settings [arguments]
+-h, --help                                        Print this usage information.
+    --fps-numerator=<int (greater than 0)>        Numerator of the fractional FPS value
+    --fps-denominator=<int (greater than 0)>      Denominator of the fractional FPS value
+    --base-width=<int (between 1 and 4096)>       Width of the base (canvas) resolution in pixels
+    --base-height=<int (between 1 and 4096)>      Height of the base (canvas) resolution in pixels
+    --output-width=<int (between 1 and 4096)>     Width of the output resolution in pixels
+    --output-height=<int (between 1 and 4096)>    Height of the output resolution in pixels
+```
+
+### general
+
+```sh
+obs general --help
+```
+
+```text
 General commands
 
 Usage: obs general <subcommand> [arguments]
 -h, --help    Print this usage information.
 
 Available subcommands:
-  get-auth-required   Tells the client if authentication is required. If so, returns authentication parameters challenge and salt (see "Authentication" for more information).
+  get-stats     Gets statistics about OBS, obs-websocket, and the current session.
+  get-version   Gets data about the current plugin and RPC version.
 ```
 
-### general get-auth-required
+#### general get-stats
 
 ```sh
-prompt>obs general get-auth-required --help
-Tells the client if authentication is required. If so, returns authentication parameters challenge and salt (see "Authentication" for more information).
+obs general get-stats --help
+```
 
-Usage: obs general get-auth-required [arguments]
+```text
+Gets statistics about OBS, obs-websocket, and the current session.
+
+Usage: obs general get-stats [arguments]
 -h, --help    Print this usage information.
 ```
 
-## sources
+#### general get-version
 
 ```sh
-prompt>obs sources --help
-General commands.
+obs general get-version --help
+```
+
+```text
+Gets data about the current plugin and RPC version.
+
+Usage: obs general get-version [arguments]
+-h, --help    Print this usage information.
+```
+
+### listen 
+
+```sh
+obs listen --help
+```
+
+```text
+Generate OBS events to stdout
+
+Usage: obs listen [arguments]
+-h, --help      Print this usage information.
+    --event-subscriptions=<Supply one more more values comma separated.
+    See https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#eventsubscription>
+    Name of the source to get the active state of.
+
+          [all] (default)               Helper to receive all non-high-volume events.
+          [config]                      Subscription value to receive events in the Config category.
+          [filters]                     Subscription value to receive events in the Filters category.
+          [general]                     Subscription value to receive events in the General category.
+          [inputActiveStateChanged]     Subscription value to receive the InputActiveStateChanged high-volume event.
+          [inputShowStateChanged]       Subscription value to receive the InputShowStateChanged high-volume event.
+          [inputVolumeMeters]           Subscription value to receive the InputVolumeMeters high-volume event.
+          [inputs]                      Subscription value to receive events in the Inputs category.
+          [mediaInputs]                 Subscription value to receive events in the MediaInputs category.
+          [none]                        Subscription value used to disable all events.
+          [outputs]                     Subscription value to receive events in the Outputs category.
+          [sceneItemTransformChanged]   Subscription value to receive the SceneItemTransformChanged high-volume event.
+          [sceneItems]                  Subscription value to receive events in the SceneItems category.
+          [scenes]                      Subscription value to receive events in the Scenes category.
+          [transitions]                 Subscription value to receive events in the Transitions category.
+          [ui]                          Subscription value to receive events in the Ui category.
+          [vendors]                     Subscription value to receive the VendorEvent event.
+```
+
+### send
+
+```sh
+obs send --help
+```
+
+```text
+Option command is mandatory.
+
+Usage: obs send [arguments]
+-h, --help                            Print this usage information.
+-c, --command=<string> (mandatory)    One of the OBS web socket supported requests - https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#requests-table-of-contents
+-a, --args=<json string>              The json representing the arguments necessary for the supplied command.
+```
+
+### sources
+
+```sh
+obs sources --help
+```
+
+```text
+Commands that manipulate OBS sources
 
 Usage: obs sources <subcommand> [arguments]
 -h, --help    Print this usage information.
 
 Available subcommands:
-  get-audio-active         Get the audio's active status of a specified source.
-  get-media-sources-list   List the media state of all media sources (vlc and media source)
-  get-source-active        Get the source's active status of a specified source (if it is showing in the final mix).
-  get-sources-list         List all sources available in the running OBS instance
-  refresh-browser-source   Refreshes the specified browser source.
-  take-source-screenshot   Take a snapshot from the video output
+  get-source-active        Gets the active and show state of a source.
+  get-source-screenshot    Gets a Base64-encoded screenshot of a source.
+  save-source-screenshot   Saves a screenshot of a source to the filesystem.
 ```
 
-### sources get-audio-active
+#### sources get-source-active
 
 ```sh
-prompt>obs sources get-audio-active --help
-Get the audio's active status of a specified source.
-
-Usage: obs sources get-audio-active [arguments]
--h, --help                                Print this usage information.
-    --source-name=<string> (mandatory)    Source name.
+obs sources get-source-active --help
 ```
 
-### sources get-media-sources-list
-
-```sh
-prompt>obs sources get-media-sources-list --help
-List the media state of all media sources (vlc and media source)
-
-Usage: obs sources get-media-sources-list [arguments]
--h, --help    Print this usage information.
-```
-
-### sources get-source-active
-
-```sh
-prompt>obs sources get-source-active --help
-Get the source's active status of a specified source (if it is showing in the final mix).
+```text
+Gets the active and show state of a source.
 
 Usage: obs sources get-source-active [arguments]
 -h, --help                                Print this usage information.
-    --source-name=<string> (mandatory)    Source name.
+    --source-name=<string> (mandatory)    Name of the source to get the active state of
 ```
 
-### sources get-sources-list
+#### sources get-source-screenshot
 
 ```sh
-prompt>obs sources get-sources-list --help
-List all sources available in the running OBS instance
-
-Usage: obs sources get-sources-list [arguments]
--h, --help    Print this usage information.
+obs sources get-source-screenshot --help
 ```
 
-### sources refresh-browser-source
+```text
+Gets a Base64-encoded screenshot of a source.
 
-```sh
-prompt>obs sources refresh-browser-source --help
-Refreshes the specified browser source.
-
-Usage: obs sources refresh-browser-source [arguments]
--h, --help                                Print this usage information.
-    --source-name=<string> (mandatory)    Source name.
+Usage: obs sources get-source-screenshot [arguments]
+-h, --help                                 Print this usage information.
+    --source-name=<string> (mandatory)     Name of the source to take a screenshot of
+    --image-format=<string> (mandatory)    Image compression format to use. Use GetVersion to get compatible image formats
 ```
 
-### sources take-source-screenshot
+#### sources save-source-screenshot
 
 ```sh
-prompt>obs sources take-source-screenshot [arguments]
--h, --help                             Print this usage information.
-    --source-name=<string>             Source name. Note: Since scenes are also sources, you can also provide a scene name. If not provided, the currently active scene is used.
-    --embed-picture-format=<string>    Format of the Data URI encoded picture.
-                                       [png, jpg, jpeg, bmp]
-    --save-to-file-path=<string>       Full file path (file extension included) where the captured image is to be saved. Can be in a format different from pictureFormat. Can be a relative path.
-    --file-format=<string>             Format to save the image file as (one of the values provided in the supported-image-export-formats response field of GetVersion). If not specified, tries to guess based on file extension.
-    --compression-quality=<int>        Compression ratio between -1 and 100 to write the image with. -1 is automatic, 1 is smallest file/most compression, 100 is largest file/least compression. Varies with image type.
-                                       (defaults to "-1")
-    --width=<int>                      Screenshot width. Defaults to the source's base width.
-    --height=<int>                     Screenshot height. Defaults to the source's base height.
+obs sources save-source-screenshot --help
 ```
 
-## streaming
+```text
+Saves a screenshot of a source to the filesystem.
+
+Usage: obs sources save-source-screenshot [arguments]
+-h, --help                                    Print this usage information.
+    --source-name=<string> (mandatory)        Name of the source to take a screenshot of
+    --image-format=<string> (mandatory)       Image compression format to use. Use GetVersion to get compatible image formats
+    --image-file-path=<string> (mandatory)    Path to save the screenshot file to.
+```
+
+### stream
 
 ```sh
-prompt>obs streaming --help
-Streaming commands.
+obs stream --help
+```
 
-Usage: obs streaming <subcommand> [arguments]
+```text
+Commands that manipulate OBS streams
+
+Usage: obs stream <subcommand> [arguments]
 -h, --help    Print this usage information.
 
 Available subcommands:
-  get-stream-settings    Get the current streaming server settings.
-  get-stream-status      Get current streaming and recording status.
-  save-stream-settings   Save the current streaming server settings to disk.
-  set-stream-settings    Sets one or more attributes of the current streaming server settings.
-  start-stop-streaming   Toggle streaming on or off (depending on the current stream state).
-  start-streaming        Start streaming. Will return an error if streaming is not active.
-  stop-streaming         Stop streaming. Will return an error if streaming is not active.
+  get-stream-status   Gets the status of the stream output.
+  start-streaming     Starts the stream output.
+  stop-streaming      Stops the stream output.
+  toggle-stream       Toggles the status of the stream output.
 ```
 
-### streaming get-stream-settings
+#### stream get-stream-status
 
 ```sh
-prompt>obs streaming get-stream-settings --help
-Get the current streaming server settings.
+obs stream get-stream-status --help
+```
 
-Usage: obs streaming get-stream-settings [arguments]
+```text
+Gets the status of the stream output.
+
+Usage: obs stream get-stream-status [arguments]
 -h, --help    Print this usage information.
 ```
 
-### streaming get-stream-status
+#### stream start-streaming
 
 ```sh
-prompt>obs streaming get-stream-status --help
-Get current streaming and recording status.
+obs stream start-streaming --help
+```
 
-Usage: obs streaming get-stream-status [arguments]
+```text
+Starts the stream output.
+
+Usage: obs stream start-streaming [arguments]
+-h, --help    Print this usage information.
+``` 
+
+#### stream stop-streaming
+
+```sh
+obs stream stop-streaming --help
+```
+
+```text
+Stops the stream output.
+
+Usage: obs stream stop-streaming [arguments]
 -h, --help    Print this usage information.
 ```
 
-### streaming save-stream-settings
+
+#### stream toggle-stream
 
 ```sh
-prompt>obs streaming save-stream-settings --help
-Save the current streaming server settings to disk.
+obs stream toggle-stream --help
+```
 
-Usage: obs streaming save-stream-settings [arguments]
+```text
+Toggles the status of the stream output.
+
+Usage: obs stream toggle-stream [arguments]
+-h, --help    Print this usage information.
+``` 
+
+### version
+
+```sh
+obs version --help
+```
+
+```text
+Display the package name and version
+
+Usage: obs version [arguments]
 -h, --help    Print this usage information.
 ```
 
-### streaming set-stream-settings
+## Advanced Usage
+
+### Subscribing to an OBS event
 
 ```sh
-prompt>obs streaming set-stream-settings --help
-Sets one or more attributes of the current streaming server settings.
-
-Usage: obs streaming set-stream-settings [arguments]
--h, --help         Print this usage information.
-    --type         The type of streaming service configuration, usually rtmp_custom or rtmp_common.
-                   [rtmp_custom (default), rtmp_common]
-    --server       The publish URL.
-    --key          The publish key.
-    --[no-]save    Persist the settings to disk.
+# will output json for any "scene" related event 
+obs listen --event-subscriptions scenes
 ```
 
-### streaming start-stop-streaming
+Gives the following result,
 
-```sh
-prompt>obs streaming start-stop-streaming --help
-Toggle streaming on or off (depending on the current stream state).
-
-Usage: obs streaming start-stop-streaming [arguments]
--h, --help    Print this usage information.
+```text
+{"eventType":"CurrentProgramSceneChanged","eventIntent":4,"eventData":{"sceneName":"Scene 2"}}
+{"eventType":"CurrentProgramSceneChanged","eventIntent":4,"eventData":{"sceneName":"MY Scene"}}
+{"eventType":"CurrentProgramSceneChanged","eventIntent":4,"eventData":{"sceneName":"Scene 2"}}
 ```
 
-### streaming start-streaming
+Now pipe the result through the `jq` command for each event
 
 ```sh
-prompt>obs streaming start-streaming --help
-Start streaming. Will return an error if streaming is not active.
-
-Usage: obs streaming start-streaming [arguments]
--h, --help    Print this usage information.
+# jq will parse the json
+obs listen --event-subscriptions scenes | jq -r '.eventType + "\t" + .eventData.sceneName'
 ```
 
-### streaming stop-streaming
+Gives this result,
+
+```text
+CurrentProgramSceneChanged	Scene 2
+CurrentProgramSceneChanged	MY Scene
+CurrentProgramSceneChanged	Scene 2
+```
+
+### Trigger a shell command for an OBS event
+
+The `listen` command provides an optional `--command` argument that allows the user to specify the shell command that will be executed each time OBS fires one of the events that has been subscribed to.  The example below will send a separate email containing the JSON payload of each event fired.
 
 ```sh
-prompt>obs streaming stop-streaming --help
-Stop streaming. Will return an error if streaming is not active.
-
-Usage: obs streaming stop-streaming [arguments]
--h, --help    Print this usage information.
+# send an email for every scene event
+obs listen --event-subscriptions scenes --command 'mutt -s "OBS Scene Event" address@email.com'
 ```

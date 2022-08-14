@@ -1,0 +1,49 @@
+// GENERATED CODE - DO NOT MODIFY BY HAND
+
+part of 'transform.dart';
+
+// **************************************************************************
+// JsonSerializableGenerator
+// **************************************************************************
+
+Transform _$TransformFromJson(Map<String, dynamic> json) => Transform(
+      alignment: json['alignment'] as int,
+      boundsAlignment: json['boundsAlignment'] as int,
+      boundsHeight: (json['boundsHeight'] as num).toDouble(),
+      boundsType: json['boundsType'] as String,
+      boundsWidth: (json['boundsWidth'] as num).toDouble(),
+      cropBottom: json['cropBottom'] as int,
+      cropLeft: json['cropLeft'] as int,
+      cropRight: json['cropRight'] as int,
+      cropTop: json['cropTop'] as int,
+      height: (json['height'] as num).toDouble(),
+      positionX: (json['positionX'] as num).toDouble(),
+      positionY: (json['positionY'] as num).toDouble(),
+      rotation: (json['rotation'] as num).toDouble(),
+      scaleX: (json['scaleX'] as num).toDouble(),
+      scaleY: (json['scaleY'] as num).toDouble(),
+      sourceHeight: (json['sourceHeight'] as num).toDouble(),
+      sourceWidth: (json['sourceWidth'] as num).toDouble(),
+      width: (json['width'] as num).toDouble(),
+    );
+
+Map<String, dynamic> _$TransformToJson(Transform instance) => <String, dynamic>{
+      'alignment': instance.alignment,
+      'boundsAlignment': instance.boundsAlignment,
+      'boundsHeight': instance.boundsHeight,
+      'boundsType': instance.boundsType,
+      'boundsWidth': instance.boundsWidth,
+      'cropBottom': instance.cropBottom,
+      'cropLeft': instance.cropLeft,
+      'cropRight': instance.cropRight,
+      'cropTop': instance.cropTop,
+      'height': instance.height,
+      'positionX': instance.positionX,
+      'positionY': instance.positionY,
+      'rotation': instance.rotation,
+      'scaleX': instance.scaleX,
+      'scaleY': instance.scaleY,
+      'sourceHeight': instance.sourceHeight,
+      'sourceWidth': instance.sourceWidth,
+      'width': instance.width,
+    };

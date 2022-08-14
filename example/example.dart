@@ -1,69 +1,107 @@
+import 'package:loggy/loggy.dart';
 import 'package:obs_websocket/obs_websocket.dart';
 import 'package:universal_io/io.dart';
 import 'package:yaml/yaml.dart';
 
-void main(List<String> args) async {
-  //get connection infomration from the config.yaml file
+main() async {
   final config = loadYaml(File('config.yaml').readAsStringSync());
 
-  ObsWebSocket obsWebSocket = await ObsWebSocket.connect(
-      connectUrl: config['host'],
-      fallbackEvent: (BaseEvent event) {
-        print('event: ${event.rawEvent}');
-      });
+  final obs = await ObsWebSocket.connect(
+    config['host'],
+    password: config['password'],
+    logOptions: LogOptions(LogLevel.debug),
+    fallbackEventHandler: (Event event) =>
+        print('type: ${event.eventType} data: ${event.eventData}'),
+  );
 
-  obsWebSocket.addHandler<RecordingStateEvent>(
-      (RecordingStateEvent recordingStateEvent) =>
-          print('recording state: ${recordingStateEvent.type}'));
+  await obs.listen(EventSubscription.all.code);
 
-  obsWebSocket.addHandler<SceneItemEvent>((SceneItemEvent sceneItemEvent) =>
-      print('scene item: ${sceneItemEvent.itemName}'));
+  final versionResponse = await obs.general.version;
 
-  obsWebSocket.addHandler<SceneItemStateEvent>(
-      (SceneItemStateEvent sceneItemState) =>
-          print('scene item state: ${sceneItemState.type}'));
+  print(versionResponse.obsWebSocketVersion);
 
-  obsWebSocket.addHandler<StreamStateEvent>(
-      (StreamStateEvent streamStateEvent) =>
-          print('stream state: ${streamStateEvent.type}'));
+  var response = await obs.send('GetHotkeyList');
 
-  obsWebSocket.addHandler<StreamStatusEvent>((StreamStatusEvent streamStatus) =>
-      print('stream status (total frames): ${streamStatus.numTotalFrames}'));
+  // use a helper method to make a request
+  final streamStatusResponse = await obs.stream.status;
 
-  final authRequired = await obsWebSocket.getAuthRequired();
+  print('is streaming: ${streamStatusResponse.outputActive}');
 
-  if (authRequired.status) {
-    await obsWebSocket.authenticate(authRequired, config['password']);
-  }
+  // the low-level method of making a request
+  response = await obs.send('GetStreamStatus');
 
-  final status = await obsWebSocket.getStreamStatus();
+  print('request status: ${response?.requestStatus.result}');
 
-  if (!status.streaming) {
-    final setting = StreamSetting.fromJson({
-      'type': 'rtmp_custom',
-      'settings': {'server': '[rtmp_url]', 'key': '[stream_key]'}
-    });
+  print('is streaming: ${response?.responseData?['outputActive']}');
 
-    await obsWebSocket.setStreamSettings(setting);
+  response = await obs.send('GetSceneList');
 
-    obsWebSocket.startStreaming();
-  }
+  // helper equivalent
+  // final sceneListResponse = await obs.scenes.list();
 
-  final streamSettings = await obsWebSocket.getStreamSettings();
+  var scenes = response?.responseData?['scenes'];
 
-  await obsWebSocket.startStopRecording();
+  scenes.forEach(
+      (scene) => print('${scene['sceneName']} - ${scene['sceneIndex']}'));
 
-  //using the old v1.x lower lovel methods
-  // final response = await obsWebSocket.command('StopStreaming');
-
-  // if (response != null) {
-  //   print(response.status);
+  // helper equivalent...
+  // for (var scene in sceneListResponse.scenes) {
+  //   print('${scene.sceneName} - ${scene.sceneIndex}');
   // }
 
-  //Alternatively, the helper method could be used
-  await obsWebSocket.stopStreaming();
+  var groups = await obs.scenes.getGroupList();
 
-  print(streamSettings.settings.toString());
+  for (var group in groups) {
+    print(group);
+  }
 
-  obsWebSocket.close();
+  var sceneItems = await obs.sceneItems.getSceneItemList('Scene');
+
+  for (var sceneItem in sceneItems) {
+    print('id: ${sceneItem.sceneItemId}, sourceName ${sceneItem.sourceName}');
+  }
+
+  var groupSceneItems = await obs.sceneItems.groupList('Group');
+
+  for (var groupSceneItem in groupSceneItems) {
+    print(
+        'id: ${groupSceneItem.sceneItemId}, sourceName ${groupSceneItem.sourceName}');
+  }
+
+  var newSettings =
+      Map<String, dynamic>.from(response?.responseData as Map<String, dynamic>);
+
+  newSettings.addAll({
+    'baseWidth': 1440,
+    'baseHeight': 1080,
+    'outputWidth': 1440,
+    'outputHeight': 1080
+  });
+
+  response = await obs.send('SetVideoSettings', newSettings);
+
+  print('$response');
+
+  // await obs.scenes.setCurrentProgramScene('presentation');
+
+  final statsResponse = await obs.general.stats;
+
+  print('cpu usage: ${statsResponse.cpuUsage}');
+
+  final sourceScreenshotResponse =
+      await obs.sources.screenshot(SourceScreenshot(
+    sourceName: 'my face',
+    imageFormat: 'jpeg',
+  ));
+
+  File('screen_shot.jpeg').writeAsBytesSync(sourceScreenshotResponse.bytes);
+
+  // don't close the connection since we want to continue to receive events
+  // only close once OBS is exited.
+  obs.addHandler<ExitStarted>(() async {
+    print('obs exiting');
+
+    //not really necessary since OBS is going away anyway
+    await obs.close();
+  });
 }

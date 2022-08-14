@@ -8,8 +8,8 @@ part of 'scene_list_response.dart';
 
 SceneListResponse _$SceneListResponseFromJson(Map<String, dynamic> json) =>
     SceneListResponse(
-      messageId: json['message-id'] as String,
-      currentScene: json['current-scene'] as String,
+      currentProgramSceneName: json['currentProgramSceneName'] as String,
+      currentPreviewSceneName: json['currentPreviewSceneName'] as String?,
       scenes: (json['scenes'] as List<dynamic>)
           .map((e) => Scene.fromJson(e as Map<String, dynamic>))
           .toList(),
@@ -17,7 +17,7 @@ SceneListResponse _$SceneListResponseFromJson(Map<String, dynamic> json) =>
 
 Map<String, dynamic> _$SceneListResponseToJson(SceneListResponse instance) =>
     <String, dynamic>{
-      'message-id': instance.messageId,
-      'current-scene': instance.currentScene,
+      'currentProgramSceneName': instance.currentProgramSceneName,
+      'currentPreviewSceneName': instance.currentPreviewSceneName,
       'scenes': instance.scenes,
     };

@@ -1,5 +1,41 @@
 # Changelog
 
+## 5.0.0
+
+* production release
+* obs cli can run shell commands with `listen`
+* improved cli README
+
+## 5.0.0-dev.6
+
+* ui module now supports: OpenInputPropertiesDialog, OpenInputFiltersDialog, OpenInputInteractDialog, OpenVideoMixProjector, OpenSourceProjector
+* changed LICENSE
+
+## 5.0.0-dev.5
+
+* obs at the command prompt
+* updated README
+* `obs version` to confirm installed package from cli
+
+## 5.0.0-dev.4
+
+ - SceneListResponse fix null currentPreviewSceneName 
+ - batch operations now supported
+ - add batch.dart example
+ - fix Flutter web `Enum` error Issue #16
+ 
+## 5.0.0-dev.3
+
+- typed responses, additional helper methods
+  
+## 5.0.0-dev.2
+
+- bug fixes (mostly events), additional helper methods
+  
+## 5.0.0-dev.1
+
+- new release for obs websocket v5.0.0 protocol
+
 ## 2.4.3
 
 - README fix and grind improvement
@@ -66,7 +102,7 @@
 
 ## 2.2.2
 
-- correction of soem class names in the readme
+- correction of some class names in the readme
 
 ## 2.2.1
 
@@ -102,7 +138,7 @@
 
 ## 2.0.4
 
-- using pendantic for static analysis, upgrade to some dependencies
+- using pedantic for static analysis, upgrade to some dependencies
 
 ## 2.0.3
 
