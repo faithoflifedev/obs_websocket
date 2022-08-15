@@ -5,7 +5,6 @@ templates:
   - name: CHANGELOG.md
     type: prepend
 
-version: 5.0.0+1
+version: 5.0.0+2
 change: |
-  * support for GetSceneItemIndex and SetSceneItemIndex
-  * improved build tools
+  * resolving some release issues
