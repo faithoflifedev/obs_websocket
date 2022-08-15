@@ -8,11 +8,21 @@ part 'integer_response.g.dart';
 @JsonSerializable()
 class IntegerResponse {
   final int? sceneItemId;
+  final int? sceneItemIndex;
 
-  int get itemId => sceneItemId != null ? sceneItemId! : throw Exception();
+  int get itemId {
+    var id = sceneItemId ?? sceneItemIndex;
+
+    if (id == null) {
+      throw Exception();
+    }
+
+    return id;
+  }
 
   IntegerResponse({
     this.sceneItemId,
+    this.sceneItemIndex,
   });
 
   factory IntegerResponse.fromJson(Map<String, dynamic> json) =>

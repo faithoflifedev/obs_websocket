@@ -16,6 +16,22 @@ main() async {
 
   await obs.listen(EventSubscription.all.code);
 
+  final currentScene = await obs.scenes.getCurrentProgramScene();
+
+  // get the id of the required sceneItem
+  final sceneItemId = await obs.sceneItems.getSceneItemId(
+    sceneName: currentScene,
+    sourceName: 'my face',
+  );
+
+  final indexId = await obs.sceneItems
+      .getIndex(sceneName: currentScene, sceneItemId: sceneItemId);
+
+  print(indexId);
+
+  await obs.sceneItems.setIndex(
+      sceneName: currentScene, sceneItemId: sceneItemId, sceneItemIndex: 4);
+
   final versionResponse = await obs.general.version;
 
   print(versionResponse.obsWebSocketVersion);

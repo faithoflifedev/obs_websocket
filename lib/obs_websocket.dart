@@ -38,6 +38,7 @@ export 'src/model/response/stream_status_response.dart';
 export 'src/model/response/version_response.dart';
 export 'src/model/response/video_settings_response.dart';
 
+export 'src/model/request/key_modifiers.dart';
 export 'src/model/request/source_screenshot.dart';
 export 'src/model/request/video_settings.dart';
 
