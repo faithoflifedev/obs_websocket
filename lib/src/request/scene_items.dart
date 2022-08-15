@@ -170,4 +170,91 @@ class SceneItems {
         'SetSceneItemEnabled',
         requestData: sceneItemEnableStateChanged.toJson(),
       ));
+
+  // TODO:
+  Future<void> getSceneItemLocked() async => throw UnimplementedError();
+
+  // TODO:
+  Future<void> setSceneItemLocked() async => throw UnimplementedError();
+
+  /// Gets the index position of a scene item in a scene.
+  ///
+  /// An index of 0 is at the bottom of the source list in the UI.
+  ///
+  /// Scenes and Groups
+  ///
+  /// - Complexity Rating: 3/5
+  /// - Latest Supported RPC Version: 1
+  /// - Added in v5.0.0
+  Future<int> getSceneItemIndex({
+    required String sceneName,
+    required int sceneItemId,
+  }) async {
+    final response = await obsWebSocket.sendRequest(Request(
+      'GetSceneItemIndex',
+      requestData: {
+        'sceneName': sceneName,
+        'sceneItemId': sceneItemId,
+      },
+    ));
+
+    return IntegerResponse.fromJson(response!.responseData!).itemId;
+  }
+
+  /// Gets the index position of a scene item in a scene.
+  ///
+  /// An index of 0 is at the bottom of the source list in the UI.
+  ///
+  /// Scenes and Groups
+  ///
+  /// - Complexity Rating: 3/5
+  /// - Latest Supported RPC Version: 1
+  /// - Added in v5.0.0
+  Future<int> getIndex({
+    required String sceneName,
+    required int sceneItemId,
+  }) async =>
+      getSceneItemIndex(
+        sceneName: sceneName,
+        sceneItemId: sceneItemId,
+      );
+
+  /// Sets the index position of a scene item in a scene.
+  ///
+  /// Scenes and Groups
+  ///
+  /// - Complexity Rating: 3/5
+  /// - Latest Supported RPC Version: 1
+  /// - Added in v5.0.0
+  Future<void> setSceneItemIndex({
+    required String sceneName,
+    required int sceneItemId,
+    required int sceneItemIndex,
+  }) async =>
+      await obsWebSocket.sendRequest(Request(
+        'SetSceneItemIndex',
+        requestData: {
+          'sceneName': sceneName,
+          'sceneItemId': sceneItemId,
+          'sceneItemIndex': sceneItemIndex,
+        },
+      ));
+
+  /// Sets the index position of a scene item in a scene.
+  ///
+  /// Scenes and Groups
+  ///
+  /// - Complexity Rating: 3/5
+  /// - Latest Supported RPC Version: 1
+  /// - Added in v5.0.0
+  Future<void> setIndex({
+    required String sceneName,
+    required int sceneItemId,
+    required int sceneItemIndex,
+  }) async =>
+      setSceneItemIndex(
+        sceneName: sceneName,
+        sceneItemId: sceneItemId,
+        sceneItemIndex: sceneItemIndex,
+      );
 }

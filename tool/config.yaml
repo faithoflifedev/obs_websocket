@@ -4,8 +4,7 @@ templates:
   - name: CHANGELOG.md
     type: prepend
 
-version: 5.0.0
+version: 5.0.0+1
 change: |
-  * production release
-  * obs cli can run shell commands with `listen`
-  * improved cli README
+  * support for GetSceneItemIndex and SetSceneItemIndex
+  * improved build tools

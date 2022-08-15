@@ -1,5 +1,10 @@
 # Changelog
 
+## 5.0.0+1
+
+* support for GetSceneItemIndex and SetSceneItemIndex
+* improved build tools
+
 ## 5.0.0
 
 * production release

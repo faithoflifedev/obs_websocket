@@ -17,7 +17,7 @@ Please feel free to submit PRs for any additional helper methods, or report an [
   - [Authenticating to OBS](#authenticating-to-obs)
   - [Sending Commands to OBS](#sending-commands-to-obs)
 - [Supported high-level commands](#supported-high-level-commands)
-  - [Requests Table of Contents](#requests-table-of-contents)
+  - [Supported Requests](#supported-requests)
 - [Sending Commands to OBS - low level](#sending-commands-to-obs---low-level)
 - [Events](#events)
   - [Supported Events for `addHandler<T>`](#supported-events-for-addhandlert)
@@ -43,7 +43,7 @@ In your project add the dependency:
 ```yml
 dependencies:
   ...
-  obs_websocket: ^5.0.0
+  obs_websocket: ^5.0.0+1
 ```
 
 For help getting started with dart, check out these [guides](https://dart.dev/guides).
@@ -100,7 +100,7 @@ if (!status.outputActive) {
 
 For any of the items that have an [x] from the list below, a high level helper command is available for that operation, i.e. `obsWebSocket.general.version` or `obsWebSocket.general.getVersion()`.  Otherwise a low-level command can be used to perform the operation, i.e. `obsWebSocket.send('GetVersion')`.
 
-### Requests Table of Contents
+### Supported Requests
 
 - [General Requests](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#general-1-requests) - `obsWebSocket.general`
   - [x] [GetVersion](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#getversion) - Gets data about the current plugin and RPC version.
@@ -109,8 +109,8 @@ For any of the items that have an [x] from the list below, a high level helper c
   - [ ] [CallVendorRequest](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#callvendorrequest)
   - [x] [GetHotkeyList](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#gethotkeylist) - Gets an array of all hotkey names in OBS
   - [x] [TriggerHotkeyByName](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#triggerhotkeybyname) - Triggers a hotkey using its name. See GetHotkeyList
-  - [ ] [TriggerHotkeyByKeySequence](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#triggerhotkeybykeysequence)
-  - [ ] [Sleep](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#sleep)
+  - [x] [TriggerHotkeyByKeySequence](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#triggerhotkeybykeysequence) - Triggers a hotkey using a sequence of keys.
+  - [x] [Sleep](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#sleep) - Sleeps for a time duration or number of frames. Only available in request batches with types SERIAL_REALTIME or SERIAL_FRAME.
 - [Config Requests](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#config-1-requests) - `obsWebSocket.config`
   - [x] [GetPersistentData](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#getpersistentdata) - Gets the value of a "slot" from the selected persistent data realm.
   - [ ] [SetPersistentData](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#setpersistentdata)
@@ -201,8 +201,8 @@ For any of the items that have an [x] from the list below, a high level helper c
   - [x] [SetSceneItemEnabled](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#setsceneitemenabled) - Sets the enable state of a scene item.
   - [ ] [GetSceneItemLocked](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#getsceneitemlocked)
   - [ ] [SetSceneItemLocked](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#setsceneitemlocked)
-  - [ ] [GetSceneItemIndex](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#getsceneitemindex)
-  - [ ] [SetSceneItemIndex](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#setsceneitemindex)
+  - [x] [GetSceneItemIndex](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#getsceneitemindex) - Gets the index position of a scene item in a scene.
+  - [x] [SetSceneItemIndex](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#setsceneitemindex) - Sets the index position of a scene item in a scene.
   - [ ] [GetSceneItemBlendMode](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#getsceneitemblendmode)
   - [ ] [SetSceneItemBlendMode](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#setsceneitemblendmode)
 - [Outputs Requests](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#outputs-1-requests) - `obsWebSocket.outputs`
@@ -245,12 +245,12 @@ For any of the items that have an [x] from the list below, a high level helper c
 - [Ui Requests](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#ui-1-requests) - `obsWebSocket.ui`
   - [x] [GetStudioModeEnabled](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#getstudiomodeenabled) - Gets whether studio is enabled.
   - [x] [SetStudioModeEnabled](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#setstudiomodeenabled) - Enables or disables studio mode.
-  - [x] [OpenInputPropertiesDialog](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#openinputpropertiesdialog)
-  - [x] [OpenInputFiltersDialog](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#openinputfiltersdialog)
-  - [x] [OpenInputInteractDialog](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#openinputinteractdialog)
+  - [x] [OpenInputPropertiesDialog](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#openinputpropertiesdialog) - Opens the properties dialog of an input.
+  - [x] [OpenInputFiltersDialog](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#openinputfiltersdialog) - Opens the filters dialog of an input.
+  - [x] [OpenInputInteractDialog](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#openinputinteractdialog) - Opens the interact dialog of an input.
   - [ ] [GetMonitorList](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#getmonitorlist)
-  - [x] [OpenVideoMixProjector](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#openvideomixprojector)
-  - [x] [OpenSourceProjector](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#opensourceprojector)
+  - [x] [OpenVideoMixProjector](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#openvideomixprojector) - Opens a projector for a specific output video mix.
+  - [x] [OpenSourceProjector](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#opensourceprojector) - Opens a projector for a source.
 
 
 ## Sending Commands to [OBS](https://obsproject.com/) - low level
