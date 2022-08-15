@@ -1,7 +1,7 @@
 name: ws
 
 environment:
-  sdk: ">=2.17.6 <3.0.0"
+  sdk: ">=2.17.3 <3.0.0"
 
 dependencies:
   loggy: ^2.0.1+1
