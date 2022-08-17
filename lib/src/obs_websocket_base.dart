@@ -285,7 +285,7 @@ class ObsWebSocket {
 
   ///Stop recording. Will return an error if recording is not active.
   Future<void> stopRecording() async {
-    await command('StopRecordinging');
+    await command('StopRecording');
   }
 
   ///Start streaming. Will return an error if streaming is already active.
