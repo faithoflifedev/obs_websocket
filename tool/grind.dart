@@ -1,5 +1,8 @@
+// import 'dart:convert';
+
 import 'package:cli_pkg/cli_pkg.dart' as pkg;
 import 'package:grinder/grinder.dart';
+import 'package:http/http.dart' as http;
 import 'package:mustache_template/mustache.dart';
 import 'package:obs_websocket/src/model/util/project_config.dart';
 import 'package:obs_websocket/src/util/meta_update.dart';
@@ -7,7 +10,7 @@ import 'package:pub_semver/pub_semver.dart';
 import 'package:pubspec/pubspec.dart';
 import 'package:universal_io/io.dart';
 
-// final config = getConfig();
+late final PubSpec pubSpec;
 
 final projectConfig = ProjectConfig.fromYamlFile('tool/config.yaml');
 
@@ -15,7 +18,9 @@ final pubspecDirectory = Directory.current;
 
 final newTag = isNewTag(projectConfig.version);
 
-main(args) {
+final client = http.Client();
+
+main(args) async {
   pkg.githubBearerToken.value = projectConfig.pkg.githubBearerToken;
   pkg.humanName.value = projectConfig.pkg.humanName;
   pkg.botName.value = projectConfig.pkg.botName;
@@ -28,9 +33,11 @@ main(args) {
   pkg.homebrewTag.value = 'v${projectConfig.version}';
 
   pkg.addGithubTasks();
-  pkg.addHomebrewTasks();
+  // pkg.addHomebrewTasks();
   pkg.addNpmTasks();
   pkg.addPubTasks();
+
+  pubSpec = await PubSpec.load(pubspecDirectory);
 
   grind(args);
 }
@@ -100,8 +107,20 @@ version() async {
 }
 
 @Task('release')
-@Depends('pkg-github-release')
-release() => null;
+release() async {
+  // var response = await client.post(
+  //     Uri.parse('https://api.github.com/repos/${pubSpec.homepage}/releases'),
+  //     headers: {
+  //       "content-type": "application/json",
+  //       "authorization": 'token ${projectConfig.pkg.githubBearerToken}'
+  //     },
+  //     body: json.encode({
+  //       "tag_name": version.toString(),
+  //       "name": "$projectConfig.pkg.humanName $version",
+  //       "prerelease": false,
+  //       if (githubReleaseNotes.value != null) "body": githubReleaseNotes.value
+  //     }));
+}
 
 @Task('homebrew')
 homebrew() {
@@ -227,8 +246,6 @@ void updateMarkdown() {
 }
 
 Future<void> updatePubspec(String version) async {
-  final pubSpec = await PubSpec.load(pubspecDirectory);
-
   final newPubSpec = pubSpec.copy(version: Version.parse(version));
 
   await newPubSpec.save(pubspecDirectory);

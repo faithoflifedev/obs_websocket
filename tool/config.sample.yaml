@@ -1,7 +1,7 @@
 repo: faithoflifedev/obs_websocket
 
 pkg:
-  githubBearerToken: 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
+  githubBearerToken: [access token]
   humanName: obs_websocket
   botName: FLN Developer
   botEmail: faithoflifedev@gmail.com
