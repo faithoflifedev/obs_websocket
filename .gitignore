@@ -29,3 +29,5 @@ scratch/
 .pubspec.yaml.bak
 
 example/config.yaml
+
+tool/config.yaml
