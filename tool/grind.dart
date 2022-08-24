@@ -1,25 +1,56 @@
+import 'package:cli_pkg/cli_pkg.dart' as pkg;
 import 'package:grinder/grinder.dart';
 import 'package:mustache_template/mustache.dart';
+import 'package:obs_websocket/src/model/util/project_config.dart';
 import 'package:obs_websocket/src/util/meta_update.dart';
 import 'package:pub_semver/pub_semver.dart';
 import 'package:pubspec/pubspec.dart';
 import 'package:universal_io/io.dart';
-import 'package:yaml/yaml.dart';
 
-final config = getConfig();
+// final config = getConfig();
+
+final projectConfig = ProjectConfig.fromYamlFile('tool/config.yaml');
 
 final pubspecDirectory = Directory.current;
 
-main(args) => grind(args);
+final newTag = isNewTag(projectConfig.version);
 
-@DefaultTask('Build the project.')
-@Depends(test)
+main(args) {
+  pkg.githubBearerToken.value = projectConfig.pkg.githubBearerToken;
+  pkg.humanName.value = projectConfig.pkg.humanName;
+  pkg.botName.value = projectConfig.pkg.botName;
+  pkg.botEmail.value = projectConfig.pkg.botEmail;
+  pkg.executables.value = projectConfig.pkg.executables;
+  // pkg.chocolateyNuspec.value = _nuspec;
+  pkg.homebrewRepo.value = projectConfig.pkg.homebrewRepo;
+  // pkg.homebrewFormula.value = projectConfig.pkg.homebrewFormula;
+  pkg.githubReleaseNotes.value = projectConfig.change;
+  pkg.homebrewTag.value = 'v${projectConfig.version}';
+
+  pkg.addGithubTasks();
+  pkg.addHomebrewTasks();
+  pkg.addNpmTasks();
+  pkg.addPubTasks();
+
+  grind(args);
+}
+
+@DefaultTask('Just running the tests for now.')
+@Depends('homebrew')
 build() {
   // log('building...');
 }
 
-@Task('publish')
-@Depends(analyze, version, doc, commit, release, dryrun)
+@Task('Remove previously created release and build files.')
+clean() {
+  shell(
+    exec: 'gh',
+    args: ['release', 'delete', projectConfig.version, '-y'],
+  );
+}
+
+@Task('All steps except for actually publishing the project.')
+@Depends(analyze, version, doc, commit, 'pkg-github-release', dryrun)
 // @Depends(analyze, version, test, doc, commit, release, dryrun)
 publish() {
   log('''
@@ -30,12 +61,12 @@ To publish this package on the pub.dev site.
 ''');
 }
 
-@Task('dart pub publish --dry-run')
+@Task('Same as \'dart pub publish --dry-run\'')
 dryrun() async {
-  await shell(args: ['pub', 'publish', '--dry-run']);
+  shell(args: ['pub', 'publish', '--dry-run']);
 }
 
-@Task('dartdoc')
+@Task('Generate the API documentation.')
 @Depends(version)
 doc() {
   DartDoc.doc();
@@ -46,56 +77,62 @@ analyze() {
   Analyzer.analyze('.', fatalWarnings: true);
 }
 
-@Task('version')
-version() async {
-  final version = config['version']!;
-
-  final newTag = await isNewTag(version);
-
+@Task(
+    'Update the meta information to display "version" info int the cli command.')
+meta() async {
   if (newTag) {
-    updateMarkdown(config);
+    MetaUpdate('pubspec.yaml').writeMetaDartFile(projectConfig.meta);
 
-    await updatePubspec(version);
+    log('version meta data file updated');
+  }
+}
 
-    //uses the pubspec file so this needs to run after the pubspec update
-    MetaUpdate('pubspec.yaml').writeMetaDartFile('lib/src/util/meta.dart');
+@Task('version')
+@Depends(meta)
+version() async {
+  if (newTag) {
+    updateMarkdown();
+
+    await updatePubspec(projectConfig.version);
+
+    log('version meta data file updated');
   }
 }
 
 @Task('release')
-release() async {
-  final result = await shell(
-    exec: 'gh',
-    args: ['release', 'view', 'v${config['version']}'],
+@Depends('pkg-github-release')
+release() => null;
+
+@Task('homebrew')
+homebrew() {
+  final folder = projectConfig.pkg.homebrewRepo.split('/').last;
+
+  try {
+    File('build/$folder').deleteSync(recursive: true);
+  } on FileSystemException catch (exception) {
+    log(exception.message);
+  }
+
+  shell(
+    exec: 'git',
+    args: ['clone', 'https://github.com/${projectConfig.pkg.homebrewRepo}.git'],
+    workingDirectory: 'build',
   );
 
-  if (result.stderr.contains('not found')) {
-    await shell(
-      exec: 'gh',
-      args: [
-        'release',
-        'create',
-        'v${config['version']}',
-        '--title',
-        'Release v${config['version']}',
-        '--notes',
-        '${config['change']}',
-        '--repo',
-        '${config['repo']}'
-      ],
-      verbose: true,
-    );
-  }
+  shell(
+    exec: 'bash',
+    args: ['commit.sh'],
+    workingDirectory: 'build/$folder',
+    verbose: true,
+  );
 }
 
 @Task('commit')
 commit() async {
-  final newTag = await isNewTag(config['version']);
-
   try {
-    await shell(
+    shell(
       exec: 'git',
-      args: ['commit', '-a', '-m', '\'${config['change']}\''],
+      args: ['commit', '-a', '-m', '\'$projectConfig.commit\''],
       verbose: true,
     );
   } catch (exception) {
@@ -103,12 +140,12 @@ commit() async {
   }
 
   if (newTag) {
-    await shell(exec: 'git', args: ['tag', 'v${config['version']}']);
+    shell(exec: 'git', args: ['tag', 'v${projectConfig.version}']);
 
-    await shell(exec: 'git', args: ['push', '--tags']);
+    shell(exec: 'git', args: ['push', '--tags']);
   }
 
-  await shell(
+  shell(
     exec: 'git',
     args: ['push'],
     verbose: true,
@@ -116,23 +153,13 @@ commit() async {
 }
 
 @Task('test')
-@Depends(version)
+@Depends(meta)
 test() {
   TestRunner().test();
 }
 
-YamlMap getConfig() {
-  final config = loadYaml(File('tool/config.yaml').readAsStringSync());
-
-  if (!config.containsKey('templates') ||
-      !config.containsKey('version') ||
-      !config.containsKey('change')) throw Exception();
-
-  return config;
-}
-
-Future<bool> isNewTag(String version) async {
-  final result = await shell(
+bool isNewTag(String version) {
+  final result = shell(
     exec: 'git',
     args: ['tag', '-l', 'v$version'],
     verbose: false,
@@ -141,11 +168,16 @@ Future<bool> isNewTag(String version) async {
   return result.stdout.trim() != 'v$version';
 }
 
-Future<ProcessResult> shell(
+ProcessResult shell(
     {String exec = 'dart',
     List<String> args = const <String>[],
-    bool verbose = true}) async {
-  final result = await Process.run(exec, args);
+    bool verbose = true,
+    String? workingDirectory}) {
+  final result = Process.runSync(
+    exec,
+    args,
+    workingDirectory: workingDirectory,
+  );
 
   if (verbose) {
     log('stderr:\n${result.stderr}');
@@ -156,27 +188,18 @@ Future<ProcessResult> shell(
   return result;
 }
 
-void updateMarkdown(config) {
-  final templates = config['templates'].value;
+void updateMarkdown() {
+  final templates = projectConfig.templates;
 
-  templates.forEach((templateFilename) {
-    final mustacheTpl = File('tool/${templateFilename['name']}');
+  for (var tmpl in templates) {
+    final mustacheTpl = File('tool/${tmpl.name}');
 
-    if (!templateFilename.containsKey('name')) throw Exception();
+    final outputFile = File(tmpl.name);
 
-    final String type = templateFilename.containsKey('type')
-        ? templateFilename['type']!
-        : 'append';
+    final template = Template(mustacheTpl.readAsStringSync(), name: tmpl.name)
+        .renderString(projectConfig.toJson());
 
-    final String templateFileName = templateFilename['name']!;
-
-    final outputFile = File(templateFileName);
-
-    final template =
-        Template(mustacheTpl.readAsStringSync(), name: templateFileName)
-            .renderString(config);
-
-    switch (type) {
+    switch (tmpl.type) {
       case 'prepend':
         final currentContent =
             outputFile.readAsStringSync().replaceFirst('# Changelog\n', '');
@@ -200,7 +223,7 @@ void updateMarkdown(config) {
       default:
         outputFile.writeAsString(template, mode: FileMode.append);
     }
-  });
+  }
 }
 
 Future<void> updatePubspec(String version) async {

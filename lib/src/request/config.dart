@@ -6,6 +6,11 @@ class Config {
 
   Config(this.obsWebSocket);
 
+  /// Gets the value of a "slot" from the selected persistent data realm.
+  ///
+  /// - Complexity Rating: 2/5
+  /// - Latest Supported RPC Version: 1
+  /// - Added in v5.0.0
   Future<Map<String, dynamic>> getPersistentData(
       {required String realm, required String slotName}) async {
     final response = await obsWebSocket.sendRequest(Request(
@@ -19,20 +24,70 @@ class Config {
     return response!.responseData!;
   }
 
-  // TODO:
-  Future<void> setPersistentData() async => throw UnimplementedError();
+  /// Sets the value of a "slot" from the selected persistent data realm.
+  ///
+  /// - Complexity Rating: 2/5
+  /// - Latest Supported RPC Version: 1
+  /// - Added in v5.0.0
+  Future<void> setPersistentData(
+          {required String realm,
+          required String slotName,
+          required dynamic slotValue}) async =>
+      await obsWebSocket.sendRequest(Request(
+        'SetPersistentData',
+        requestData: {
+          'realm': realm,
+          'slotName': slotName,
+          'slotValue': slotValue
+        },
+      ));
 
-  // TODO:
-  Future<void> getSceneCollectionList() async => throw UnimplementedError();
+  /// Gets an array of all scene collections
+  ///
+  /// - Complexity Rating: 1/5
+  /// - Latest Supported RPC Version: 1
+  /// - Added in v5.0.0
+  Future<SceneCollectionListResponse> getSceneCollectionList() async {
+    final response =
+        await obsWebSocket.sendRequest(Request('GetSceneCollectionList'));
 
-  // TODO:
-  Future<void> setSceneCollectionList() async => throw UnimplementedError();
+    return SceneCollectionListResponse.fromJson(response!.responseData!);
+  }
 
-  // TODO:
-  Future<void> createSceneCollection() async => throw UnimplementedError();
+  /// Switches to a scene collection.
+  ///
+  /// - Complexity Rating: 1/5
+  /// - Latest Supported RPC Version: 1
+  /// - Added in v5.0.0
+  Future<void> setCurrentSceneCollection(String sceneCollectionName) async =>
+      await obsWebSocket.sendRequest(Request(
+        'SetCurrentSceneCollection',
+        requestData: {'sceneCollectionName': sceneCollectionName},
+      ));
 
-  // TODO:
-  Future<void> getProfileList() async => throw UnimplementedError();
+  /// Creates a new scene collection, switching to it in the process.
+  ///
+  /// Note: This will block until the collection has finished changing.
+  ///
+  /// - Complexity Rating: 1/5
+  /// - Latest Supported RPC Version: 1
+  /// - Added in v5.0.0
+  Future<void> createSceneCollection(String sceneCollectionName) async =>
+      await obsWebSocket.sendRequest(Request(
+        'CreateSceneCollection',
+        requestData: {'sceneCollectionName': sceneCollectionName},
+      ));
+
+  /// Gets an array of all profiles
+  ///
+  /// - Complexity Rating: 1/5
+  /// - Latest Supported RPC Version: 1
+  /// - Added in v5.0.0
+  Future<ProfileListResponse> getProfileList() async {
+    final response = await obsWebSocket.sendRequest(Request('GetProfileList'));
+
+    return ProfileListResponse.fromJson(response!.responseData!);
+  }
 
   /// Switches to a profile.
   ///
@@ -67,11 +122,43 @@ class Config {
         requestData: {'profileName': profileName},
       ));
 
-  // TODO:
-  Future<void> getProfileParameter() async => throw UnimplementedError();
+  /// Gets a parameter from the current profile's configuration.
+  ///
+  /// - Complexity Rating: 4/5
+  /// - Latest Supported RPC Version: 1
+  /// - Added in v5.0.0
+  Future<ProfileParameterResponse> getProfileParameter({
+    required String parameterCategory,
+    required String parameterName,
+  }) async {
+    final response = await obsWebSocket.sendRequest(Request(
+      'GetProfileParameter',
+      requestData: {
+        'parameterCategory': parameterCategory,
+        'parameterName': parameterName,
+      },
+    ));
 
-  // TODO:
-  Future<void> setProfileParameter() async => throw UnimplementedError();
+    return ProfileParameterResponse.fromJson(response!.responseData!);
+  }
+
+  /// Sets the value of a parameter in the current profile's configuration.
+  ///
+  /// - Complexity Rating: 4/5
+  /// - Latest Supported RPC Version: 1
+  /// - Added in v5.0.0
+  Future<void> setProfileParameter(
+          {required String parameterCategory,
+          required String parameterName,
+          required String parameterValue}) async =>
+      await obsWebSocket.sendRequest(Request(
+        'SetProfileParameter',
+        requestData: {
+          'parameterCategory': parameterCategory,
+          'parameterName': parameterName,
+          'parameterValue': parameterValue,
+        },
+      ));
 
   /// Gets the current video settings.
   ///

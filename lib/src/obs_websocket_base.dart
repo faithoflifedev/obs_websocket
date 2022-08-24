@@ -436,7 +436,7 @@ class ObsWebSocket with UiLoggy {
         loggy.debug(
             'response status: ${requestResponse.requestType} ${requestResponse.requestStatus}');
 
-        if (requestResponse.requestId == request.requestId) {
+        if (request.requestId == requestResponse.requestId) {
           _checkResponse(request, requestResponse);
 
           break;

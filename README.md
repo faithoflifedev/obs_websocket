@@ -43,7 +43,7 @@ In your project add the dependency:
 ```yml
 dependencies:
   ...
-  obs_websocket: ^5.0.0+2
+  obs_websocket: ^5.0.0+3
 ```
 
 For help getting started with dart, check out these [guides](https://dart.dev/guides).
@@ -113,16 +113,16 @@ For any of the items that have an [x] from the list below, a high level helper c
   - [x] [Sleep](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#sleep) - Sleeps for a time duration or number of frames. Only available in request batches with types SERIAL_REALTIME or SERIAL_FRAME.
 - [Config Requests](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#config-1-requests) - `obsWebSocket.config`
   - [x] [GetPersistentData](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#getpersistentdata) - Gets the value of a "slot" from the selected persistent data realm.
-  - [ ] [SetPersistentData](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#setpersistentdata)
-  - [ ] [GetSceneCollectionList](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#getscenecollectionlist)
-  - [ ] [SetCurrentSceneCollection](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#setcurrentscenecollection)
-  - [ ] [CreateSceneCollection](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#createscenecollection)
-  - [ ] [GetProfileList](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#getprofilelist)
+  - [x] [SetPersistentData](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#setpersistentdata) - Sets the value of a "slot" from the selected persistent data realm.
+  - [x] [GetSceneCollectionList](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#getscenecollectionlist) - Gets an array of all scene collections
+  - [x] [SetCurrentSceneCollection](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#setcurrentscenecollection) - Switches to a scene collection.
+  - [x] [CreateSceneCollection](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#createscenecollection) - Creates a new scene collection, switching to it in the process.
+  - [x] [GetProfileList](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#getprofilelist) - Gets an array of all profiles
   - [x] [SetCurrentProfile](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#setcurrentprofile) - Switches to a profile.
   - [x] [CreateProfile](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#createprofile) - Creates a new profile, switching to it in the process
   - [x] [RemoveProfile](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#removeprofile) - Removes a profile. If the current profile is chosen, it will change to a different profile first.
-  - [ ] [GetProfileParameter](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#getprofileparameter)
-  - [ ] [SetProfileParameter](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#setprofileparameter)
+  - [x] [GetProfileParameter](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#getprofileparameter) - Gets a parameter from the current profile's configuration.
+  - [x] [SetProfileParameter](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#setprofileparameter) - Sets the value of a parameter in the current profile's configuration.
   - [x] [GetVideoSettings](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#getvideosettings) - Gets the current video settings.
   - [x] [SetVideoSettings](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#setvideosettings) - Sets the current video settings.
   - [x] [GetStreamServiceSettings](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#getstreamservicesettings) - Gets the current stream service settings (stream destination).
