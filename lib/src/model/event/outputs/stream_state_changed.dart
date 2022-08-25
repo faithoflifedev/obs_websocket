@@ -6,7 +6,7 @@ part 'stream_state_changed.g.dart';
 
 @JsonSerializable()
 class StreamStateChanged {
-  final String outputActive;
+  final bool outputActive;
   final String outputState;
 
   StreamStateChanged({
