@@ -1,5 +1,10 @@
 # Changelog
 
+## 5.0.0+4
+
+* build tool changes
+* fix for issue #23
+
 ## 5.0.0+3
 
 * SetPersistentData, GetSceneCollectionList, SetCurrentSceneCollection, CreateSceneCollection, GetProfileList, GetProfileParameter, SetProfileParameter now supported as high level commands
