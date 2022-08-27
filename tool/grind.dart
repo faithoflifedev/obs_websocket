@@ -1,5 +1,7 @@
 // import 'dart:convert';
 
+import 'dart:convert';
+
 import 'package:cli_pkg/cli_pkg.dart' as pkg;
 import 'package:grinder/grinder.dart';
 import 'package:http/http.dart' as http;
@@ -25,17 +27,14 @@ main(args) async {
   pkg.humanName.value = projectConfig.pkg.humanName;
   pkg.botName.value = projectConfig.pkg.botName;
   pkg.botEmail.value = projectConfig.pkg.botEmail;
-  pkg.executables.value = projectConfig.pkg.executables;
-  // pkg.chocolateyNuspec.value = _nuspec;
   pkg.homebrewRepo.value = projectConfig.pkg.homebrewRepo;
-  // pkg.homebrewFormula.value = projectConfig.pkg.homebrewFormula;
   pkg.githubReleaseNotes.value = projectConfig.change;
-  pkg.homebrewTag.value = 'v${projectConfig.version}';
 
-  pkg.addGithubTasks();
+  // pkg.addGithubTasks();
   // pkg.addHomebrewTasks();
+
   pkg.addNpmTasks();
-  pkg.addPubTasks();
+  // pkg.addPubTasks();
 
   pubSpec = await PubSpec.load(pubspecDirectory);
 
@@ -43,7 +42,7 @@ main(args) async {
 }
 
 @DefaultTask('Just running the tests for now.')
-@Depends('homebrew')
+@Depends('release')
 build() {
   // log('building...');
 }
@@ -57,16 +56,22 @@ clean() {
 }
 
 @Task('All steps except for actually publishing the project.')
-@Depends(analyze, version, doc, commit, 'pkg-github-release', dryrun)
+@Depends(analyze, version, doc, commit, release, dryrun)
 // @Depends(analyze, version, test, doc, commit, release, dryrun)
 publish() {
   log('''
 Use the command:
-  dart pub publish
+  grind submit
 
-To publish this package on the pub.dev site.
+To submit this package on the pub.dev site.
 ''');
 }
+
+@Task('Submit to pub.dev')
+submit() => shell(
+      args: ['pub', 'publish', '--force'],
+      verbose: true,
+    );
 
 @Task('Same as \'dart pub publish --dry-run\'')
 dryrun() async {
@@ -85,7 +90,7 @@ analyze() {
 }
 
 @Task(
-    'Update the meta information to display "version" info int the cli command.')
+    'Update the meta information to display \'version\' info int the cli command.')
 meta() async {
   if (newTag) {
     MetaUpdate('pubspec.yaml').writeMetaDartFile(projectConfig.meta);
@@ -108,18 +113,24 @@ version() async {
 
 @Task('release')
 release() async {
-  // var response = await client.post(
-  //     Uri.parse('https://api.github.com/repos/${pubSpec.homepage}/releases'),
-  //     headers: {
-  //       "content-type": "application/json",
-  //       "authorization": 'token ${projectConfig.pkg.githubBearerToken}'
-  //     },
-  //     body: json.encode({
-  //       "tag_name": version.toString(),
-  //       "name": "$projectConfig.pkg.humanName $version",
-  //       "prerelease": false,
-  //       if (githubReleaseNotes.value != null) "body": githubReleaseNotes.value
-  //     }));
+  final response = await client.post(
+      Uri.parse('https://api.github.com/repos/${projectConfig.repo}/releases'),
+      headers: {
+        'content-type': 'application/json',
+        'authorization': 'token ${projectConfig.pkg.githubBearerToken}'
+      },
+      body: json.encode({
+        'tag_name': projectConfig.version,
+        'name': '${projectConfig.pkg.humanName} ${projectConfig.version}',
+        'prerelease': false,
+        'body': projectConfig.change,
+      }));
+
+  if (response.statusCode != 201) {
+    fail('${response.statusCode} error creating release:\n${response.body}');
+  } else {
+    log('Released ${projectConfig.pkg.humanName}; ${projectConfig.version} to GitHub.');
+  }
 }
 
 @Task('homebrew')

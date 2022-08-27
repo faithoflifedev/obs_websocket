@@ -12,7 +12,7 @@ class Pkg {
   final String humanName;
   final String botName;
   final String botEmail;
-  final Map<String, String> executables;
+  // final Map<String, String> executables;
   final String homebrewRepo;
   // final String homebrewFormula;
 
@@ -21,7 +21,7 @@ class Pkg {
     required this.humanName,
     required this.botName,
     required this.botEmail,
-    required this.executables,
+    // required this.executables,
     required this.homebrewRepo,
     // required this.homebrewFormula,
   });
@@ -32,7 +32,7 @@ class Pkg {
       'humanName',
       'botName',
       'botEmail',
-      'executables',
+      // 'executables',
       'homebrewRepo',
       // 'homebrewFormula'
     ];
@@ -46,7 +46,7 @@ class Pkg {
       humanName: pkg['humanName'],
       botName: pkg['botName'],
       botEmail: pkg['botEmail'],
-      executables: pkg['executables'].cast<String, String>(),
+      // executables: pkg['executables'].cast<String, String>(),
       homebrewRepo: pkg['homebrewRepo'],
       // homebrewFormula: pkg['homebrewFormula'],
     );
