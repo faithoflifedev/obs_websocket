@@ -10,7 +10,6 @@ class RecordStatusResponse {
   final bool outputPaused;
   final String outputTimecode;
   final int outputDuration;
-  final double outputCongestion;
   final int outputBytes;
 
   RecordStatusResponse({
@@ -18,7 +17,6 @@ class RecordStatusResponse {
     required this.outputPaused,
     required this.outputTimecode,
     required this.outputDuration,
-    required this.outputCongestion,
     required this.outputBytes,
   });
 

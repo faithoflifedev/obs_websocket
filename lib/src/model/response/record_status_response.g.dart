@@ -13,7 +13,6 @@ RecordStatusResponse _$RecordStatusResponseFromJson(
       outputPaused: json['outputPaused'] as bool,
       outputTimecode: json['outputTimecode'] as String,
       outputDuration: json['outputDuration'] as int,
-      outputCongestion: (json['outputCongestion'] as num).toDouble(),
       outputBytes: json['outputBytes'] as int,
     );
 
@@ -24,6 +23,5 @@ Map<String, dynamic> _$RecordStatusResponseToJson(
       'outputPaused': instance.outputPaused,
       'outputTimecode': instance.outputTimecode,
       'outputDuration': instance.outputDuration,
-      'outputCongestion': instance.outputCongestion,
       'outputBytes': instance.outputBytes,
     };
