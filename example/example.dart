@@ -14,8 +14,6 @@ main() async {
         print('type: ${event.eventType} data: ${event.eventData}'),
   );
 
-  await obs.listen(EventSubscription.all.code);
-
   final currentScene = await obs.scenes.getCurrentProgramScene();
 
   // get the id of the required sceneItem

@@ -5,9 +5,10 @@ import 'package:yaml/yaml.dart';
 
 void main(List<String> args) async {
   Loggy.initLoggy();
+
   final config = loadYaml(File('config.yaml').readAsStringSync());
 
-  final sceneItem = 'My Face';
+  final sceneItem = 'my face';
 
   final obsWebSocket = await ObsWebSocket.connect(
     config['host'],

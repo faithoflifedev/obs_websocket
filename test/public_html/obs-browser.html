@@ -1,0 +1,34 @@
+<html>
+<!-- 
+	This can be run with the built in PHP web server:
+
+	php -S localhost:8000
+
+	After creating a "browser" scene with url - http://localhost:8000/obs-browser.html - you can use the following Dart code to update the scene:
+
+	await obsWebSocket.general.browserEvent(
+		eventName: 'obs-websocket-test-event',
+		eventData: {
+		'my': 'data',
+		'that': 'will be displayed in an event',
+		},
+	);
+-->
+<head>
+	<script>
+		window.addEventListener('obs-websocket-test-event', function(event) {
+			console.log(event); //  {"my":"data","that":"will be displayed in an event"}
+
+			let custom = document.getElementById('custom');
+
+			custom.innerHTML = JSON.stringify(event.detail);
+
+		});
+	</script>
+</head>
+
+<body style="background-color:powderblue; font-size: 40px;">
+	Custom Event Data: <p id='custom'></p>
+</body>
+
+</html>

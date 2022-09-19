@@ -42,14 +42,48 @@ class General {
     return StatsResponse.fromJson(response!.responseData!);
   }
 
+  /// Broadcasts a CustomEvent to all WebSocket clients. Receivers are clients which are identified and subscribed.
+  ///
+  /// - Complexity Rating: 1/5
+  /// - Latest Supported RPC Version: 1
+  /// - Added in v5.0.0
   Future<void> broadcastCustomEvent(Map<String, dynamic> arg) async =>
       await obsWebSocket.sendRequest(Request(
         'BroadcastCustomEvent',
         requestData: arg,
       ));
 
-  // TODO:
-  Future<void> callVendorRequest() async => throw UnimplementedError();
+  /// Call a request registered to a vendor.
+  ///
+  /// A vendor is a unique name registered by a third-party plugin or script, which allows for custom requests and events to be added to obs-websocket. If a plugin or script implements vendor requests or events, documentation is expected to be provided with them.
+  ///
+  /// - Complexity Rating: 3/5
+  /// - Latest Supported RPC Version: 1
+  /// - Added in v5.0.0
+  Future<CallVendorRequestResponse> callVendorRequest(
+      {required String vendorName,
+      required String requestType,
+      RequestData? requestData}) async {
+    final response = await obsWebSocket.sendRequest(Request(
+      'CallVendorRequest',
+      requestData: {
+        'vendorName': vendorName,
+        'requestType': requestType,
+        'requestData': requestData?.toJson(),
+      }..removeWhere((key, value) => value == null),
+    ));
+
+    return CallVendorRequestResponse.fromJson(response!.responseData!);
+  }
+
+  /// Helper method to send a VendorRequest specifically to the 'obs-browser' plugin.
+  Future<CallVendorRequestResponse> obsBrowserEvent(
+          {required String eventName, dynamic eventData}) async =>
+      await callVendorRequest(
+        vendorName: 'obs-browser',
+        requestType: 'emit_event',
+        requestData: RequestData(eventName: eventName, eventData: eventData),
+      );
 
   /// Gets an array of all hotkey names in OBS
   ///
@@ -97,14 +131,14 @@ class General {
   /// - Latest Supported RPC Version: 1
   /// - Added in v5.0.0
   Future<void> sleep({
-    required int sleepMillis,
-    required int sleepFrames,
+    int? sleepMillis,
+    int? sleepFrames,
   }) async =>
       await obsWebSocket.sendRequest(Request(
         'Sleep',
         requestData: {
           'sleepMillis': sleepMillis,
           'sleepFrames': sleepFrames,
-        },
+        }..removeWhere((key, value) => value == null),
       ));
 }

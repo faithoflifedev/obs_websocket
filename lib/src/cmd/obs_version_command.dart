@@ -11,6 +11,6 @@ class ObsVersionCommand extends Command {
 
   @override
   void run() async {
-    print('${meta['name']} v${meta['version']}');
+    print('${pubSpec['name']} v${pubSpec['version']}');
   }
 }

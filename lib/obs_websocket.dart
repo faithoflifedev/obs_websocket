@@ -24,6 +24,8 @@ export 'src/model/event/scene_items/scene_item_selected.dart';
 export 'src/model/event/ui/studio_mode_state_changed.dart';
 
 export 'src/model/response/boolean_response.dart';
+export 'src/model/response/call_vendor_request_response.dart';
+export 'src/model/response/call_vendor_request_data.dart';
 export 'src/model/response/integer_response.dart';
 export 'src/model/response/profile_list_response.dart';
 export 'src/model/response/profile_parameter_response.dart';
