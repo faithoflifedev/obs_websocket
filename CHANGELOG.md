@@ -18,6 +18,42 @@
   * obsBrowserEvent
   * GetHotkeyList
 
+## 5.0.0+5
+
+* improved build tools (using publish_tools package)
+* issue #25 implemented
+* cli commands
+  * general - BroadcastCustomEventCommand
+  * general - CallVendorRequestCommand
+  * general - BrowserEventCommand (helper method)
+  * general - GetHotkeyListCommand
+  * general - TriggerHotkeyByNameCommand
+  * general - TriggerHotkeyByKeySequenceCommand
+  * general - SleepCommand
+* unit tests
+  * GetVersion
+  * CallVendorRequest
+  * obsBrowserEvent
+  * GetHotkeyList
+
+## 5.0.0+5
+
+* improved build tools (using publish_tools package)
+* issue #25 implemented
+* cli commands
+  * general - BroadcastCustomEventCommand
+  * general - CallVendorRequestCommand
+  * general - BrowserEventCommand (helper method)
+  * general - GetHotkeyListCommand
+  * general - TriggerHotkeyByNameCommand
+  * general - TriggerHotkeyByKeySequenceCommand
+  * general - SleepCommand
+* unit tests
+  * GetVersion
+  * CallVendorRequest
+  * obsBrowserEvent
+  * GetHotkeyList
+
 ## 5.0.0+4
 
 * build tool changes

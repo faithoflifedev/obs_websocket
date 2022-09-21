@@ -8,7 +8,7 @@ main(args) async {
 }
 
 @DefaultTask('Just keeping it real')
-@Depends('pt-homebrew')
+@Depends('pt-commit')
 build() {
   // log('building...');
 }
