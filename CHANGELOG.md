@@ -1,5 +1,15 @@
 # Changelog
 
+## 5.0.0+10
+
+* commands
+  * Outputs - ToggleReplayBuffer
+  * Outputs - StartReplayBuffer
+  * Outputs - StopReplayBuffer
+  * Outputs - SaveReplayBuffer
+* unit tests
+  * ToggleReplayBuffer
+
 ## 5.0.0+9
 
 * dependency bump for publish_tools again
@@ -11,20 +21,6 @@
 ## 5.0.0+7
 
 * using publish_tools from pub.dev
-
-## 5.0.0+6
-
-* additional events supported
-  * Config - CurrentSceneCollectionChanging
-  * Config - CurrentSceneCollectionChanged
-  * Config - SceneCollectionListChanged
-
-## 5.0.0+6
-
-* additional events supported
-  * Config - CurrentSceneCollectionChanging
-  * Config - CurrentSceneCollectionChanged
-  * Config - SceneCollectionListChanged
 
 ## 5.0.0+6
 

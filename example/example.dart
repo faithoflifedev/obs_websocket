@@ -14,6 +14,10 @@ main() async {
         print('type: ${event.eventType} data: ${event.eventData}'),
   );
 
+  var res = await obs.outputs.toggleReplayBuffer();
+
+  print(res);
+
   final currentScene = await obs.scenes.getCurrentProgramScene();
 
   // get the id of the required sceneItem

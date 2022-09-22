@@ -37,15 +37,15 @@ The short answer is that everything has changed.  The obs-websocket [v5.0.0 prot
 
 ### Requirements
 
-- The [OBS](https://obsproject.com/) application needs to be installed on a machine reachable on the local network
-- The [obs-websocket](https://github.com/obsproject/obs-websocket) plugin needs to be installed on the same machine
+- The [OBS](https://obsproject.com/) v27.x or above application needs to be installed on a machine reachable on the local network
+- The [obs-websocket](https://github.com/obsproject/obs-websocket) is included with OBS in current versions.
 
 In your project add the dependency:
 
 ```yml
 dependencies:
   ...
-  obs_websocket: ^5.0.0+9
+  obs_websocket: ^5.0.0+10
 ```
 
 For help getting started with dart, check out these [guides](https://dart.dev/guides).
@@ -214,10 +214,10 @@ For any of the items that have an [x] from the list below, a high level helper c
   - [x] [StartVirtualCam](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#startvirtualcam) - Starts the virtualcam output.
   - [x] [StopVirtualCam](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#stopvirtualcam) - Stops the virtualcam output.
   - [x] [GetReplayBufferStatus](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#getreplaybufferstatus) - Gets the status of the replay buffer output.
-  - [ ] [ToggleReplayBuffer](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#togglereplaybuffer)
-  - [ ] [StartReplayBuffer](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#startreplaybuffer)
-  - [ ] [StopReplayBuffer](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#stopreplaybuffer)
-  - [ ] [SaveReplayBuffer](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#savereplaybuffer)
+  - [x] [ToggleReplayBuffer](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#togglereplaybuffer) - Toggles the state of the replay buffer output.
+  - [x] [StartReplayBuffer](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#startreplaybuffer) - Starts the replay buffer output.
+  - [x] [StopReplayBuffer](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#stopreplaybuffer) - Stops the replay buffer output.
+  - [x] [SaveReplayBuffer](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#savereplaybuffer) - Saves the contents of the replay buffer output.
   - [ ] [GetLastReplayBufferReplay](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#getlastreplaybufferreplay)
   - [ ] [GetOutputList](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#getoutputlist)
   - [ ] [GetOutputStatus](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#getoutputstatus)

@@ -58,6 +58,47 @@ class Outputs {
     return BooleanResponse.fromJson(response!.responseData!).enabled;
   }
 
+  /// Toggles the state of the replay buffer output.
+  ///
+  /// - Complexity Rating: 1/5
+  /// - Latest Supported RPC Version: 1
+  /// - Added in v5.0.0
+  Future<bool> toggleReplayBuffer() async {
+    final response = await obsWebSocket.sendRequest(
+      Request('ToggleReplayBuffer'),
+    );
+
+    if (response?.requestStatus.code != 100) {
+      throw Exception('${response?.requestStatus.comment}');
+    }
+
+    return BooleanResponse.fromJson(response!.responseData!).enabled;
+  }
+
+  /// Starts the replay buffer output.
+  ///
+  /// - Complexity Rating: 1/5
+  /// - Latest Supported RPC Version: 1
+  /// - Added in v5.0.0
+  Future<void> startReplayBuffer(String outputName) async =>
+      await obsWebSocket.sendRequest(Request('StartReplayBuffer'));
+
+  /// Stops the replay buffer output.
+  ///
+  /// - Complexity Rating: 1/5
+  /// - Latest Supported RPC Version: 1
+  /// - Added in v5.0.0
+  Future<void> stopReplayBuffer(String outputName) async =>
+      await obsWebSocket.sendRequest(Request('StopReplayBuffer'));
+
+  /// Saves the contents of the replay buffer output.
+  ///
+  /// - Complexity Rating: 1/5
+  /// - Latest Supported RPC Version: 1
+  /// - Added in v5.0.0
+  Future<void> saveReplayBuffer(String outputName) async =>
+      await obsWebSocket.sendRequest(Request('SaveReplayBuffer'));
+
   /// Toggles the status of an output.
   ///
   /// - Complexity Rating: 4/5
