@@ -1,5 +1,9 @@
 # Changelog
 
+## 5.0.0+7
+
+* using publish_tools from pub.dev
+
 ## 5.0.0+6
 
 * additional events supported

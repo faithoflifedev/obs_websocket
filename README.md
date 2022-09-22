@@ -45,7 +45,7 @@ In your project add the dependency:
 ```yml
 dependencies:
   ...
-  obs_websocket: ^5.0.0+6
+  obs_websocket: ^5.0.0+7
 ```
 
 For help getting started with dart, check out these [guides](https://dart.dev/guides).
