@@ -1,5 +1,12 @@
 # Changelog
 
+## 5.0.0+6
+
+* additional events supported
+  * Config - CurrentSceneCollectionChanging
+  * Config - CurrentSceneCollectionChanged
+  * Config - SceneCollectionListChanged
+
 ## 5.0.0+5
 
 * improved build tools (using publish_tools package)

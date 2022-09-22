@@ -392,9 +392,9 @@ if (!sceneItemEnabled) {
   - [x] [ExitStarted](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#exitstarted) - OBS has begun the shutdown process.
   - [x] [VendorEvent](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#vendorevent) - An event has been emitted from a vendor.
 - [Config Events](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#config-events)
-  - [ ] [CurrentSceneCollectionChanging](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#currentscenecollectionchanging)
-  - [ ] [CurrentSceneCollectionChanged](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#currentscenecollectionchanged)
-  - [ ] [SceneCollectionListChanged](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#scenecollectionlistchanged)
+  - [x] [CurrentSceneCollectionChanging](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#currentscenecollectionchanging) - The current scene collection has begun changing.
+  - [x] [CurrentSceneCollectionChanged](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#currentscenecollectionchanged) - The current scene collection has changed.
+  - [x] [SceneCollectionListChanged](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#scenecollectionlistchanged) - The scene collection list has changed.
   - [ ] [CurrentProfileChanging](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#currentprofilechanging)
   - [ ] [CurrentProfileChanged](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#currentprofilechanged)
   - [ ] [ProfileListChanged](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#profilelistchanged)
