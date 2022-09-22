@@ -1,5 +1,9 @@
 # Changelog
 
+## 5.0.0+9
+
+* dependency bump for publish_tools again
+
 ## 5.0.0+8
 
 * updated dependency for publish_tools
