@@ -80,7 +80,7 @@ class SceneItems {
     required String sourceName,
     int? searchOffset,
   }) async =>
-      await getId(
+      await getSceneItemId(
         sceneName: sceneName,
         sourceName: sourceName,
         searchOffset: searchOffset,
