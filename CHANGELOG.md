@@ -1,5 +1,13 @@
 # Changelog
 
+## 5.0.0+11
+
+* events supported
+  * Config - CurrentProfileChanging
+  * Config - CurrentProfileChanged
+  * Config - ProfileListChanged
+* PR #26
+
 ## 5.0.0+10
 
 * commands

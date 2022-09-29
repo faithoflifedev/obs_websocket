@@ -45,7 +45,7 @@ In your project add the dependency:
 ```yml
 dependencies:
   ...
-  obs_websocket: ^5.0.0+10
+  obs_websocket: ^5.0.0+11
 ```
 
 For help getting started with dart, check out these [guides](https://dart.dev/guides).
@@ -395,9 +395,9 @@ if (!sceneItemEnabled) {
   - [x] [CurrentSceneCollectionChanging](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#currentscenecollectionchanging) - The current scene collection has begun changing.
   - [x] [CurrentSceneCollectionChanged](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#currentscenecollectionchanged) - The current scene collection has changed.
   - [x] [SceneCollectionListChanged](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#scenecollectionlistchanged) - The scene collection list has changed.
-  - [ ] [CurrentProfileChanging](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#currentprofilechanging)
-  - [ ] [CurrentProfileChanged](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#currentprofilechanged)
-  - [ ] [ProfileListChanged](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#profilelistchanged)
+  - [x] [CurrentProfileChanging](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#currentprofilechanging) - The current profile has begun changing.
+  - [x] [CurrentProfileChanged](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#currentprofilechanged) - The current profile has changed.
+  - [x] [ProfileListChanged](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#profilelistchanged) - The profile list has changed.
 - [Scenes Events](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#scenes-events)
   - [ ] [SceneCreated](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#scenecreated)
   - [ ] [SceneRemoved](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#sceneremoved)
