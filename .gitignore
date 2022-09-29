@@ -32,3 +32,5 @@ example/config.yaml
 
 tool/config.yaml
 tool/publish_tools.yaml
+
+.pt-build/
