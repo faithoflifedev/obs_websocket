@@ -1,0 +1,20 @@
+github:
+  repoUser: faithoflifedev
+  repoName: obs_websocket
+  bearerToken: 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
+
+meta: lib/src/util/meta.dart
+
+templates:
+  - name: README.md
+    type: overwrite
+  - name: CHANGELOG.md
+    type: prepend
+
+commit: additional events supported
+changes: |
+  * events supported
+    * Config - CurrentProfileChanging
+    * Config - CurrentProfileChanged
+    * Config - ProfileListChanged
+  * PR #26
