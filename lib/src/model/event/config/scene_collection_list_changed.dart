@@ -2,6 +2,8 @@ import 'dart:convert';
 
 import 'package:json_annotation/json_annotation.dart';
 
+import 'abstract_event.dart';
+
 part 'scene_collection_list_changed.g.dart';
 
 /// The scene collection list has changed.
@@ -10,7 +12,7 @@ part 'scene_collection_list_changed.g.dart';
 /// Latest Supported RPC Version: 1
 /// Added in v5.0.0
 @JsonSerializable()
-class SceneCollectionListChanged {
+class SceneCollectionListChanged implements BaseEvent {
   final List<String> sceneCollections;
 
   SceneCollectionListChanged({required this.sceneCollections});
@@ -18,6 +20,7 @@ class SceneCollectionListChanged {
   factory SceneCollectionListChanged.fromJson(Map<String, dynamic> json) =>
       _$SceneCollectionListChangedFromJson(json);
 
+  @override
   Map<String, dynamic> toJson() => _$SceneCollectionListChangedToJson(this);
 
   @override

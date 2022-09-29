@@ -8,7 +8,9 @@ main(args) async {
 }
 
 @DefaultTask('Just keeping it real')
-@Depends('pt-commit')
-build() {
-  // log('building...');
+@Depends('pt-commit', 'publish', 'pt-homebrew')
+done() {
+  log('commit to faithoflifedev/obs_websocket complete');
+  log('publish to pub.dev/packages complete.');
+  log('commit to faithoflifedev/homebrew-obs_websocket complete');
 }
