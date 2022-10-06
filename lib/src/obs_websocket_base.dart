@@ -19,6 +19,8 @@ class ObsWebSocket with UiLoggy {
 
   final eventHandlers = <String, List<Function>>{};
 
+  Function()? onStreamDone = () {};
+
   request.Config? _config;
 
   request.Filters? _filters;
@@ -126,6 +128,8 @@ class ObsWebSocket with UiLoggy {
     if (fallbackEventHandler != null) {
       addFallbackListener(fallbackEventHandler);
     }
+
+    onStreamDone = onDone;
   }
 
   static Future<ObsWebSocket> connect(
@@ -178,6 +182,8 @@ class ObsWebSocket with UiLoggy {
 
         _handleEvent(event);
       }
+    }, onDone: () {
+      onStreamDone?.call();
     });
 
     await authenticate();
