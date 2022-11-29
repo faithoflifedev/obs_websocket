@@ -45,7 +45,7 @@ In your project add the dependency:
 ```yml
 dependencies:
   ...
-  obs_websocket: ^5.0.0+11
+  obs_websocket: ^5.0.0+12
 ```
 
 For help getting started with dart, check out these [guides](https://dart.dev/guides).
@@ -251,7 +251,7 @@ For any of the items that have an [x] from the list below, a high level helper c
   - [x] [OpenInputPropertiesDialog](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#openinputpropertiesdialog) - Opens the properties dialog of an input.
   - [x] [OpenInputFiltersDialog](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#openinputfiltersdialog) - Opens the filters dialog of an input.
   - [x] [OpenInputInteractDialog](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#openinputinteractdialog) - Opens the interact dialog of an input.
-  - [ ] [GetMonitorList](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#getmonitorlist)
+  - [x] [GetMonitorList](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#getmonitorlist) - Gets a list of connected monitors and information about them.
   - [x] [OpenVideoMixProjector](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#openvideomixprojector) - Opens a projector for a specific output video mix.
   - [x] [OpenSourceProjector](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#opensourceprojector) - Opens a projector for a source.
 
@@ -522,5 +522,6 @@ Available commands:
   send        Send a low-level websocket request to OBS
   sources     Commands that manipulate OBS sources
   stream      Commands that manipulate OBS streams
+  ui          Commands that manipulate the OBS user interface.
   version     Display the package name and version
 ```

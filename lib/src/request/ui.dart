@@ -62,8 +62,19 @@ class Ui {
         requestData: {'inputName': inputName},
       ));
 
-  // TODO:
-  Future<void> getMonitorList() async => throw UnimplementedError();
+  /// Gets a list of connected monitors and information about them.
+  ///
+  /// Complexity Rating: 2/5
+  /// Latest Supported RPC Version: 1
+  /// Added in v5.0.0
+  Future<List<Monitor>> getMonitorList() async {
+    final response = await obsWebSocket.sendRequest(Request('GetMonitorList'));
+
+    final monitorListResponse =
+        MonitorListResponse.fromJson(response!.responseData!);
+
+    return monitorListResponse.monitors;
+  }
 
   /// Opens a projector for a specific output video mix.
   ///

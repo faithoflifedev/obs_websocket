@@ -27,6 +27,7 @@ export 'src/model/response/boolean_response.dart';
 export 'src/model/response/call_vendor_request_response.dart';
 export 'src/model/response/call_vendor_request_data.dart';
 export 'src/model/response/integer_response.dart';
+export 'src/model/response/monitor_list_response.dart';
 export 'src/model/response/profile_list_response.dart';
 export 'src/model/response/profile_parameter_response.dart';
 export 'src/model/response/record_status_response.dart';
@@ -47,6 +48,7 @@ export 'src/model/request/key_modifiers.dart';
 export 'src/model/request/source_screenshot.dart';
 export 'src/model/request/video_settings.dart';
 
+export 'src/model/shared/monitor.dart';
 export 'src/model/shared/scene_item.dart';
 export 'src/model/shared/scene_item_detail.dart';
 export 'src/model/shared/scene.dart';

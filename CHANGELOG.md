@@ -1,5 +1,21 @@
 # Changelog
 
+## 5.0.0+12
+
+* dependency bumps
+* ui
+  * GetMonitorList
+* cli
+  * ui
+    * GetStudioModeEnabled
+    * SetStudioModeEnabled
+    * GetMonitorList
+* tests
+  * ui
+    * GetStudioModeEnabled
+    * SetStudioModeEnabled
+    * GetMonitorList
+
 ## 5.0.0+11
 
 * events supported

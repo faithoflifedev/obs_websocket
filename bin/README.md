@@ -2,34 +2,38 @@
 # Easy OBS WebSocket CLI
 
 A command line interface for controlling OBS with cli commands
-
 - [Installation](#installation)
 - [Quick start](#quick-start)
 - [Available Commands](#available-commands)
-  - [authorize](#authorize)
-  - [config](#config)
-    - [config get-stream-service-settings](#config-get-stream-service-settings)
-    - [config get-video-settings](#config-get-video-settings)
-    - [config set-stream-service-settings](#config-set-stream-service-settings)
-    - [config set-video-settings](#config-set-video-settings)
-  - [general](#general)
-    - [general get-stats](#general-get-stats)
-    - [general get-version](#general-get-version)
-  - [listen](#listen)
-  - [send](#send)
-  - [sources](#sources)
-    - [sources get-source-active](#sources-get-source-active)
-    - [sources get-source-screenshot](#sources-get-source-screenshot)
-    - [sources save-source-screenshot](#sources-save-source-screenshot)
-  - [stream](#stream)
-    - [stream get-stream-status](#stream-get-stream-status)
-    - [stream start-streaming](#stream-start-streaming)
-    - [stream stop-streaming](#stream-stop-streaming)
-    - [stream toggle-stream](#stream-toggle-stream)
-  - [version](#version)
+- [authorize](#authorize)
+- [config](#config)
+  - [config get-stream-service-settings](#config-get-stream-service-settings)
+  - [config get-video-settings](#config-get-video-settings)
+  - [config set-stream-service-settings](#config-set-stream-service-settings)
+  - [config set-video-settings](#config-set-video-settings)
+- [general](#general)
+  - [general get-stats](#general-get-stats)
+  - [general get-version](#general-get-version)
+- [listen](#listen)
+- [send](#send)
+- [sources](#sources)
+  - [sources get-source-active](#sources-get-source-active)
+  - [sources get-source-screenshot](#sources-get-source-screenshot)
+  - [sources save-source-screenshot](#sources-save-source-screenshot)
+- [stream](#stream)
+  - [stream get-stream-status](#stream-get-stream-status)
+  - [stream start-streaming](#stream-start-streaming)
+  - [stream stop-streaming](#stream-stop-streaming)
+  - [stream toggle-stream](#stream-toggle-stream)
+- [ui](#ui)
+  - [ui get-monitor-list](#ui-get-monitor-list)
+  - [ui get-studio-mode-enabled](#ui-get-studio-mode-enabled)
+  - [ui set-studio-mode-enabled](#ui-set-studio-mode-enabled)
+- [version](#version)
 - [Advanced Usage](#advanced-usage)
-  - [Subscribing to an OBS event](#subscribing-to-an-obs-event)
-  - [Trigger a shell command for an OBS event](#trigger-a-shell-command-for-an-obs-event)
+- [Subscribing to an OBS event](#subscribing-to-an-obs-event)
+- [Trigger a shell command for an OBS event](#trigger-a-shell-command-for-an-obs-event)
+
 
 ## Installation
 
@@ -454,6 +458,70 @@ Toggles the status of the stream output.
 Usage: obs stream toggle-stream [arguments]
 -h, --help    Print this usage information.
 ``` 
+
+
+
+### ui
+
+```sh
+obs ui --help
+```
+
+```text
+Commands that manipulate the OBS user interface.
+
+Usage: obs ui <subcommand> [arguments]
+-h, --help    Print this usage information.
+
+Available subcommands:
+  get-monitor-list          Gets a list of connected monitors and information about them.
+  get-studio-mode-enabled   Gets whether studio is enabled.
+  set-studio-mode-enabled   Enables or disables studio mode.
+```
+
+
+#### ui get-monitor-list 
+
+```sh
+obs ui get-monitor-list  --help
+```
+
+```text
+Gets a list of connected monitors and information about them.
+
+Usage: obs ui get-monitor-list [arguments]
+-h, --help    Print this usage information.
+``` 
+
+
+#### ui get-studio-mode-enabled
+
+```sh
+obs ui get-studio-mode-enabled  --help
+```
+
+```text
+Gets whether studio is enabled.
+
+Usage: obs ui get-studio-mode-enabled [arguments]
+-h, --help    Print this usage information.
+``` 
+
+
+#### ui set-studio-mode-enabled
+
+```sh
+obs ui set-studio-mode-enabled  --help
+```
+
+```text
+Enables or disables studio mode.
+
+Usage: obs ui set-studio-mode-enabled [arguments]
+-h, --help                Print this usage information.
+-m, --[no-]studio-mode    
+``` 
+
 
 ### version
 

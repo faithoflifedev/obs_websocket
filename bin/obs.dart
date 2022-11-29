@@ -34,7 +34,7 @@ void main(List<String> arguments) async {
     // ..addCommand(ObsSceneItemsCommand())
     // ..addCommand(ObsScenesCommand())
     ..addCommand(ObsStreamCommand())
-    // ..addCommand(ObsStudioModeCommand())
+    ..addCommand(ObsUiCommand())
     ..addCommand(ObsVersionCommand())
     ..run(arguments).catchError((error) {
       if (error is! UsageException) throw error;
