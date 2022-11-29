@@ -171,11 +171,78 @@ class SceneItems {
         requestData: sceneItemEnableStateChanged.toJson(),
       ));
 
-  // TODO:
-  Future<void> getSceneItemLocked() async => throw UnimplementedError();
+  /// Gets the lock state of a scene item.
+  ///
+  /// Scenes and Groups
+  ///
+  /// Complexity Rating: 3/5
+  /// Latest Supported RPC Version: 1
+  /// Added in v5.0.0
+  Future<bool> getSceneItemLocked({
+    required String sceneName,
+    required int sceneItemId,
+  }) async {
+    final response = await obsWebSocket.sendRequest(Request(
+      'GetSceneItemLocked',
+      requestData: {
+        'sceneName': sceneName,
+        'sceneItemId': sceneItemId,
+      },
+    ));
 
-  // TODO:
-  Future<void> setSceneItemLocked() async => throw UnimplementedError();
+    return BooleanResponse.fromJson(response!.responseData!).enabled;
+  }
+
+  /// Gets the lock state of a scene item.
+  ///
+  /// Scenes and Groups
+  ///
+  /// Complexity Rating: 3/5
+  /// Latest Supported RPC Version: 1
+  /// Added in v5.0.0
+  Future<bool> getLocked({
+    required String sceneName,
+    required int sceneItemId,
+  }) async =>
+      getSceneItemLocked(sceneName: sceneName, sceneItemId: sceneItemId);
+
+  /// Sets the lock state of a scene item.
+  ///
+  /// Scenes and Group
+  ///
+  /// Complexity Rating: 3/5
+  /// Latest Supported RPC Version: 1
+  /// Added in v5.0.0
+  Future<void> setSceneItemLocked({
+    required String sceneName,
+    required int sceneItemId,
+    required bool sceneItemLocked,
+  }) async =>
+      await obsWebSocket.sendRequest(Request(
+        'SetSceneItemLocked',
+        requestData: {
+          'sceneName': sceneName,
+          'sceneItemId': sceneItemId,
+          'sceneItemLocked': sceneItemLocked,
+        },
+      ));
+
+  /// Sets the lock state of a scene item.
+  ///
+  /// Scenes and Group
+  ///
+  /// Complexity Rating: 3/5
+  /// Latest Supported RPC Version: 1
+  /// Added in v5.0.0
+  Future<void> setLocked({
+    required String sceneName,
+    required int sceneItemId,
+    required bool sceneItemLocked,
+  }) async =>
+      setSceneItemLocked(
+          sceneName: sceneName,
+          sceneItemId: sceneItemId,
+          sceneItemLocked: sceneItemLocked);
 
   /// Gets the index position of a scene item in a scene.
   ///

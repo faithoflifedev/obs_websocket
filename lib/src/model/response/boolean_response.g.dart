@@ -12,6 +12,7 @@ BooleanResponse _$BooleanResponseFromJson(Map<String, dynamic> json) =>
       sceneItemEnabled: json['sceneItemEnabled'] as bool?,
       studioModeEnabled: json['studioModeEnabled'] as bool?,
       inputMuted: json['inputMuted'] as bool?,
+      sceneItemLocked: json['sceneItemLocked'] as bool?,
     );
 
 Map<String, dynamic> _$BooleanResponseToJson(BooleanResponse instance) =>
@@ -20,4 +21,5 @@ Map<String, dynamic> _$BooleanResponseToJson(BooleanResponse instance) =>
       'sceneItemEnabled': instance.sceneItemEnabled,
       'studioModeEnabled': instance.studioModeEnabled,
       'inputMuted': instance.inputMuted,
+      'sceneItemLocked': instance.sceneItemLocked,
     };

@@ -202,8 +202,8 @@ For any of the items that have an [x] from the list below, a high level helper c
   - [ ] [SetSceneItemTransform](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#setsceneitemtransform)
   - [x] [GetSceneItemEnabled](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#getsceneitemenabled) - Gets the enable state of a scene item.
   - [x] [SetSceneItemEnabled](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#setsceneitemenabled) - Sets the enable state of a scene item.
-  - [ ] [GetSceneItemLocked](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#getsceneitemlocked)
-  - [ ] [SetSceneItemLocked](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#setsceneitemlocked)
+  - [x] [GetSceneItemLocked](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#getsceneitemlocked) - Gets the lock state of a scene item.
+  - [x] [SetSceneItemLocked](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#setsceneitemlocked) - Sets the lock state of a scene item.
   - [x] [GetSceneItemIndex](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#getsceneitemindex) - Gets the index position of a scene item in a scene.
   - [x] [SetSceneItemIndex](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#setsceneitemindex) - Sets the index position of a scene item in a scene.
   - [ ] [GetSceneItemBlendMode](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#getsceneitemblendmode)
@@ -515,13 +515,14 @@ Global options:
 -p, --passwd=<string>             The OBS websocket password, only required if enabled in OBS
 
 Available commands:
-  authorize   Generate an authentication file for an OBS connection
-  config      Config Requests
-  general     General commands
-  listen      Generate OBS events to stdout
-  send        Send a low-level websocket request to OBS
-  sources     Commands that manipulate OBS sources
-  stream      Commands that manipulate OBS streams
-  ui          Commands that manipulate the OBS user interface.
-  version     Display the package name and version
+  authorize     Generate an authentication file for an OBS connection
+  config        Config Requests
+  general       General commands
+  listen        Generate OBS events to stdout
+  scene-items   Scene Items Requests
+  send          Send a low-level websocket request to OBS
+  sources       Commands that manipulate OBS sources
+  stream        Commands that manipulate OBS streams
+  ui            Commands that manipulate the OBS user interface.
+  version       Display the package name and version
 ```

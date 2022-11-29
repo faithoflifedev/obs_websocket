@@ -75,14 +75,16 @@ Global options:
 -p, --passwd=<string>             The OBS websocket password, only required if enabled in OBS
 
 Available commands:
-  authorize   Generate an authentication file for an OBS connection
-  config      Config Requests
-  general     General commands
-  listen      Generate OBS events to stdout
-  send        Send a low-level websocket request to OBS
-  sources     Commands that manipulate OBS sources
-  stream      Commands that manipulate OBS streaming
-  version     Display the package name version
+  authorize     Generate an authentication file for an OBS connection
+  config        Config Requests
+  general       General commands
+  listen        Generate OBS events to stdout
+  scene-items   Scene Items Requests
+  send          Send a low-level websocket request to OBS
+  sources       Commands that manipulate OBS sources
+  stream        Commands that manipulate OBS streams
+  ui            Commands that manipulate the OBS user interface.
+  version       Display the package name and version
 ```
 
 | command | description |
@@ -307,6 +309,69 @@ Usage: obs listen [arguments]
           [transitions]                 Subscription value to receive events in the Transitions category.
           [ui]                          Subscription value to receive events in the Ui category.
           [vendors]                     Subscription value to receive the VendorEvent event.
+```
+
+### scene-items
+
+```sh
+obs scene-items --help
+```
+
+```text
+Scene Items Requests
+
+Usage: obs scene-items <subcommand> [arguments]
+-h, --help    Print this usage information.
+
+Available subcommands:
+  get-scene-item-list     Gets the lock state of a scene item.
+  get-scene-item-locked   Gets the lock state of a scene item.
+  set-scene-item-locked   Sets the lock state of a scene item.
+```
+
+## scene-items get-scene-item-list
+
+```sh
+obs scene-items get-scene-item-list --help
+```
+
+```text
+Gets a list of all scene items in a scene.
+
+Usage: obs scene-items get-scene-item-list [arguments]
+-h, --help                               Print this usage information.
+-n, --scene-name=<string> (mandatory)    Name of the scene to get the items of
+```
+
+## scene-items get-scene-item-locked
+
+```sh
+obs scene-items get-scene-item-locked --help
+```
+
+```text
+Gets the lock state of a scene item.
+
+Usage: obs scene-items get-scene-item-locked [arguments]
+-h, --help                               Print this usage information.
+-n, --scene-name=<string> (mandatory)    Name of the scene the item is in
+-i, --scene-item-id=<int> (mandatory)    Numeric ID of the scene item
+```
+
+## scene-items set-scene-item-locked
+
+```sh
+obs scene-items set-scene-item-locked --help
+```
+
+```text
+Sets the lock state of a scene item.
+
+Usage: obs scene-items set-scene-item-locked [arguments]
+-h, --help                               Print this usage information.
+-n, --scene-name=<string> (mandatory)    Name of the scene the item is in
+-i, --scene-item-id=<int> (mandatory)    Numeric ID of the scene item
+-l, --[no-]scene-item-locked             New lock state of the scene item
 ```
 
 ### send

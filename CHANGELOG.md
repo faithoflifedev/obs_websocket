@@ -1,5 +1,21 @@
 # Changelog
 
+## 5.0.0+13
+
+* scene items
+  * GetSceneItemLocked
+  * SetSceneItemLocked
+* cli
+  * scene items
+    * GetSceneItemList
+    * GetSceneItemLocked
+    * SetSceneItemLocked
+* tests
+  * scene items
+    * GetSceneItemList
+    * GetSceneItemLocked
+    * SetSceneItemLocked
+
 ## 5.0.0+12
 
 * dependency bumps

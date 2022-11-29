@@ -11,22 +11,26 @@ class BooleanResponse {
   final bool? sceneItemEnabled;
   final bool? studioModeEnabled;
   final bool? inputMuted;
+  final bool? sceneItemLocked;
 
   bool get enabled {
-    final bool? check =
-        outputActive ?? sceneItemEnabled ?? studioModeEnabled ?? inputMuted;
+    final bool? check = outputActive ??
+        sceneItemEnabled ??
+        studioModeEnabled ??
+        inputMuted ??
+        sceneItemLocked;
 
     if (check == null) throw Exception();
 
     return check;
   }
 
-  BooleanResponse({
-    this.outputActive,
-    this.sceneItemEnabled,
-    this.studioModeEnabled,
-    this.inputMuted,
-  });
+  BooleanResponse(
+      {this.outputActive,
+      this.sceneItemEnabled,
+      this.studioModeEnabled,
+      this.inputMuted,
+      this.sceneItemLocked});
 
   factory BooleanResponse.fromJson(Map<String, dynamic> json) =>
       _$BooleanResponseFromJson(json);

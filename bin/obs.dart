@@ -31,7 +31,7 @@ void main(List<String> arguments) async {
     ..addCommand(ObsSourcesCommand())
     // ..addCommand(ObsProfilesCommand())
     // ..addCommand(ObsRecordingCommand())
-    // ..addCommand(ObsSceneItemsCommand())
+    ..addCommand(ObsSceneItemsCommand())
     // ..addCommand(ObsScenesCommand())
     ..addCommand(ObsStreamCommand())
     ..addCommand(ObsUiCommand())
