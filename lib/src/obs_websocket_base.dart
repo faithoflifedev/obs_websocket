@@ -15,6 +15,8 @@ class ObsWebSocket with UiLoggy {
 
   final String? password;
 
+  final Function? onDone;
+
   final List<Function> fallbackHandlers = [];
 
   final eventHandlers = <String, List<Function>>{};
@@ -94,7 +96,7 @@ class ObsWebSocket with UiLoggy {
   ObsWebSocket(
     this.websocketChannel, {
     this.password,
-    Function()? onDone,
+    this.onDone,
     Function? fallbackEventHandler,
   }) : broadcastStream = websocketChannel.stream.asBroadcastStream() {
     _config = request.Config(this);
@@ -344,6 +346,8 @@ class ObsWebSocket with UiLoggy {
 
   ///Before execution finished the websocket needs to be closed
   Future<void> close() async {
+    if (onDone != null) onDone!();
+
     await websocketChannel.sink.close(status.normalClosure);
   }
 

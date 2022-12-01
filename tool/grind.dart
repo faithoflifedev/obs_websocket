@@ -7,6 +7,12 @@ main(args) async {
   grind(args);
 }
 
+@Task('meta')
+@Depends('pt-meta')
+meta() {
+  log('meta done');
+}
+
 @DefaultTask('Just keeping it real')
 @Depends('pt-commit', 'pt-publish', 'pt-homebrew')
 done() {

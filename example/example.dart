@@ -12,6 +12,7 @@ main() async {
     logOptions: LogOptions(LogLevel.debug),
     fallbackEventHandler: (Event event) =>
         print('type: ${event.eventType} data: ${event.eventData}'),
+    onDone: () => print('done'),
   );
 
   var res = await obs.outputs.toggleReplayBuffer();

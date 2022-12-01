@@ -1,5 +1,9 @@
 # Changelog
 
+## 5.0.0+14
+
+* #27 - onDone functionality returned
+
 ## 5.0.0+13
 
 * scene items
