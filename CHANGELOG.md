@@ -6,10 +6,6 @@
 
 ## 5.0.0+14
 
-* fix publish_tools dependency
-
-## 5.0.0+14
-
 * #27 - onDone functionality returned
 
 ## 5.0.0+13
