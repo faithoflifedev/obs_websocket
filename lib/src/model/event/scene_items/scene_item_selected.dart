@@ -5,6 +5,7 @@ import 'package:obs_websocket/obs_websocket.dart' show SceneItem;
 
 part 'scene_item_selected.g.dart';
 
+/// A scene item has been selected in the Ui.
 @JsonSerializable()
 class SceneItemSelected extends SceneItem {
   SceneItemSelected({

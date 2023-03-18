@@ -7,6 +7,7 @@ part 'scene_item.g.dart';
 
 @JsonSerializable()
 class SceneItem extends Scene {
+  /// Numeric ID of the scene item
   final int sceneItemId;
 
   SceneItem({

@@ -4,9 +4,13 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'stream_state_changed.g.dart';
 
+/// The state of the stream output has changed.
 @JsonSerializable()
 class StreamStateChanged {
+  /// Whether the output is active
   final bool outputActive;
+
+  /// The specific state of the output
   final String outputState;
 
   StreamStateChanged({

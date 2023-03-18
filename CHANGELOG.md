@@ -1,5 +1,19 @@
 # Changelog
 
+## 5.1.0
+
+* stream
+  * SendStreamCaption
+* config
+  * GetRecordDirectory
+* ui event
+  * ScreenshotSaved
+* commands
+  * stream
+    * SendStreamCaption
+  * config
+    * GetRecordDirectory
+
 ## 5.0.0+15
 
 * fix publish_tools dependency

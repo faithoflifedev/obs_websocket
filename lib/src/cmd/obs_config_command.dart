@@ -19,6 +19,7 @@ class ObsConfigCommand extends Command {
     addSubcommand(ObsSetVideoSettingsCommand());
     addSubcommand(ObsGetStreamServiceSettingsCommand());
     addSubcommand(ObsSetStreamServiceSettingsCommand());
+    addSubcommand(ObsGetRecordDirectoryCommand());
     // addSubcommand(ObsGetHotkeyListCommand());
     // addSubcommand(ObsTriggerHotkeyByNameCommand());
     // addSubcommand(ObsTriggerHotkeyByKeySequenceCommand());
@@ -162,5 +163,24 @@ class ObsSetStreamServiceSettingsCommand extends ObsHelperCommand {
             json.decode(argResults!['stream-service-settings']));
 
     obs.close();
+  }
+}
+
+/// Gets the current directory that the record output is set to.
+class ObsGetRecordDirectoryCommand extends ObsHelperCommand {
+  @override
+  String get description =>
+      'Gets the current directory that the record output is set to.';
+
+  @override
+  String get name => 'get-record-directory';
+
+  @override
+  void run() async {
+    await initializeObs();
+
+    final result = await obs.config.getRecordDirectory();
+
+    print(result.recordDirectory);
   }
 }

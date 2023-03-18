@@ -4,6 +4,7 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'profile_parameter_response.g.dart';
 
+/// Gets the current directory that the record output is set to.
 @JsonSerializable()
 class ProfileParameterResponse {
   final String parameterValue;

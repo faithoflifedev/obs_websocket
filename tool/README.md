@@ -231,7 +231,7 @@ For any of the items that have an [x] from the list below, a high level helper c
   - [x] [ToggleStream](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#togglestream) - Toggles the status of the stream output.
   - [x] [StartStream](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#startstream) - Starts the stream output.
   - [x] [StopStream](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#stopstream) - Stops the stream output.
-  - [ ] [SendStreamCaption](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#sendstreamcaption)
+  - [x] [SendStreamCaption](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#sendstreamcaption) - Sends CEA-608 caption text over the stream output.
 - [Record Requests](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#record-requests) - `obsWebSocket.record`
   - [x] [GetRecordStatus](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#getrecordstatus) - Gets the status of the record output.
   - [x] [ToggleRecord](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#togglerecord) - Toggles the status of the record output.
@@ -450,7 +450,8 @@ if (!sceneItemEnabled) {
   - [ ] [MediaInputActionTriggered](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#mediainputactiontriggered)
 - [Ui Events](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#ui-events)
   - [x] [StudioModeStateChanged](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#studiomodestatechanged) - Studio mode has been enabled or disabled.
-
+  - [x] [ScreenshotSaved](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#screenshotsaved) - A screenshot has been saved. 
+  
 ### Handling events not yet supported
 
 You can supply a `fallbackEvent` to the `ObsWebSocket` constructor to handle events that are not yet supported directly in the code.  The following code snippet provides an example of this.

@@ -232,4 +232,24 @@ class Config {
           'streamServiceSettings': streamServiceSettings,
         },
       ));
+
+  /// Gets the current directory that the record output is set to.
+  ///
+  /// - Complexity Rating: 1/5
+  /// - Latest Supported RPC Version: 1
+  /// - Added in v5.0.0
+  Future<RecordDirectoryResponse> getRecordDirectory() async =>
+      await recordDirectory();
+
+  /// Gets the current directory that the record output is set to.
+  ///
+  /// - Complexity Rating: 1/5
+  /// - Latest Supported RPC Version: 1
+  /// - Added in v5.0.0
+  Future<RecordDirectoryResponse> recordDirectory() async {
+    final response =
+        await obsWebSocket.sendRequest(Request('GetRecordDirectory'));
+
+    return RecordDirectoryResponse.fromJson(response!.responseData!);
+  }
 }

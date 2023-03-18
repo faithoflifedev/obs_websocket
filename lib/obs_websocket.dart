@@ -31,6 +31,7 @@ export 'src/model/response/monitor_list_response.dart';
 export 'src/model/response/profile_list_response.dart';
 export 'src/model/response/profile_parameter_response.dart';
 export 'src/model/response/record_status_response.dart';
+export 'src/model/response/record_directory_response.dart';
 export 'src/model/response/scene_collection_list_response.dart';
 export 'src/model/response/scene_item_list_response.dart';
 export 'src/model/response/scene_list_response.dart';

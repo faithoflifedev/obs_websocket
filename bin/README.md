@@ -2,38 +2,44 @@
 # Easy OBS WebSocket CLI
 
 A command line interface for controlling OBS with cli commands
+
 - [Installation](#installation)
 - [Quick start](#quick-start)
 - [Available Commands](#available-commands)
-- [authorize](#authorize)
-- [config](#config)
-  - [config get-stream-service-settings](#config-get-stream-service-settings)
-  - [config get-video-settings](#config-get-video-settings)
-  - [config set-stream-service-settings](#config-set-stream-service-settings)
-  - [config set-video-settings](#config-set-video-settings)
-- [general](#general)
-  - [general get-stats](#general-get-stats)
-  - [general get-version](#general-get-version)
-- [listen](#listen)
-- [send](#send)
-- [sources](#sources)
-  - [sources get-source-active](#sources-get-source-active)
-  - [sources get-source-screenshot](#sources-get-source-screenshot)
-  - [sources save-source-screenshot](#sources-save-source-screenshot)
-- [stream](#stream)
-  - [stream get-stream-status](#stream-get-stream-status)
-  - [stream start-streaming](#stream-start-streaming)
-  - [stream stop-streaming](#stream-stop-streaming)
-  - [stream toggle-stream](#stream-toggle-stream)
-- [ui](#ui)
-  - [ui get-monitor-list](#ui-get-monitor-list)
-  - [ui get-studio-mode-enabled](#ui-get-studio-mode-enabled)
-  - [ui set-studio-mode-enabled](#ui-set-studio-mode-enabled)
-- [version](#version)
+  - [authorize](#authorize)
+  - [config](#config)
+    - [config get-record-directory](#config-get-record-directory)
+    - [config get-stream-service-settings](#config-get-stream-service-settings)
+    - [config get-video-settings](#config-get-video-settings)
+    - [config set-stream-service-settings](#config-set-stream-service-settings)
+    - [config set-video-settings](#config-set-video-settings)
+  - [general](#general)
+    - [general get-stats](#general-get-stats)
+    - [general get-version](#general-get-version)
+  - [listen](#listen)
+  - [scene-items](#scene-items)
+- [scene-items get-scene-item-list](#scene-items-get-scene-item-list)
+- [scene-items get-scene-item-locked](#scene-items-get-scene-item-locked)
+- [scene-items set-scene-item-locked](#scene-items-set-scene-item-locked)
+  - [send](#send)
+  - [sources](#sources)
+    - [sources get-source-active](#sources-get-source-active)
+    - [sources get-source-screenshot](#sources-get-source-screenshot)
+    - [sources save-source-screenshot](#sources-save-source-screenshot)
+  - [stream](#stream)
+    - [stream get-stream-status](#stream-get-stream-status)
+    - [stream send-stream-caption](#stream-send-stream-caption)
+    - [stream start-streaming](#stream-start-streaming)
+    - [stream stop-streaming](#stream-stop-streaming)
+    - [stream toggle-stream](#stream-toggle-stream)
+  - [ui](#ui)
+    - [ui get-monitor-list](#ui-get-monitor-list)
+    - [ui get-studio-mode-enabled](#ui-get-studio-mode-enabled)
+    - [ui set-studio-mode-enabled](#ui-set-studio-mode-enabled)
+  - [version](#version)
 - [Advanced Usage](#advanced-usage)
-- [Subscribing to an OBS event](#subscribing-to-an-obs-event)
-- [Trigger a shell command for an OBS event](#trigger-a-shell-command-for-an-obs-event)
-
+  - [Subscribing to an OBS event](#subscribing-to-an-obs-event)
+  - [Trigger a shell command for an OBS event](#trigger-a-shell-command-for-an-obs-event)
 
 ## Installation
 
@@ -170,11 +176,26 @@ Usage: obs config <subcommand> [arguments]
 -h, --help    Print this usage information.
 
 Available subcommands:
+  get-record-directory          Gets the current directory that the record output is set to.
   get-stream-service-settings   Gets the current stream service settings (stream destination).
   get-video-settings            Gets the current video settings.
   set-stream-service-settings   Sets the current stream service settings (stream destination).
   set-video-settings            Sets the current video settings.
 ```
+
+#### config get-record-directory
+
+```sh
+obs config get-record-directory --help
+```
+
+```text
+Gets the current directory that the record output is set to.
+
+Usage: obs config get-record-directory [arguments]
+-h, --help    Print this usage information.
+```
+
 
 #### config get-stream-service-settings
 
@@ -186,6 +207,7 @@ obs config get-stream-service-settings --help
 Gets the current stream service settings (stream destination).
 
 Usage: obs config get-stream-service-settings [arguments]
+-h, --help    Print this usage information.
 ```
 
 #### config get-video-settings
@@ -198,6 +220,7 @@ obs config get-video-settings --help
 Gets the current video settings.
 
 Usage: obs config get-video-settings [arguments]
+-h, --help    Print this usage information.
 ```
 
 #### config set-stream-service-settings
@@ -465,10 +488,11 @@ Usage: obs stream <subcommand> [arguments]
 -h, --help    Print this usage information.
 
 Available subcommands:
-  get-stream-status   Gets the status of the stream output.
-  start-streaming     Starts the stream output.
-  stop-streaming      Stops the stream output.
-  toggle-stream       Toggles the status of the stream output.
+  get-stream-status     Gets the status of the stream output.
+  send-stream-caption   Sends CEA-608 caption text over the stream output.
+  start-streaming       Starts the stream output.
+  stop-streaming        Stops the stream output.
+  toggle-stream         Toggles the status of the stream output.
 ```
 
 #### stream get-stream-status
@@ -482,6 +506,20 @@ Gets the status of the stream output.
 
 Usage: obs stream get-stream-status [arguments]
 -h, --help    Print this usage information.
+```
+
+#### stream send-stream-caption
+
+```sh
+obs stream send-stream-caption --help
+```
+
+```text
+Sends CEA-608 caption text over the stream output.
+
+Usage: obs stream send-stream-caption [arguments]
+-h, --help                                 Print this usage information.
+    --caption-Text=<string> (mandatory)    Caption text
 ```
 
 #### stream start-streaming

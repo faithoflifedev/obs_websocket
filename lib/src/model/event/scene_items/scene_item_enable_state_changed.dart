@@ -4,10 +4,16 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'scene_item_enable_state_changed.g.dart';
 
+/// A scene item's enable state has changed.
 @JsonSerializable()
 class SceneItemEnableStateChanged {
+  /// Name of the scene the item is in
   final String sceneName;
+
+  /// Numeric ID of the scene item
   final int sceneItemId;
+
+  /// Whether the scene item is enabled (visible)
   final bool sceneItemEnabled;
 
   SceneItemEnableStateChanged({

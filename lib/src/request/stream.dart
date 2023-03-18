@@ -80,6 +80,14 @@ class Stream {
   Future<void> stop() async =>
       await obsWebSocket.sendRequest(Request('StopStream'));
 
-  // TODO:
-  Future<void> sendStreamCaption() async => throw UnimplementedError();
+  /// Sends CEA-608 caption text over the stream output.
+  ///
+  /// - Complexity Rating: 2/5
+  /// - Latest Supported RPC Version: 1
+  /// - Added in v5.0.0
+  Future<void> sendStreamCaption(String captionText) async =>
+      await obsWebSocket.sendRequest(Request(
+        'SendStreamCaption',
+        requestData: {'captionText': captionText},
+      ));
 }

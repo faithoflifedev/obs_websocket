@@ -14,6 +14,7 @@ class ObsStreamCommand extends Command {
     addSubcommand(ObsToggleStreamCommand());
     addSubcommand(ObsStartStreamCommand());
     addSubcommand(ObsStopStreamCommand());
+    addSubcommand(ObsSendStreamCaptionCommand());
   }
 }
 
@@ -86,6 +87,30 @@ class ObsStopStreamCommand extends ObsHelperCommand {
     await initializeObs();
 
     await obs.stream.stopStream();
+
+    obs.close();
+  }
+}
+
+/// Sends CEA-608 caption text over the stream output.
+class ObsSendStreamCaptionCommand extends ObsHelperCommand {
+  @override
+  String get description =>
+      'Sends CEA-608 caption text over the stream output.';
+
+  @override
+  String get name => 'send-stream-caption';
+
+  ObsSendStreamCaptionCommand() {
+    argParser.addOption('caption-Text',
+        mandatory: true, valueHelp: 'string', help: 'Caption text');
+  }
+
+  @override
+  void run() async {
+    await initializeObs();
+
+    await obs.stream.sendStreamCaption(argResults!['caption-Text']);
 
     obs.close();
   }
