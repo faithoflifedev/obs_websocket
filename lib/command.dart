@@ -9,6 +9,7 @@ export 'src/cmd/obs_general_command.dart';
 export 'src/cmd/obs_helper_command.dart';
 export 'src/cmd/obs_listen_command.dart';
 export 'src/cmd/obs_scene_items_command.dart';
+export 'src/cmd/obs_scenes_command.dart';
 export 'src/cmd/obs_send_command.dart';
 export 'src/cmd/obs_sources_command.dart';
 export 'src/cmd/obs_stream_command.dart';

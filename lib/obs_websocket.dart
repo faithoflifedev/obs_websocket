@@ -35,6 +35,7 @@ export 'src/model/response/record_directory_response.dart';
 export 'src/model/response/scene_collection_list_response.dart';
 export 'src/model/response/scene_item_list_response.dart';
 export 'src/model/response/scene_list_response.dart';
+export 'src/model/response/scene_scene_transition_override_response.dart';
 export 'src/model/response/source_active_response.dart';
 export 'src/model/response/source_screenshot_response.dart';
 export 'src/model/response/stats_response.dart';

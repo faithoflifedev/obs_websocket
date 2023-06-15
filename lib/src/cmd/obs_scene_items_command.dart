@@ -1,7 +1,7 @@
 import 'package:args/command_runner.dart';
 import 'package:obs_websocket/command.dart';
 
-/// Config Requests
+/// SceneItem Requests
 class ObsSceneItemsCommand extends Command {
   @override
   String get description => 'Scene Items Requests';

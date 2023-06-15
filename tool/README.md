@@ -145,8 +145,8 @@ For any of the items that have an [x\] from the list below, a high level helper 
   - [x\] [CreateScene](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#createscene) - Creates a new scene in OBS.
   - [x\] [RemoveScene](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#removescene) - Removes a scene from OBS.
   - [x\] [SetSceneName](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#setscenename) - Sets the name of a scene (rename).
-  - [ \] [GetSceneSceneTransitionOverride](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#getscenescenetransitionoverride)
-  - [ \] [SetSceneSceneTransitionOverride](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#setscenescenetransitionoverride)
+  - [x\] [GetSceneSceneTransitionOverride](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#getscenescenetransitionoverride) - Gets the scene transition overridden for a scene.
+  - [x\] [SetSceneSceneTransitionOverride](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#setscenescenetransitionoverride) - Sets the scene transition overridden for a scene.
 - [Inputs Requests](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#inputs-1-requests) - `obsWebSocket.inputs`
   - [ \] [GetInputList](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#getinputlist)
   - [ \] [GetInputKindList](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#getinputkindlist)

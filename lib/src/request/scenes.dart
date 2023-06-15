@@ -188,4 +188,34 @@ class Scenes {
         'SetSceneName',
         requestData: {'sceneName': sceneName},
       ));
+
+  /// Gets the scene transition overridden for a scene.
+  ///
+  /// Complexity Rating: 2/5
+  /// Latest Supported RPC Version: 1
+  /// Added in v5.0.0
+  Future<SceneSceneTransitionOverrideResponse> getSceneSceneTransitionOverride(
+      String sceneName) async {
+    final response = await obsWebSocket.sendRequest(Request(
+      'GetSceneSceneTransitionOverride',
+      requestData: {'sceneName': sceneName},
+    ));
+
+    return SceneSceneTransitionOverrideResponse.fromJson(
+        response!.responseData!);
+  }
+
+  /// Sets the scene transition overridden for a scene.
+  ///
+  /// Complexity Rating: 2/5
+  /// Latest Supported RPC Version: 1
+  /// Added in v5.0.0
+  Future<void> setSceneSceneTransitionOverride(String sceneName,
+          {String? transitionName, int? transitionDuration}) async =>
+      await obsWebSocket
+          .sendRequest(Request('SetSceneSceneTransitionOverride', requestData: {
+        'sceneName': sceneName,
+        'transitionName': transitionName,
+        'transitionDuration': transitionDuration,
+      }));
 }

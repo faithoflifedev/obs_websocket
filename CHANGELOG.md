@@ -1,5 +1,16 @@
 # Changelog
 
+## 5.1.0+2
+
+* Scenes
+  * GetSceneSceneTransitionOverride
+  * SetSceneSceneTransitionOverride
+* CLI Commands
+  * scenes
+    * get-current-program-scene
+    * get-group-list
+    * get-scenes-list
+
 ## 5.1.0+1
 
 * README
