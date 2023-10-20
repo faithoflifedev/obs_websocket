@@ -1,5 +1,10 @@
 # Changelog
 
+## 5.1.0+3
+
+* readme update
+* dependency bump
+
 ## 5.1.0+2
 
 * Scenes

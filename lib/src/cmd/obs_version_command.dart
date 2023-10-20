@@ -1,5 +1,5 @@
 import 'package:args/command_runner.dart';
-import 'package:obs_websocket/src/util/meta.dart';
+import 'package:obs_websocket/meta.dart';
 
 /// Generate a refresh token used to authenticate the command line API requests
 class ObsVersionCommand extends Command {
