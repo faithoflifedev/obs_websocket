@@ -11,10 +11,9 @@ class SceneItem extends Scene {
   final int sceneItemId;
 
   SceneItem({
-    required String sceneName,
+    required super.sceneName,
     required this.sceneItemId,
   }) : super(
-          sceneName: sceneName,
           sceneIndex: sceneItemId,
         );
 

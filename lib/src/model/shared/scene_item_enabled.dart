@@ -10,10 +10,9 @@ class SceneItemEnabled extends Scene {
   final int sceneItemId;
 
   SceneItemEnabled({
-    required String sceneName,
+    required super.sceneName,
     required this.sceneItemId,
   }) : super(
-          sceneName: sceneName,
           sceneIndex: sceneItemId,
         );
 

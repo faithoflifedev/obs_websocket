@@ -4,7 +4,6 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'record_directory_response.g.dart';
 
-/// [imageData] Base64-encoded screenshot
 @JsonSerializable()
 class RecordDirectoryResponse {
   /// Output directory

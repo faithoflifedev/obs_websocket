@@ -9,12 +9,9 @@ part 'scene_item_selected.g.dart';
 @JsonSerializable()
 class SceneItemSelected extends SceneItem {
   SceneItemSelected({
-    required String sceneName,
-    required int sceneItemId,
-  }) : super(
-          sceneName: sceneName,
-          sceneItemId: sceneItemId,
-        );
+    required super.sceneName,
+    required super.sceneItemId,
+  });
 
   factory SceneItemSelected.fromJson(Map<String, dynamic> json) =>
       _$SceneItemSelectedFromJson(json);
