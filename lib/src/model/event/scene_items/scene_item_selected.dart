@@ -1,13 +1,13 @@
-import 'dart:convert';
-
 import 'package:json_annotation/json_annotation.dart';
 import 'package:obs_websocket/obs_websocket.dart' show SceneItem;
+
+import '../base_event.dart';
 
 part 'scene_item_selected.g.dart';
 
 /// A scene item has been selected in the Ui.
 @JsonSerializable()
-class SceneItemSelected extends SceneItem {
+class SceneItemSelected extends SceneItem implements BaseEvent {
   SceneItemSelected({
     required super.sceneName,
     required super.sceneItemId,
@@ -18,7 +18,4 @@ class SceneItemSelected extends SceneItem {
 
   @override
   Map<String, dynamic> toJson() => _$SceneItemSelectedToJson(this);
-
-  @override
-  String toString() => json.encode(toJson());
 }

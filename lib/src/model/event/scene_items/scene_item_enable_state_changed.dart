@@ -1,12 +1,12 @@
-import 'dart:convert';
-
 import 'package:json_annotation/json_annotation.dart';
+
+import '../base_event.dart';
 
 part 'scene_item_enable_state_changed.g.dart';
 
 /// A scene item's enable state has changed.
 @JsonSerializable()
-class SceneItemEnableStateChanged {
+class SceneItemEnableStateChanged implements BaseEvent {
   /// Name of the scene the item is in
   final String sceneName;
 
@@ -25,8 +25,6 @@ class SceneItemEnableStateChanged {
   factory SceneItemEnableStateChanged.fromJson(Map<String, dynamic> json) =>
       _$SceneItemEnableStateChangedFromJson(json);
 
-  Map<String, dynamic> toJson() => _$SceneItemEnableStateChangedToJson(this);
-
   @override
-  String toString() => json.encode(toJson());
+  Map<String, dynamic> toJson() => _$SceneItemEnableStateChangedToJson(this);
 }

@@ -1,20 +1,15 @@
-import 'dart:convert';
-
 import 'package:json_annotation/json_annotation.dart';
 
-import 'abstract_event.dart';
+import '../base_event.dart';
 
 part 'current_scene_collection_changing.g.dart';
 
 /// The current scene collection has begun changing.
 ///
 /// Note: We recommend using this event to trigger a pause of all polling requests, as performing any requests during a scene collection change is considered undefined behavior and can cause crashes!
-///
-/// Complexity Rating: 1/5
-/// Latest Supported RPC Version: 1
-/// Added in v5.0.0
 @JsonSerializable()
 class CurrentSceneCollectionChanging implements BaseEvent {
+  /// Name of the current scene collection
   final String sceneCollectionName;
 
   CurrentSceneCollectionChanging({required this.sceneCollectionName});
@@ -24,7 +19,4 @@ class CurrentSceneCollectionChanging implements BaseEvent {
 
   @override
   Map<String, dynamic> toJson() => _$CurrentSceneCollectionChangingToJson(this);
-
-  @override
-  String toString() => json.encode(toJson());
 }

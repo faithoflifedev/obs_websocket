@@ -1,5 +1,11 @@
 # Changelog
 
+## 5.1.0+5
+
+* more events
+* dependency bump
+* less code duplication
+
 ## 5.1.0+4
 
 * dart fix

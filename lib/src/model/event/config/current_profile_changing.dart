@@ -1,18 +1,13 @@
-import 'dart:convert';
-
 import 'package:json_annotation/json_annotation.dart';
 
-import 'abstract_event.dart';
+import '../base_event.dart';
 
 part 'current_profile_changing.g.dart';
 
 /// The current profile has begun changing.
-///
-/// Complexity Rating: 1/5
-/// Latest Supported RPC Version: 1
-/// Added in v5.0.0
 @JsonSerializable()
 class CurrentProfileChanging implements BaseEvent {
+  /// Name of the current profile
   final String profileName;
 
   CurrentProfileChanging({required this.profileName});
@@ -22,7 +17,4 @@ class CurrentProfileChanging implements BaseEvent {
 
   @override
   Map<String, dynamic> toJson() => _$CurrentProfileChangingToJson(this);
-
-  @override
-  String toString() => json.encode(toJson());
 }

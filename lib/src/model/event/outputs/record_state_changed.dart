@@ -1,12 +1,12 @@
-import 'dart:convert';
-
 import 'package:json_annotation/json_annotation.dart';
+
+import '../base_event.dart';
 
 part 'record_state_changed.g.dart';
 
 /// The state of the record output has changed.
 @JsonSerializable()
-class RecordStateChanged {
+class RecordStateChanged implements BaseEvent {
   /// Whether the output is active
   final bool outputActive;
 
@@ -25,8 +25,6 @@ class RecordStateChanged {
   factory RecordStateChanged.fromJson(Map<String, dynamic> json) =>
       _$RecordStateChangedFromJson(json);
 
-  Map<String, dynamic> toJson() => _$RecordStateChangedToJson(this);
-
   @override
-  String toString() => json.encode(toJson());
+  Map<String, dynamic> toJson() => _$RecordStateChangedToJson(this);
 }
