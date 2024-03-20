@@ -1,5 +1,11 @@
 # Changelog
 
+## 5.1.0+6
+
+* Media Inputs
+  * OffsetMediaInputCursor
+* dependency bump
+
 ## 5.1.0+5
 
 * more events

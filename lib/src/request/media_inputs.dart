@@ -25,4 +25,31 @@ class MediaInputs {
         'SetMediaInputCursor',
         requestData: {'inputName': inputName, 'mediaCursor': mediaCursor},
       ));
+
+  /// Offsets the current cursor position of a media input by the specified value.
+  ///
+  /// This request does not perform bounds checking of the cursor position.
+  ///
+  /// - Complexity Rating: 2/5
+  /// - Latest Supported RPC Version: 1
+  /// - Added in v5.0.0
+  /// **Request Fields:**
+  ///
+  /// | Name | Type  | Description | Value Restrictions | ?Default Behavior |
+  /// | ---- | :---: | ----------- | :----------------: | ----------------- |
+  /// | [inputName] | String | Name of the media input | None | Unknown |
+  /// | [inputName] | String | UUID of the media input | None | Unknown |
+  /// | [mediaCursorOffset] | Number | Value to offset the current cursor position by | None | N/A |
+  Future<void> offsetMediaInputCursor(
+          {String? inputName,
+          String? inputUuid,
+          required int mediaCursorOffset}) async =>
+      await obsWebSocket.sendRequest(Request(
+        'OffsetMediaInputCursor',
+        requestData: {
+          'inputName': inputName,
+          'inputUuid': inputUuid,
+          'mediaCursor': mediaCursorOffset,
+        }..removeWhere((key, value) => value == null),
+      ));
 }
