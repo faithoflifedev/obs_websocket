@@ -1,5 +1,10 @@
 # Changelog
 
+## 5.1.0+7
+
+* updated README
+* dependency bump
+
 ## 5.1.0+6
 
 * Media Inputs

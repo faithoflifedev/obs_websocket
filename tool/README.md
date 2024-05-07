@@ -6,6 +6,7 @@ This package gives access to all of the methods and events outlined by the [obs-
 [![pub package](https://img.shields.io/pub/v/obs_websocket.svg)](https://pub.dartlang.org/packages/obs_websocket)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
+
 - [Breaking changes from v2.4.3 (obs-websocket v4.9.1 protocol)](#breaking-changes-from-v243-obs-websocket-v491-protocol)
 - [Getting Started](#getting-started)
   - [Requirements](#requirements)
@@ -23,8 +24,10 @@ This package gives access to all of the methods and events outlined by the [obs-
   - [Handling events not yet supported](#handling-events-not-yet-supported)
 - [Closing the websocket](#closing-the-websocket)
 - [obs\_websocket cli (OBS at the command prompt)](#obs_websocket-cli-obs-at-the-command-prompt)
+- [Interesting Projects](#interesting-projects)
 - [Contributors](#contributors)
 - [Contributing](#contributing)
+
 
 [![Build Status](https://github.com/faithoflifedev/obs_websocket/workflows/Dart/badge.svg)](https://github.com/faithoflifedev/obs_websocket/actions) [![github last commit](https://shields.io/github/last-commit/faithoflifedev/obs_websocket)](https://shields.io/github/last-commit/faithoflifedev/obs_websocket) [![github build](https://img.shields.io/github/actions/workflow/status/faithoflifedev/obs_websocket/dart.yml?branch=main)](https://shields.io/github/workflow/status/faithoflifedev/obs_websocket/Dart) [![github issues](https://shields.io/github/issues/faithoflifedev/obs_websocket)](https://shields.io/github/issues/faithoflifedev/obs_websocket)
 
@@ -529,6 +532,11 @@ Available commands:
   ui            Commands that manipulate the OBS user interface.
   version       Display the package name and version
 ```
+
+## Interesting Projects
+
+[Using Flutter as a source in OBS](https://www.aloisdeniel.com/blog/using-flutter-as-a-source-in-obs?source=post_page-----1b1d9bf0106e--------------------------------) - a blog post by Aloïs Deniel
+were he shows a simple way to use a Fluttter application as a custom source in OBS on macOS.  He uses it to create animated scenes on his live streams on Twitch: a custom Flutter widget is used for each scene and is kept in sync with OBS thanks to the OBS websocket protocol.
 
 
 ## Contributors
