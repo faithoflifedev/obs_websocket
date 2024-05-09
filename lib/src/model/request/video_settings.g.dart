@@ -8,12 +8,12 @@ part of 'video_settings.dart';
 
 VideoSettings _$VideoSettingsFromJson(Map<String, dynamic> json) =>
     VideoSettings(
-      fpsNumerator: json['fpsNumerator'] as int?,
-      fpsDenominator: json['fpsDenominator'] as int?,
-      baseWidth: json['baseWidth'] as int?,
-      baseHeight: json['baseHeight'] as int?,
-      outputWidth: json['outputWidth'] as int?,
-      outputHeight: json['outputHeight'] as int?,
+      fpsNumerator: (json['fpsNumerator'] as num?)?.toInt(),
+      fpsDenominator: (json['fpsDenominator'] as num?)?.toInt(),
+      baseWidth: (json['baseWidth'] as num?)?.toInt(),
+      baseHeight: (json['baseHeight'] as num?)?.toInt(),
+      outputWidth: (json['outputWidth'] as num?)?.toInt(),
+      outputHeight: (json['outputHeight'] as num?)?.toInt(),
     );
 
 Map<String, dynamic> _$VideoSettingsToJson(VideoSettings instance) =>

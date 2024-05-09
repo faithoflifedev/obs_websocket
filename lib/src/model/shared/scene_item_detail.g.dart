@@ -12,8 +12,8 @@ SceneItemDetail _$SceneItemDetailFromJson(Map<String, dynamic> json) =>
       isGroup: json['isGroup'] as bool?,
       sceneItemBlendMode: json['sceneItemBlendMode'] as String,
       sceneItemEnabled: json['sceneItemEnabled'] as bool,
-      sceneItemId: json['sceneItemId'] as int,
-      sceneItemIndex: json['sceneItemIndex'] as int,
+      sceneItemId: (json['sceneItemId'] as num).toInt(),
+      sceneItemIndex: (json['sceneItemIndex'] as num).toInt(),
       sceneItemLocked: json['sceneItemLocked'] as bool,
       sceneItemTransform: Transform.fromJson(
           json['sceneItemTransform'] as Map<String, dynamic>),

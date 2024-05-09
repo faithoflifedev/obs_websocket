@@ -24,6 +24,7 @@ void main(List<String> arguments) async {
         valueHelp: 'string',
         help: 'The OBS websocket password, only required if enabled in OBS')
     ..addCommand(ObsAuthorizeCommand())
+    ..addCommand(ObsInputsCommand())
     ..addCommand(ObsListenCommand())
     ..addCommand(ObsGeneralCommand())
     ..addCommand(ObsConfigCommand())

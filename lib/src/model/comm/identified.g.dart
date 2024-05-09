@@ -7,7 +7,7 @@ part of 'identified.dart';
 // **************************************************************************
 
 Identified _$IdentifiedFromJson(Map<String, dynamic> json) => Identified(
-      negotiatedRpcVersion: json['negotiatedRpcVersion'] as int,
+      negotiatedRpcVersion: (json['negotiatedRpcVersion'] as num).toInt(),
     );
 
 Map<String, dynamic> _$IdentifiedToJson(Identified instance) =>

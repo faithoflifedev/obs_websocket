@@ -7,12 +7,12 @@ part of 'monitor.dart';
 // **************************************************************************
 
 Monitor _$MonitorFromJson(Map<String, dynamic> json) => Monitor(
-      monitorHeight: json['monitorHeight'] as int,
-      monitorIndex: json['monitorIndex'] as int,
+      monitorHeight: (json['monitorHeight'] as num).toInt(),
+      monitorIndex: (json['monitorIndex'] as num).toInt(),
       monitorName: json['monitorName'] as String,
-      monitorPositionX: json['monitorPositionX'] as int,
-      monitorPositionY: json['monitorPositionY'] as int,
-      monitorWidth: json['monitorWidth'] as int,
+      monitorPositionX: (json['monitorPositionX'] as num).toInt(),
+      monitorPositionY: (json['monitorPositionY'] as num).toInt(),
+      monitorWidth: (json['monitorWidth'] as num).toInt(),
     );
 
 Map<String, dynamic> _$MonitorToJson(Monitor instance) => <String, dynamic>{

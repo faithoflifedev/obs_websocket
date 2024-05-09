@@ -9,7 +9,7 @@ part of 'scene_item_selected.dart';
 SceneItemSelected _$SceneItemSelectedFromJson(Map<String, dynamic> json) =>
     SceneItemSelected(
       sceneName: json['sceneName'] as String,
-      sceneItemId: json['sceneItemId'] as int,
+      sceneItemId: (json['sceneItemId'] as num).toInt(),
     );
 
 Map<String, dynamic> _$SceneItemSelectedToJson(SceneItemSelected instance) =>

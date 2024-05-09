@@ -10,8 +10,8 @@ SceneItemCreated _$SceneItemCreatedFromJson(Map<String, dynamic> json) =>
     SceneItemCreated(
       sceneName: json['sceneName'] as String,
       sourceName: json['sourceName'] as String,
-      sceneItemId: json['sceneItemId'] as int,
-      sceneItemIndex: json['sceneItemIndex'] as int,
+      sceneItemId: (json['sceneItemId'] as num).toInt(),
+      sceneItemIndex: (json['sceneItemIndex'] as num).toInt(),
     );
 
 Map<String, dynamic> _$SceneItemCreatedToJson(SceneItemCreated instance) =>

@@ -9,7 +9,7 @@ part of 'scene_item_enabled.dart';
 SceneItemEnabled _$SceneItemEnabledFromJson(Map<String, dynamic> json) =>
     SceneItemEnabled(
       sceneName: json['sceneName'] as String,
-      sceneItemId: json['sceneItemId'] as int,
+      sceneItemId: (json['sceneItemId'] as num).toInt(),
     );
 
 Map<String, dynamic> _$SceneItemEnabledToJson(SceneItemEnabled instance) =>

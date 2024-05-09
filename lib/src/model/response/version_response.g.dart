@@ -10,7 +10,7 @@ VersionResponse _$VersionResponseFromJson(Map<String, dynamic> json) =>
     VersionResponse(
       obsVersion: json['obsVersion'] as String,
       obsWebSocketVersion: json['obsWebSocketVersion'] as String,
-      rpcVersion: json['rpcVersion'] as int,
+      rpcVersion: (json['rpcVersion'] as num).toInt(),
       availableRequests: (json['availableRequests'] as List<dynamic>)
           .map((e) => e as String)
           .toList(),

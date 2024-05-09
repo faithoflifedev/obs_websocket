@@ -9,7 +9,7 @@ part of 'request_status.dart';
 RequestStatus _$RequestStatusFromJson(Map<String, dynamic> json) =>
     RequestStatus(
       result: json['result'] as bool,
-      code: json['code'] as int,
+      code: (json['code'] as num).toInt(),
       comment: json['comment'] as String?,
     );
 

@@ -12,8 +12,8 @@ RecordStatusResponse _$RecordStatusResponseFromJson(
       outputActive: json['outputActive'] as bool,
       outputPaused: json['outputPaused'] as bool,
       outputTimecode: json['outputTimecode'] as String,
-      outputDuration: json['outputDuration'] as int,
-      outputBytes: json['outputBytes'] as int,
+      outputDuration: (json['outputDuration'] as num).toInt(),
+      outputBytes: (json['outputBytes'] as num).toInt(),
     );
 
 Map<String, dynamic> _$RecordStatusResponseToJson(

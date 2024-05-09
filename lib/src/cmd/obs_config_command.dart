@@ -182,5 +182,7 @@ class ObsGetRecordDirectoryCommand extends ObsHelperCommand {
     final result = await obs.config.getRecordDirectory();
 
     print(result.recordDirectory);
+
+    obs.close();
   }
 }

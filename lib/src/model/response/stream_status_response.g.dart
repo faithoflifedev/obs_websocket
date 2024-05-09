@@ -12,11 +12,11 @@ StreamStatusResponse _$StreamStatusResponseFromJson(
       outputActive: json['outputActive'] as bool,
       outputReconnecting: json['outputReconnecting'] as bool,
       outputTimecode: json['outputTimecode'] as String,
-      outputDuration: json['outputDuration'] as int,
+      outputDuration: (json['outputDuration'] as num).toInt(),
       outputCongestion: (json['outputCongestion'] as num).toDouble(),
-      outputBytes: json['outputBytes'] as int,
-      outputSkippedFrames: json['outputSkippedFrames'] as int,
-      outputTotalFrames: json['outputTotalFrames'] as int,
+      outputBytes: (json['outputBytes'] as num).toInt(),
+      outputSkippedFrames: (json['outputSkippedFrames'] as num).toInt(),
+      outputTotalFrames: (json['outputTotalFrames'] as num).toInt(),
     );
 
 Map<String, dynamic> _$StreamStatusResponseToJson(

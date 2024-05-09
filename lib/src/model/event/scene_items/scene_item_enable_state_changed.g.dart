@@ -10,7 +10,7 @@ SceneItemEnableStateChanged _$SceneItemEnableStateChangedFromJson(
         Map<String, dynamic> json) =>
     SceneItemEnableStateChanged(
       sceneName: json['sceneName'] as String,
-      sceneItemId: json['sceneItemId'] as int,
+      sceneItemId: (json['sceneItemId'] as num).toInt(),
       sceneItemEnabled: json['sceneItemEnabled'] as bool,
     );
 

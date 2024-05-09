@@ -7,7 +7,7 @@ part of 'reidentify.dart';
 // **************************************************************************
 
 ReIdentify _$ReIdentifyFromJson(Map<String, dynamic> json) => ReIdentify(
-      eventSubscriptions: json['eventSubscriptions'] as int?,
+      eventSubscriptions: (json['eventSubscriptions'] as num?)?.toInt(),
     );
 
 Map<String, dynamic> _$ReIdentifyToJson(ReIdentify instance) =>

@@ -11,9 +11,10 @@ SourceScreenshot _$SourceScreenshotFromJson(Map<String, dynamic> json) =>
       sourceName: json['sourceName'] as String,
       imageFormat: json['imageFormat'] as String,
       imageFilePath: json['imageFilePath'] as String?,
-      imageWidth: json['imageWidth'] as int?,
-      imageHeight: json['imageHeight'] as int?,
-      imageCompressionQuality: json['imageCompressionQuality'] as int?,
+      imageWidth: (json['imageWidth'] as num?)?.toInt(),
+      imageHeight: (json['imageHeight'] as num?)?.toInt(),
+      imageCompressionQuality:
+          (json['imageCompressionQuality'] as num?)?.toInt(),
     );
 
 Map<String, dynamic> _$SourceScreenshotToJson(SourceScreenshot instance) =>

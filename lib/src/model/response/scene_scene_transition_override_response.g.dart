@@ -10,7 +10,7 @@ SceneSceneTransitionOverrideResponse
     _$SceneSceneTransitionOverrideResponseFromJson(Map<String, dynamic> json) =>
         SceneSceneTransitionOverrideResponse(
           transitionName: json['transitionName'] as String?,
-          transitionDuration: json['transitionDuration'] as int?,
+          transitionDuration: (json['transitionDuration'] as num?)?.toInt(),
         );
 
 Map<String, dynamic> _$SceneSceneTransitionOverrideResponseToJson(

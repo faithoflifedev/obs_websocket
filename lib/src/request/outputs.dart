@@ -53,7 +53,7 @@ class Outputs {
   /// - Added in v5.0.0
   Future<bool> getReplayBufferStatus() async {
     final response =
-        await obsWebSocket.sendRequest(Request('ToggleVirtualCam'));
+        await obsWebSocket.sendRequest(Request('GetReplayBufferStatus'));
 
     return BooleanResponse.fromJson(response!.responseData!).enabled;
   }

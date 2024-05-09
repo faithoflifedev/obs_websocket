@@ -8,7 +8,7 @@ part of 'event.dart';
 
 Event _$EventFromJson(Map<String, dynamic> json) => Event(
       eventType: json['eventType'] as String,
-      eventIntent: json['eventIntent'] as int,
+      eventIntent: (json['eventIntent'] as num).toInt(),
       eventData: json['eventData'] as Map<String, dynamic>?,
     );
 

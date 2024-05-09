@@ -7,15 +7,15 @@ part of 'transform.dart';
 // **************************************************************************
 
 Transform _$TransformFromJson(Map<String, dynamic> json) => Transform(
-      alignment: json['alignment'] as int,
-      boundsAlignment: json['boundsAlignment'] as int,
+      alignment: (json['alignment'] as num).toInt(),
+      boundsAlignment: (json['boundsAlignment'] as num).toInt(),
       boundsHeight: (json['boundsHeight'] as num).toDouble(),
       boundsType: json['boundsType'] as String,
       boundsWidth: (json['boundsWidth'] as num).toDouble(),
-      cropBottom: json['cropBottom'] as int,
-      cropLeft: json['cropLeft'] as int,
-      cropRight: json['cropRight'] as int,
-      cropTop: json['cropTop'] as int,
+      cropBottom: (json['cropBottom'] as num).toInt(),
+      cropLeft: (json['cropLeft'] as num).toInt(),
+      cropRight: (json['cropRight'] as num).toInt(),
+      cropTop: (json['cropTop'] as num).toInt(),
       height: (json['height'] as num).toDouble(),
       positionX: (json['positionX'] as num).toDouble(),
       positionY: (json['positionY'] as num).toDouble(),

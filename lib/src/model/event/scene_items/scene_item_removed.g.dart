@@ -10,7 +10,7 @@ SceneItemRemoved _$SceneItemRemovedFromJson(Map<String, dynamic> json) =>
     SceneItemRemoved(
       sceneName: json['sceneName'] as String,
       sourceName: json['sourceName'] as String,
-      sceneItemId: json['sceneItemId'] as int,
+      sceneItemId: (json['sceneItemId'] as num).toInt(),
     );
 
 Map<String, dynamic> _$SceneItemRemovedToJson(SceneItemRemoved instance) =>

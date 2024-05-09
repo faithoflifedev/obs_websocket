@@ -8,7 +8,7 @@ part of 'hello.dart';
 
 Hello _$HelloFromJson(Map<String, dynamic> json) => Hello(
       obsWebSocketVersion: json['obsWebSocketVersion'] as String,
-      rpcVersion: json['rpcVersion'] as int,
+      rpcVersion: (json['rpcVersion'] as num).toInt(),
       authentication: json['authentication'] == null
           ? null
           : Authentication.fromJson(
