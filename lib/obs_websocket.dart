@@ -28,6 +28,7 @@ export 'src/model/response/call_vendor_request_response.dart';
 export 'src/model/response/call_vendor_request_data.dart';
 export 'src/model/response/input_kind_response.dart';
 export 'src/model/response/input.dart';
+export 'src/model/response/input_volume_response.dart';
 export 'src/model/response/integer_response.dart';
 export 'src/model/response/monitor_list_response.dart';
 export 'src/model/response/profile_list_response.dart';
