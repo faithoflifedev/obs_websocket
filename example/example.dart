@@ -15,6 +15,10 @@ main() async {
     onDone: () => print('done'),
   );
 
+  var vol = await obs.inputs.getInputVolume(inputName: 'Media Source');
+
+  print(vol.inputVolumeMul);
+
   var res = await obs.outputs.toggleReplayBuffer();
 
   print(res);

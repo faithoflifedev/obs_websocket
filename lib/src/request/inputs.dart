@@ -166,4 +166,28 @@ class Inputs {
 
     return BooleanResponse.fromJson(response!.responseData!).enabled;
   }
+
+  /// Gets the current volume setting of an input.
+  ///
+  /// - Complexity Rating: 3/5
+  /// - Latest Supported RPC Version: 1
+  /// - Added in v5.0.0
+  Future<InputVolumeResponse> getInputVolume({
+    String? inputName,
+    String? inputUuid,
+  }) async {
+    if (inputName == null && inputUuid == null) {
+      throw ArgumentError('inputName or inputUuid must be provided');
+    }
+
+    final response = await obsWebSocket.sendRequest(Request(
+      'GetInputVolume',
+      requestData: {
+        'inputName': inputName,
+        'inputUuid': inputUuid,
+      }..removeWhere((key, value) => value == null),
+    ));
+
+    return InputVolumeResponse.fromJson(response!.responseData!);
+  }
 }
