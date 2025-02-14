@@ -2,44 +2,56 @@
 # Easy OBS WebSocket CLI
 
 A command line interface for controlling OBS with cli commands
-
-- [Installation](#installation)
-- [Quick start](#quick-start)
-- [Available Commands](#available-commands)
-  - [authorize](#authorize)
-  - [config](#config)
-    - [config get-record-directory](#config-get-record-directory)
-    - [config get-stream-service-settings](#config-get-stream-service-settings)
-    - [config get-video-settings](#config-get-video-settings)
-    - [config set-stream-service-settings](#config-set-stream-service-settings)
-    - [config set-video-settings](#config-set-video-settings)
-  - [general](#general)
-    - [general get-stats](#general-get-stats)
-    - [general get-version](#general-get-version)
-  - [listen](#listen)
-  - [scene-items](#scene-items)
-- [scene-items get-scene-item-list](#scene-items-get-scene-item-list)
-- [scene-items get-scene-item-locked](#scene-items-get-scene-item-locked)
-- [scene-items set-scene-item-locked](#scene-items-set-scene-item-locked)
-  - [send](#send)
-  - [sources](#sources)
-    - [sources get-source-active](#sources-get-source-active)
-    - [sources get-source-screenshot](#sources-get-source-screenshot)
-    - [sources save-source-screenshot](#sources-save-source-screenshot)
-  - [stream](#stream)
-    - [stream get-stream-status](#stream-get-stream-status)
-    - [stream send-stream-caption](#stream-send-stream-caption)
-    - [stream start-streaming](#stream-start-streaming)
-    - [stream stop-streaming](#stream-stop-streaming)
-    - [stream toggle-stream](#stream-toggle-stream)
-  - [ui](#ui)
-    - [ui get-monitor-list](#ui-get-monitor-list)
-    - [ui get-studio-mode-enabled](#ui-get-studio-mode-enabled)
-    - [ui set-studio-mode-enabled](#ui-set-studio-mode-enabled)
-  - [version](#version)
-- [Advanced Usage](#advanced-usage)
-  - [Subscribing to an OBS event](#subscribing-to-an-obs-event)
-  - [Trigger a shell command for an OBS event](#trigger-a-shell-command-for-an-obs-event)
+- [Easy OBS WebSocket CLI](#easy-obs-websocket-cli)
+  - [Installation](#installation)
+  - [Quick start](#quick-start)
+  - [Available Commands](#available-commands)
+    - [authorize](#authorize)
+    - [config](#config)
+      - [config get-record-directory](#config-get-record-directory)
+      - [config get-stream-service-settings](#config-get-stream-service-settings)
+      - [config get-video-settings](#config-get-video-settings)
+      - [config set-stream-service-settings](#config-set-stream-service-settings)
+      - [config set-video-settings](#config-set-video-settings)
+    - [general](#general)
+      - [general get-stats](#general-get-stats)
+      - [general get-version](#general-get-version)
+    - [inputs](#inputs)
+      - [inputs get-input-kind-list](#inputs-get-input-kind-list)
+      - [inputs get-input-list](#inputs-get-input-list)
+      - [inputs get-input-mute](#inputs-get-input-mute)
+      - [inputs remove-input](#inputs-remove-input)
+      - [inputs set-input-mute](#inputs-set-input-mute)
+      - [inputs set-input-name](#inputs-set-input-name)
+      - [inputs toggle-input-mute](#inputs-toggle-input-mute)
+    - [listen](#listen)
+    - [scene-items](#scene-items)
+      - [scene-items get-scene-item-list](#scene-items-get-scene-item-list)
+      - [scene-items get-scene-item-locked](#scene-items-get-scene-item-locked)
+      - [scene-items set-scene-item-locked](#scene-items-set-scene-item-locked)
+    - [scenes](#scenes)
+      - [scenes get-current-program-scene](#scenes-get-current-program-scene)
+      - [scenes get-group-list](#scenes-get-group-list)
+      - [scenes get-scenes-list](#scenes-get-scenes-list)
+    - [send](#send)
+    - [sources](#sources)
+      - [sources get-source-active](#sources-get-source-active)
+      - [sources get-source-screenshot](#sources-get-source-screenshot)
+      - [sources save-source-screenshot](#sources-save-source-screenshot)
+    - [stream](#stream)
+      - [stream get-stream-status](#stream-get-stream-status)
+      - [stream send-stream-caption](#stream-send-stream-caption)
+      - [stream start-streaming](#stream-start-streaming)
+      - [stream stop-streaming](#stream-stop-streaming)
+      - [stream toggle-stream](#stream-toggle-stream)
+    - [ui](#ui)
+      - [ui get-monitor-list](#ui-get-monitor-list)
+      - [ui get-studio-mode-enabled](#ui-get-studio-mode-enabled)
+      - [ui set-studio-mode-enabled](#ui-set-studio-mode-enabled)
+    - [version](#version)
+  - [Advanced Usage](#advanced-usage)
+    - [Subscribing to an OBS event](#subscribing-to-an-obs-event)
+    - [Trigger a shell command for an OBS event](#trigger-a-shell-command-for-an-obs-event)
 
 ## Installation
 
@@ -84,8 +96,10 @@ Available commands:
   authorize     Generate an authentication file for an OBS connection
   config        Config Requests
   general       General commands
+  inputs        Inputs Requests
   listen        Generate OBS events to stdout
   scene-items   Scene Items Requests
+  scenes        Scenes Requests
   send          Send a low-level websocket request to OBS
   sources       Commands that manipulate OBS sources
   stream        Commands that manipulate OBS streams
@@ -98,10 +112,14 @@ Available commands:
 | authorize | Generate an authentication file for an Onvif device |
 | config | Config Requests - [documentation](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#config-requests) |
 | general | General commands - [documentation](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#general-requests) |
+| inputs | Inputs Requests - [documentation](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#inputs-requests) |
 | listen | Generate OBS events to stdout - [documentation](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#events-table-of-contents) |
+| scene-items | Scene Items Requests - [documentation](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#scene-items-requests) |
+| scenes | Scenes Requests - [documentation](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#scenes-requests) |
 | send | Send a low-level websocket request to OBS - [commands](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#requests-table-of-contents) |
-| sources | Commands that manipulate OBS sources, [documentation](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#sources-requests) |
-| stream | Commands that manipulate OBS streams, [documentation](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#stream-requests) |
+| sources | Commands that manipulate OBS sources - [documentation](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#sources-requests) |
+| ui | Commands that manipulate the OBS user interface - [documentation](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#ui-requests)
+| stream | Commands that manipulate OBS streams -  [documentation](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#stream-requests) |
 | version | The current package and version for this tool. |
 
 Just like the main dart library, any responses provided through the above commands will be given in JSON format.  So ideally, you will want to use a command line json parser to interpret the results.  The recommended json parser for this purpose is [_jq_](https://stedolan.github.io/jq/).
@@ -300,6 +318,128 @@ Usage: obs general get-version [arguments]
 -h, --help    Print this usage information.
 ```
 
+### inputs 
+
+```sh
+obs inputs --help
+```
+
+```text
+Inputs Requests
+
+Usage: obs inputs <subcommand> [arguments]
+-h, --help    Print this usage information.
+
+Available subcommands:
+  get-input-kind-list   Gets an array of all available input kinds in OBS.
+  get-input-list        Gets an array of all inputs in OBS.
+  get-input-mute        Gets the mute status of an input.
+  remove-input          Removes an existing input.
+  set-input-mute        Sets the mute status of an input.
+  set-input-name        Sets the name of an input (rename).
+  toggle-input-mute     Toggles the mute status of an input.
+```
+
+#### inputs get-input-kind-list
+
+```sh
+obs inputs get-input-kind-list --help
+```
+
+```text
+Gets an array of all available input kinds in OBS.
+
+Usage: obs inputs get-input-kind-list [arguments]
+-h, --help                Print this usage information.
+    --[no-]unversioned    Whether to get unversioned input kinds.
+```
+
+#### inputs get-input-list
+
+```sh
+obs inputs get-input-list --help
+```
+
+```text
+Gets an array of all inputs in OBS.
+
+Usage: obs inputs get-input-list [arguments]
+-h, --help         Print this usage information.
+    --inputKind    The kind of input to get.
+```
+
+#### inputs get-input-mute
+
+```sh
+obs inputs get-input-mute --help
+```
+
+```text
+Gets the mute status of an input.
+
+Usage: obs inputs get-input-mute [arguments]
+-h, --help         Print this usage information.
+    --inputName    The name of the input to get the mute status of.
+```
+
+#### inputs remove-input
+
+```sh
+obs inputs remove-input --help
+```
+
+```text
+Removes an existing input.
+
+Usage: obs inputs remove-input [arguments]
+-h, --help         Print this usage information.
+    --inputName    The name of the input to remove.
+```
+
+#### inputs set-input-mute
+
+```sh
+obs inputs set-input-mute --help
+```
+
+```text
+Sets the mute status of an input.
+
+Usage: obs inputs set-input-mute [arguments]
+-h, --help         Print this usage information.
+    --inputName    The name of the input to set the mute status of.
+    --[no-]mute    Whether to mute the input.
+```
+
+#### inputs set-input-name
+
+```sh
+obs inputs set-input-name --help
+```
+
+```text
+Sets the name of an input (rename).
+
+Usage: obs inputs set-input-name [arguments]
+-h, --help            Print this usage information.
+    --inputName       The name of the input to rename.
+    --newInputName    The new name of the input.
+```
+
+#### inputs toggle-input-mute
+
+```sh
+obs inputs toggle-input-mute --help
+```
+
+```text
+Toggles the mute status of an input.
+
+Usage: obs inputs toggle-input-mute [arguments]
+-h, --help         Print this usage information.
+    --inputName    The name of the input to toggle the mute status of.
+```
+
 ### listen 
 
 ```sh
@@ -352,7 +492,7 @@ Available subcommands:
   set-scene-item-locked   Sets the lock state of a scene item.
 ```
 
-## scene-items get-scene-item-list
+#### scene-items get-scene-item-list
 
 ```sh
 obs scene-items get-scene-item-list --help
@@ -366,7 +506,7 @@ Usage: obs scene-items get-scene-item-list [arguments]
 -n, --scene-name=<string> (mandatory)    Name of the scene to get the items of
 ```
 
-## scene-items get-scene-item-locked
+#### scene-items get-scene-item-locked
 
 ```sh
 obs scene-items get-scene-item-locked --help
@@ -381,7 +521,7 @@ Usage: obs scene-items get-scene-item-locked [arguments]
 -i, --scene-item-id=<int> (mandatory)    Numeric ID of the scene item
 ```
 
-## scene-items set-scene-item-locked
+#### scene-items set-scene-item-locked
 
 ```sh
 obs scene-items set-scene-item-locked --help
@@ -395,6 +535,63 @@ Usage: obs scene-items set-scene-item-locked [arguments]
 -n, --scene-name=<string> (mandatory)    Name of the scene the item is in
 -i, --scene-item-id=<int> (mandatory)    Numeric ID of the scene item
 -l, --[no-]scene-item-locked             New lock state of the scene item
+```
+
+### scenes
+
+```sh
+obs scenes --help
+```
+
+```text
+Scenes Requests
+
+Usage: obs scenes <subcommand> [arguments]
+-h, --help    Print this usage information.
+
+Available subcommands:
+  get-current-program-scene   Gets the current program scene.
+  get-group-list              Gets an array of all groups in OBS.
+  get-scenes-list             Gets an array of all scenes in OBS.
+```
+
+#### scenes get-current-program-scene
+
+```sh
+obs scenes get-current-program-scene --help
+```
+
+```text
+Gets the current program scene.
+
+Usage: obs scenes get-current-program-scene [arguments]
+-h, --help    Print this usage information.
+```
+
+#### scenes get-group-list
+
+```sh
+obs scenes get-group-list --help
+```
+
+```text
+Gets an array of all groups in OBS.
+
+Usage: obs scenes get-group-list [arguments]
+-h, --help    Print this usage information.
+```
+
+#### scenes get-scenes-list
+
+```sh
+obs scenes get-scenes-list --help
+```
+
+```text
+Gets an array of all scenes in OBS.
+
+Usage: obs scenes get-scenes-list [arguments]
+-h, --help    Print this usage information.
 ```
 
 ### send
@@ -562,8 +759,6 @@ Usage: obs stream toggle-stream [arguments]
 -h, --help    Print this usage information.
 ``` 
 
-
-
 ### ui
 
 ```sh
@@ -624,7 +819,6 @@ Usage: obs ui set-studio-mode-enabled [arguments]
 -h, --help                Print this usage information.
 -m, --[no-]studio-mode    
 ``` 
-
 
 ### version
 

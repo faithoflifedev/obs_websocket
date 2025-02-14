@@ -7,26 +7,27 @@ This package gives access to all of the methods and events outlined by the [obs-
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 
-- [Breaking changes from v2.4.3 (obs-websocket v4.9.1 protocol)](#breaking-changes-from-v243-obs-websocket-v491-protocol)
-- [Getting Started](#getting-started)
-  - [Requirements](#requirements)
-  - [Usage Example](#usage-example)
-  - [Opening a websocket Connection](#opening-a-websocket-connection)
-  - [Authenticating to OBS](#authenticating-to-obs)
-  - [Sending Commands to OBS](#sending-commands-to-obs)
-- [Supported high-level commands](#supported-high-level-commands)
-  - [Supported Requests](#supported-requests)
-- [Helper methods](#helper-methods)
-  - [browserEvent](#browserevent)
-- [Sending Commands to OBS - low level](#sending-commands-to-obs---low-level)
-- [Events](#events)
-  - [Supported Events for `addHandler<T>`](#supported-events-for-addhandlert)
-  - [Handling events not yet supported](#handling-events-not-yet-supported)
-- [Closing the websocket](#closing-the-websocket)
-- [obs\_websocket cli (OBS at the command prompt)](#obs_websocket-cli-obs-at-the-command-prompt)
-- [Interesting Projects](#interesting-projects)
-- [Contributors](#contributors)
-- [Contributing](#contributing)
+- [obs\_websocket](#obs_websocket)
+  - [Breaking changes from v2.4.3 (obs-websocket v4.9.1 protocol)](#breaking-changes-from-v243-obs-websocket-v491-protocol)
+  - [Getting Started](#getting-started)
+    - [Requirements](#requirements)
+    - [Usage Example](#usage-example)
+    - [Opening a websocket Connection](#opening-a-websocket-connection)
+    - [Authenticating to OBS](#authenticating-to-obs)
+    - [Sending Commands to OBS](#sending-commands-to-obs)
+  - [Supported high-level commands](#supported-high-level-commands)
+    - [Supported Requests](#supported-requests)
+  - [Helper methods](#helper-methods)
+    - [browserEvent](#browserevent)
+  - [Sending Commands to OBS - low level](#sending-commands-to-obs---low-level)
+  - [Events](#events)
+    - [Supported Events for `addHandler<T>`](#supported-events-for-addhandlert)
+    - [Handling events not yet supported](#handling-events-not-yet-supported)
+  - [Closing the websocket](#closing-the-websocket)
+  - [obs\_websocket cli (OBS at the command prompt)](#obs_websocket-cli-obs-at-the-command-prompt)
+  - [Interesting Projects](#interesting-projects)
+  - [Contributors](#contributors)
+  - [Contributing](#contributing)
 
 
 [![Build Status](https://github.com/faithoflifedev/obs_websocket/workflows/Dart/badge.svg)](https://github.com/faithoflifedev/obs_websocket/actions) [![github last commit](https://shields.io/github/last-commit/faithoflifedev/obs_websocket)](https://shields.io/github/last-commit/faithoflifedev/obs_websocket) [![github build](https://img.shields.io/github/actions/workflow/status/faithoflifedev/obs_websocket/dart.yml?branch=main)](https://shields.io/github/workflow/status/faithoflifedev/obs_websocket/Dart) [![github issues](https://shields.io/github/issues/faithoflifedev/obs_websocket)](https://shields.io/github/issues/faithoflifedev/obs_websocket)
@@ -493,13 +494,6 @@ Install using `dart pub`:
 dart pub global activate obs_websocket
 ```
 
-Install using `brew`:
-
-```sh
-brew tap faithoflifedev/obs_websocket
-brew install obs
-```
-
 Run the following command to see help:
 
 ```sh
@@ -524,8 +518,10 @@ Available commands:
   authorize     Generate an authentication file for an OBS connection
   config        Config Requests
   general       General commands
+  inputs        Inputs Requests
   listen        Generate OBS events to stdout
   scene-items   Scene Items Requests
+  scenes        Scenes Requests
   send          Send a low-level websocket request to OBS
   sources       Commands that manipulate OBS sources
   stream        Commands that manipulate OBS streams
@@ -535,8 +531,7 @@ Available commands:
 
 ## Interesting Projects
 
-[Using Flutter as a source in OBS](https://www.aloisdeniel.com/blog/using-flutter-as-a-source-in-obs?source=post_page-----1b1d9bf0106e--------------------------------) - a blog post by Aloïs Deniel
-were he shows a simple way to use a Fluttter application as a custom source in OBS on macOS.  He uses it to create animated scenes on his live streams on Twitch: a custom Flutter widget is used for each scene and is kept in sync with OBS thanks to the OBS websocket protocol.
+[Using Flutter as a source in OBS](https://www.aloisdeniel.com/blog/using-flutter-as-a-source-in-obs?source=post_page-----1b1d9bf0106e--------------------------------) - a blog post by Aloïs Deniel where he shows how to use a Fluttter application as a custom source in OBS on macOS.  He uses it to create animated scenes on his live streams on Twitch: a custom Flutter widget is used for each scene and is kept in sync with OBS thanks to the OBS websocket protocol.
 
 
 ## Contributors
