@@ -5,7 +5,7 @@ import 'package:obs_websocket/command.dart';
 /// UI Requests
 class ObsUiCommand extends Command {
   @override
-  String get description => 'Commands that manipulate the OBS user interface.';
+  String get description => 'Commands that manipulate the OBS user interface';
 
   @override
   String get name => 'ui';

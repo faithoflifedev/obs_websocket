@@ -1,3 +1,4 @@
+import 'package:obs_websocket/event.dart';
 import 'package:obs_websocket/obs_websocket.dart';
 
 /// Record Requests

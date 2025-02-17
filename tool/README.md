@@ -7,26 +7,27 @@ This package gives access to all of the methods and events outlined by the [obs-
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 
-- [Breaking changes from v2.4.3 (obs-websocket v4.9.1 protocol)](#breaking-changes-from-v243-obs-websocket-v491-protocol)
-- [Getting Started](#getting-started)
-  - [Requirements](#requirements)
-  - [Usage Example](#usage-example)
-  - [Opening a websocket Connection](#opening-a-websocket-connection)
-  - [Authenticating to OBS](#authenticating-to-obs)
-  - [Sending Commands to OBS](#sending-commands-to-obs)
-- [Supported high-level commands](#supported-high-level-commands)
-  - [Supported Requests](#supported-requests)
-- [Helper methods](#helper-methods)
-  - [browserEvent](#browserevent)
-- [Sending Commands to OBS - low level](#sending-commands-to-obs---low-level)
-- [Events](#events)
-  - [Supported Events for `addHandler<T>`](#supported-events-for-addhandlert)
-  - [Handling events not yet supported](#handling-events-not-yet-supported)
-- [Closing the websocket](#closing-the-websocket)
-- [obs\_websocket cli (OBS at the command prompt)](#obs_websocket-cli-obs-at-the-command-prompt)
-- [Interesting Projects](#interesting-projects)
-- [Contributors](#contributors)
-- [Contributing](#contributing)
+- [obs\_websocket](#obs_websocket)
+  - [Breaking changes from v2.4.3 (obs-websocket v4.9.1 protocol)](#breaking-changes-from-v243-obs-websocket-v491-protocol)
+  - [Getting Started](#getting-started)
+    - [Requirements](#requirements)
+    - [Usage Example](#usage-example)
+    - [Opening a websocket Connection](#opening-a-websocket-connection)
+    - [Authenticating to OBS](#authenticating-to-obs)
+    - [Sending Commands to OBS](#sending-commands-to-obs)
+  - [Supported high-level commands](#supported-high-level-commands)
+    - [Supported Requests](#supported-requests)
+  - [Helper methods](#helper-methods)
+    - [browserEvent](#browserevent)
+  - [Sending Commands to OBS - low level](#sending-commands-to-obs---low-level)
+  - [Events](#events)
+    - [Supported Events for `addHandler<T>`](#supported-events-for-addhandlert)
+    - [Handling events not yet supported](#handling-events-not-yet-supported)
+  - [Closing the websocket](#closing-the-websocket)
+  - [obs\_websocket cli (OBS at the command prompt)](#obs_websocket-cli-obs-at-the-command-prompt)
+  - [Interesting Projects](#interesting-projects)
+  - [Contributors](#contributors)
+  - [Contributing](#contributing)
 
 
 [![Build Status](https://github.com/faithoflifedev/obs_websocket/workflows/Dart/badge.svg)](https://github.com/faithoflifedev/obs_websocket/actions) [![github last commit](https://shields.io/github/last-commit/faithoflifedev/obs_websocket)](https://shields.io/github/last-commit/faithoflifedev/obs_websocket) [![github build](https://img.shields.io/github/actions/workflow/status/faithoflifedev/obs_websocket/dart.yml?branch=main)](https://shields.io/github/workflow/status/faithoflifedev/obs_websocket/Dart) [![github issues](https://shields.io/github/issues/faithoflifedev/obs_websocket)](https://shields.io/github/issues/faithoflifedev/obs_websocket)
@@ -134,7 +135,7 @@ For any of the items that have an [x\] from the list below, a high level helper 
   - [x\] [SetVideoSettings](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#setvideosettings) - Sets the current video settings.
   - [x\] [GetStreamServiceSettings](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#getstreamservicesettings) - Gets the current stream service settings (stream destination).
   - [x\] [SetStreamServiceSettings](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#setstreamservicesettings) - Sets the current stream service settings (stream destination).
-  - [ \] [GetRecordDirectory](https://github.com/obsproject/obs-websocket/blob/release/5.2.3/docs/generated/protocol.md#getrecorddirectory) - Gets the current directory that the record output is set to.
+  - [x\] [GetRecordDirectory](https://github.com/obsproject/obs-websocket/blob/release/5.2.3/docs/generated/protocol.md#getrecorddirectory) - Gets the current directory that the record output is set to.
 - [Sources Requests](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#sources-requests) - `obsWebSocket.sources`
   - [x\] [GetSourceActive](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#getsourceactive) - Gets the active and show state of a source.
   - [x\] [GetSourceScreenshot](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#getsourcescreenshot) - Gets a Base64-encoded screenshot of a source.
@@ -152,15 +153,15 @@ For any of the items that have an [x\] from the list below, a high level helper 
   - [x\] [GetSceneSceneTransitionOverride](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#getscenescenetransitionoverride) - Gets the scene transition overridden for a scene.
   - [x\] [SetSceneSceneTransitionOverride](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#setscenescenetransitionoverride) - Sets the scene transition overridden for a scene.
 - [Inputs Requests](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#inputs-1-requests) - `obsWebSocket.inputs`
-  - [x\] [GetInputList](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#getinputlist)
-  - [x\] [GetInputKindList](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#getinputkindlist)
-  - [ \] [GetSpecialInputs](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#getspecialinputs)
-  - [ \] [CreateInput](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#createinput)
+  - [x\] [GetInputList](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#getinputlist) - Gets an array of all inputs in OBS.
+  - [x\] [GetInputKindList](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#getinputkindlist) - Gets an array of all available input kinds in OBS.
+  - [x\] [GetSpecialInputs](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#getspecialinputs) - Gets the names of all special inputs.
+  - [x\] [CreateInput](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#createinput) - Creates a new input, adding it as a scene item to the specified scene.
   - [x\] [RemoveInput](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#removeinput) - Removes an existing input.
   - [x\] [SetInputName](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#setinputname) - Sets the name of an input (rename).
-  - [ \] [GetInputDefaultSettings](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#getinputdefaultsettings)
-  - [ \] [GetInputSettings](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#getinputsettings)
-  - [ \] [SetInputSettings](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#setinputsettings)
+  - [x\] [GetInputDefaultSettings](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#getinputdefaultsettings) - Gets the default settings for an input kind.
+  - [x\] [GetInputSettings](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#getinputsettings) - Gets the settings of an input.
+  - [x\] [SetInputSettings](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#setinputsettings) - Sets the settings of an input.
   - [x\] [GetInputMute](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#getinputmute) - Gets the audio mute state of an input.
   - [x\] [SetInputMute](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#setinputmute) - Sets the audio mute state of an input.
   - [x\] [ToggleInputMute](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#toggleinputmute) - Toggles the audio mute state of an input.
@@ -335,13 +336,18 @@ await obs.send('SetVideoSettings', newSettings);
 Events generated by OBS through the websocket can be hooked into by supplying an event listener in the form of `addHandler<T>(Function handler)`. In the sample code below a hook is created that waits for a `SceneItemEnableStateChanged` event. If the specified `SceneItem` is visible the code hides the `SceneItem` after 13 seconds. This code from the `show_scene_item.dart` example could be used in a cron job to show and then hide an OBS `SceneItem` periodically.
 
 ```dart
+import 'package:obs_websocket/event.dart';
+import 'package:obs_websocket/obs_websocket.dart';
+
+// ...
+
 final obsWebSocket = await ObsWebSocket.connect(config['host'], password: config['password']);
 
 // sceneItem to show/hide
 final sceneItem = 'ytBell';
 
 // tell obsWebSocket to listen to events, since the default is to ignore them
-await obsWebSocket.listen(EventSubscription.all.code);
+await obsWebSocket.listen(EventSubscription.all);
 
 // get the current scene
 final currentScene = await obsWebSocket.scenes.getCurrentProgramScene();
@@ -354,7 +360,7 @@ final sceneItemId = await obsWebSocket.sceneItems.getSceneItemId(SceneItemId(
 
 // this handler will only run when a SceneItemEnableStateChanged event is generated
 obsWebSocket.addHandler<SceneItemEnableStateChanged>(
-    (SceneItemEnableStateChanged sceneItemEnableStateChanged) async {
+    (sceneItemEnableStateChanged) async {
   print(
       'event: ${sceneItemEnableStateChanged.sceneName} ${sceneItemEnableStateChanged.sceneItemEnabled}');
 
@@ -404,12 +410,12 @@ if (!sceneItemEnabled) {
   - [x\] [CurrentProfileChanged](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#currentprofilechanged) - The current profile has changed.
   - [x\] [ProfileListChanged](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#profilelistchanged) - The profile list has changed.
 - [Scenes Events](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#scenes-events)
-  - [ \] [SceneCreated](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#scenecreated)
-  - [ \] [SceneRemoved](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#sceneremoved)
-  - [ \] [SceneNameChanged](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#scenenamechanged)
-  - [ \] [CurrentProgramSceneChanged](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#currentprogramscenechanged)
-  - [ \] [CurrentPreviewSceneChanged](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#currentpreviewscenechanged)
-  - [ \] [SceneListChanged](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#scenelistchanged)
+  - [x\] [SceneCreated](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#scenecreated) - A new scene has been created.
+  - [x\] [SceneRemoved](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#sceneremoved) - A scene has been removed.
+  - [x\] [SceneNameChanged](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#scenenamechanged) - The name of a scene has changed.
+  - [x\] [CurrentProgramSceneChanged](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#currentprogramscenechanged) - The current program scene has changed.
+  - [x\] [CurrentPreviewSceneChanged](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#currentpreviewscenechanged) - The current preview scene has changed.
+  - [x\] [SceneListChanged](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#scenelistchanged) - The list of scenes has changed.
 - [Inputs Events](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#inputs-events)
   - [ \] [InputCreated](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#inputcreated)
   - [ \] [InputRemoved](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#inputremoved)
@@ -493,13 +499,6 @@ Install using `dart pub`:
 dart pub global activate obs_websocket
 ```
 
-Install using `brew`:
-
-```sh
-brew tap faithoflifedev/obs_websocket
-brew install obs
-```
-
 Run the following command to see help:
 
 ```sh
@@ -524,8 +523,10 @@ Available commands:
   authorize     Generate an authentication file for an OBS connection
   config        Config Requests
   general       General commands
+  inputs        Inputs Requests
   listen        Generate OBS events to stdout
   scene-items   Scene Items Requests
+  scenes        Scenes Requests
   send          Send a low-level websocket request to OBS
   sources       Commands that manipulate OBS sources
   stream        Commands that manipulate OBS streams
@@ -535,8 +536,7 @@ Available commands:
 
 ## Interesting Projects
 
-[Using Flutter as a source in OBS](https://www.aloisdeniel.com/blog/using-flutter-as-a-source-in-obs?source=post_page-----1b1d9bf0106e--------------------------------) - a blog post by Aloïs Deniel
-were he shows a simple way to use a Fluttter application as a custom source in OBS on macOS.  He uses it to create animated scenes on his live streams on Twitch: a custom Flutter widget is used for each scene and is kept in sync with OBS thanks to the OBS websocket protocol.
+[Using Flutter as a source in OBS](https://www.aloisdeniel.com/blog/using-flutter-as-a-source-in-obs?source=post_page-----1b1d9bf0106e--------------------------------) - a blog post by Aloïs Deniel where he shows how to use a Fluttter application as a custom source in OBS on macOS.  He uses it to create animated scenes on his live streams on Twitch: a custom Flutter widget is used for each scene and is kept in sync with OBS thanks to the OBS websocket protocol.
 
 
 ## Contributors
@@ -562,5 +562,4 @@ Any help from the open-source community is always welcome and needed:
 - Have you already helped in any way?
     - **Many thanks from me, the contributors and everybody that uses this project!**
 
-*If you donate 1 hour of your time, you can contribute a lot,
-because others will do the same, just be part and start with your 1 hour.*
+*If you donate 1 hour of your time, you can contribute a lot, because others will do the same, just be part and start with your 1 hour.*

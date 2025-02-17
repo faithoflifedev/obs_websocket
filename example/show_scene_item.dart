@@ -1,4 +1,5 @@
 import 'package:loggy/loggy.dart';
+import 'package:obs_websocket/event.dart';
 import 'package:obs_websocket/obs_websocket.dart';
 import 'package:universal_io/io.dart';
 import 'package:yaml/yaml.dart';
@@ -16,7 +17,7 @@ void main(List<String> args) async {
   );
 
   // tell obsWebSocket to listen to events, since the default is to ignore them
-  await obsWebSocket.listen(EventSubscription.all.code);
+  await obsWebSocket.subscribe(EventSubscription.all);
 
   // get the current scene
   final currentScene = await obsWebSocket.scenes.getCurrentProgramScene();

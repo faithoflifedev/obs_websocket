@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:json_annotation/json_annotation.dart';
 
 import '../base_event.dart';
@@ -27,4 +29,7 @@ class SceneItemEnableStateChanged implements BaseEvent {
 
   @override
   Map<String, dynamic> toJson() => _$SceneItemEnableStateChangedToJson(this);
+
+  @override
+  String toString() => json.encode(toJson());
 }

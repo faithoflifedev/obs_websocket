@@ -15,18 +15,13 @@ export 'src/model/comm/request_batch.dart';
 export 'src/model/comm/request_batch_response.dart';
 export 'src/model/comm/request_response.dart';
 
-export 'src/model/event/general/exit_started.dart';
-export 'src/model/event/general/vendor_event.dart';
-export 'src/model/event/outputs/record_state_changed.dart';
-export 'src/model/event/outputs/stream_state_changed.dart';
-export 'src/model/event/scene_items/scene_item_enable_state_changed.dart';
-export 'src/model/event/scene_items/scene_item_selected.dart';
-export 'src/model/event/ui/studio_mode_state_changed.dart';
-
 export 'src/model/response/boolean_response.dart';
 export 'src/model/response/call_vendor_request_response.dart';
 export 'src/model/response/call_vendor_request_data.dart';
+export 'src/model/response/create_input_response.dart';
+export 'src/model/response/input_default_settings_response.dart';
 export 'src/model/response/input_kind_response.dart';
+export 'src/model/response/input_settings_response.dart';
 export 'src/model/response/input.dart';
 export 'src/model/response/input_volume_response.dart';
 export 'src/model/response/integer_response.dart';
@@ -41,6 +36,7 @@ export 'src/model/response/scene_list_response.dart';
 export 'src/model/response/scene_scene_transition_override_response.dart';
 export 'src/model/response/source_active_response.dart';
 export 'src/model/response/source_screenshot_response.dart';
+export 'src/model/response/special_inputs_response.dart';
 export 'src/model/response/stats_response.dart';
 export 'src/model/response/stream_service_settings_response.dart';
 export 'src/model/response/stream_status_response.dart';
@@ -59,5 +55,8 @@ export 'src/model/shared/scene_item_detail.dart';
 export 'src/model/shared/scene.dart';
 export 'src/model/shared/transform.dart';
 
-export 'src/obs_websocket_base.dart';
 export 'src/util/enum.dart';
+export 'src/util/extension.dart';
+
+export 'src/from_json_singleton.dart';
+export 'src/obs_websocket_base.dart';

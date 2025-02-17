@@ -6,12 +6,18 @@ part 'scene.g.dart';
 
 @JsonSerializable()
 class Scene {
+  /// 	Name of the scene
   final String sceneName;
+
   final int sceneIndex;
+
+  /// UUID of the scene
+  final String? sceneUuid;
 
   Scene({
     required this.sceneName,
     required this.sceneIndex,
+    this.sceneUuid,
   });
 
   factory Scene.fromJson(Map<String, dynamic> json) => _$SceneFromJson(json);

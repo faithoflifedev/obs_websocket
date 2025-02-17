@@ -96,7 +96,7 @@ class ObsListenCommand extends ObsHelperCommand {
       }
     }
 
-    await obs.listen(finalSubscriptions);
+    await obs.listenForMask(finalSubscriptions);
 
     final commandList = CommandLineConverter().convert(argResults?['command']);
 
