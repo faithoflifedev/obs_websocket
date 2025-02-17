@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:json_annotation/json_annotation.dart';
 import 'package:obs_websocket/obs_websocket.dart' show SceneItem;
 
@@ -18,4 +20,7 @@ class SceneItemSelected extends SceneItem implements BaseEvent {
 
   @override
   Map<String, dynamic> toJson() => _$SceneItemSelectedToJson(this);
+
+  @override
+  String toString() => json.encode(toJson());
 }

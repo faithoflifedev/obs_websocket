@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:json_annotation/json_annotation.dart';
 
 import '../base_event.dart';
@@ -17,4 +19,7 @@ class CurrentProfileChanging implements BaseEvent {
 
   @override
   Map<String, dynamic> toJson() => _$CurrentProfileChangingToJson(this);
+
+  @override
+  String toString() => json.encode(toJson());
 }

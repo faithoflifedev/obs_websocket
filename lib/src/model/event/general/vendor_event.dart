@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:json_annotation/json_annotation.dart';
 
 import '../base_event.dart';
@@ -21,4 +23,7 @@ class VendorEvent implements BaseEvent {
 
   @override
   Map<String, dynamic> toJson() => _$VendorEventToJson(this);
+
+  @override
+  String toString() => json.encode(toJson());
 }

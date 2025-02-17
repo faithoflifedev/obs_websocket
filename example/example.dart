@@ -1,4 +1,5 @@
 import 'package:loggy/loggy.dart';
+import 'package:obs_websocket/event.dart';
 import 'package:obs_websocket/obs_websocket.dart';
 import 'package:universal_io/io.dart';
 import 'package:yaml/yaml.dart';
@@ -15,6 +16,28 @@ main() async {
     onDone: () => print('done'),
   );
 
+  await obs.subscribe(EventSubscription.all);
+
+  obs.addHandler<SceneNameChanged>((sceneNameChanged) async {
+    print('scene name changed: \n$sceneNameChanged');
+  });
+
+  obs.addHandler<SceneListChanged>((sceneListChanged) async {
+    print('scene list changed: \n$sceneListChanged');
+  });
+
+  obs.addHandler<ExitStarted>((exitStarted) async {
+    print('exit started: \n$exitStarted');
+
+    obs.close();
+
+    exit(0);
+  });
+
+  var recordDirectoryResponse = await obs.config.getRecordDirectory();
+
+  print(recordDirectoryResponse.recordDirectory);
+
   var vol = await obs.inputs.getInputVolume(inputName: 'Media Source');
 
   print(vol.inputVolumeMul);
@@ -23,21 +46,21 @@ main() async {
 
   print(res);
 
-  final currentScene = await obs.scenes.getCurrentProgramScene();
+  // final currentScene = await obs.scenes.getCurrentProgramScene();
 
   // get the id of the required sceneItem
-  final sceneItemId = await obs.sceneItems.getSceneItemId(
-    sceneName: currentScene,
-    sourceName: 'my face',
-  );
+  // final sceneItemId = await obs.sceneItems.getSceneItemId(
+  //   sceneName: currentScene,
+  //   sourceName: 'my face',
+  // );
 
-  final indexId = await obs.sceneItems
-      .getIndex(sceneName: currentScene, sceneItemId: sceneItemId);
+  // final indexId = await obs.sceneItems
+  //     .getIndex(sceneName: currentScene, sceneItemId: sceneItemId);
 
-  print(indexId);
+  // print(indexId);
 
-  await obs.sceneItems.setIndex(
-      sceneName: currentScene, sceneItemId: sceneItemId, sceneItemIndex: 4);
+  // await obs.sceneItems.setIndex(
+  //     sceneName: currentScene, sceneItemId: sceneItemId, sceneItemIndex: 4);
 
   final versionResponse = await obs.general.version;
 
@@ -78,18 +101,18 @@ main() async {
     print(group);
   }
 
-  var sceneItems = await obs.sceneItems.getSceneItemList('Scene');
+  // var sceneItems = await obs.sceneItems.getSceneItemList('Scene');
 
-  for (var sceneItem in sceneItems) {
-    print('id: ${sceneItem.sceneItemId}, sourceName ${sceneItem.sourceName}');
-  }
+  // for (var sceneItem in sceneItems) {
+  //   print('id: ${sceneItem.sceneItemId}, sourceName ${sceneItem.sourceName}');
+  // }
 
-  var groupSceneItems = await obs.sceneItems.groupList('Group');
+  // var groupSceneItems = await obs.sceneItems.groupList('Group');
 
-  for (var groupSceneItem in groupSceneItems) {
-    print(
-        'id: ${groupSceneItem.sceneItemId}, sourceName ${groupSceneItem.sourceName}');
-  }
+  // for (var groupSceneItem in groupSceneItems) {
+  //   print(
+  //       'id: ${groupSceneItem.sceneItemId}, sourceName ${groupSceneItem.sourceName}');
+  // }
 
   var newSettings =
       Map<String, dynamic>.from(response?.responseData as Map<String, dynamic>);
@@ -111,20 +134,11 @@ main() async {
 
   print('cpu usage: ${statsResponse.cpuUsage}');
 
-  final sourceScreenshotResponse =
-      await obs.sources.screenshot(SourceScreenshot(
-    sourceName: 'my face',
-    imageFormat: 'jpeg',
-  ));
+  // final sourceScreenshotResponse =
+  //     await obs.sources.screenshot(SourceScreenshot(
+  //   sourceName: 'my face',
+  //   imageFormat: 'jpeg',
+  // ));
 
-  File('screen_shot.jpeg').writeAsBytesSync(sourceScreenshotResponse.bytes);
-
-  // don't close the connection since we want to continue to receive events
-  // only close once OBS is exited.
-  obs.addHandler<ExitStarted>(() async {
-    print('obs exiting');
-
-    //not really necessary since OBS is going away anyway
-    await obs.close();
-  });
+  // File('screen_shot.jpeg').writeAsBytesSync(sourceScreenshotResponse.bytes);
 }

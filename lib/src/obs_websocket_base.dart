@@ -21,6 +21,8 @@ class ObsWebSocket with UiLoggy {
 
   final eventHandlers = <String, List<Function>>{};
 
+  final fromJsonSingleton = FromJsonSingleton();
+
   request.Config? _config;
 
   request.Filters? _filters;
@@ -261,83 +263,40 @@ class ObsWebSocket with UiLoggy {
     return await getStreamOpcode(opCodeResponseMap[opcode.op]);
   }
 
-  Future<void> listen(int eventSubscription) async {
-    final reIdentifyOpcode =
-        ReIdentifyOpcode(ReIdentify(eventSubscriptions: eventSubscription));
+  /// Listen to a specific event subscription, the original code
+  Future<void> listenForMask(int eventSubscriptions) async => await sendOpcode(
+        ReIdentifyOpcode(
+          ReIdentify(
+            eventSubscriptions: eventSubscriptions,
+          ),
+        ),
+      );
 
-    await sendOpcode(reIdentifyOpcode);
-  }
+  /// Listen to a specific event subscription.
+  @Deprecated('Use subscribe instead')
+  Future<void> listen(
+    dynamic eventSubscription,
+  ) async =>
+      await listenForMask(switch (eventSubscription.runtimeType) {
+        const (EventSubscription) => eventSubscription.code,
+        const (int) => eventSubscription,
+        _ => 0,
+      });
+
+  /// subscribe to all events based on the [eventSubscription] mask.
+  Future<void> subscribe(EventSubscription eventSubscription) async =>
+      await listenForMask(eventSubscription.code);
 
   /// Look at the raw [event] data and run the appropriate event handler
   void _handleEvent(Event event) {
     final listeners = eventHandlers[event.eventType] ?? [];
 
     if (listeners.isNotEmpty) {
-      switch (event.eventType) {
-        // General Events
-        case 'ExitStarted':
-          for (var handler in listeners) {
-            handler();
-          }
-
-          break;
-
-        case 'VendorEvent':
-          for (var handler in listeners) {
-            if (event.eventData != null) {
-              handler(VendorEvent.fromJson(event.eventData!));
-            }
-          }
-
-          break;
-
-        // Scene Items Events
-        case 'SceneItemEnableStateChanged':
-          for (var handler in listeners) {
-            if (event.eventData != null) {
-              handler(SceneItemEnableStateChanged.fromJson(event.eventData!));
-            }
-          }
-
-          break;
-
-        case 'SceneItemSelected':
-          for (var handler in listeners) {
-            if (event.eventData != null) {
-              handler(SceneItemSelected.fromJson(event.eventData!));
-            }
-          }
-
-          break;
-
-        // Outputs Events
-        case 'StreamStateChanged':
-          for (var handler in listeners) {
-            if (event.eventData != null) {
-              handler(StreamStateChanged.fromJson(event.eventData!));
-            }
-          }
-
-          break;
-
-        case 'RecordStateChanged':
-          for (var handler in listeners) {
-            if (event.eventData != null) {
-              handler(RecordStateChanged.fromJson(event.eventData!));
-            }
-          }
-
-          break;
-
-        // Ui Events
-        case 'StudioModeStateChanged':
-          for (var handler in listeners) {
-            if (event.eventData != null) {
-              handler(StudioModeStateChanged.fromJson(event.eventData!));
-            }
-          }
-
-          break;
+      for (var handler in listeners) {
+        if (fromJsonSingleton.factories.containsKey(event.eventType)) {
+          handler(fromJsonSingleton
+              .factories[event.eventType]!(event.eventData ?? {}));
+        }
       }
     } else {
       _fallback(event);

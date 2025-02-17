@@ -8,6 +8,7 @@ part 'string_list_response.g.dart';
 class StringListResponse {
   final List<String>? hotkeys;
   final List<String>? groups;
+  final List<String>? inputKinds;
 
   List<String> get items {
     final List<String>? check = hotkeys ?? groups;
@@ -20,6 +21,7 @@ class StringListResponse {
   StringListResponse({
     this.hotkeys,
     this.groups,
+    this.inputKinds,
   });
 
   factory StringListResponse.fromJson(Map<String, dynamic> json) =>

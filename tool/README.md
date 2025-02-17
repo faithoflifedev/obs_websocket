@@ -135,7 +135,7 @@ For any of the items that have an [x\] from the list below, a high level helper 
   - [x\] [SetVideoSettings](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#setvideosettings) - Sets the current video settings.
   - [x\] [GetStreamServiceSettings](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#getstreamservicesettings) - Gets the current stream service settings (stream destination).
   - [x\] [SetStreamServiceSettings](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#setstreamservicesettings) - Sets the current stream service settings (stream destination).
-  - [ \] [GetRecordDirectory](https://github.com/obsproject/obs-websocket/blob/release/5.2.3/docs/generated/protocol.md#getrecorddirectory) - Gets the current directory that the record output is set to.
+  - [x\] [GetRecordDirectory](https://github.com/obsproject/obs-websocket/blob/release/5.2.3/docs/generated/protocol.md#getrecorddirectory) - Gets the current directory that the record output is set to.
 - [Sources Requests](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#sources-requests) - `obsWebSocket.sources`
   - [x\] [GetSourceActive](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#getsourceactive) - Gets the active and show state of a source.
   - [x\] [GetSourceScreenshot](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#getsourcescreenshot) - Gets a Base64-encoded screenshot of a source.
@@ -153,15 +153,15 @@ For any of the items that have an [x\] from the list below, a high level helper 
   - [x\] [GetSceneSceneTransitionOverride](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#getscenescenetransitionoverride) - Gets the scene transition overridden for a scene.
   - [x\] [SetSceneSceneTransitionOverride](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#setscenescenetransitionoverride) - Sets the scene transition overridden for a scene.
 - [Inputs Requests](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#inputs-1-requests) - `obsWebSocket.inputs`
-  - [x\] [GetInputList](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#getinputlist)
-  - [x\] [GetInputKindList](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#getinputkindlist)
-  - [ \] [GetSpecialInputs](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#getspecialinputs)
-  - [ \] [CreateInput](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#createinput)
+  - [x\] [GetInputList](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#getinputlist) - Gets an array of all inputs in OBS.
+  - [x\] [GetInputKindList](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#getinputkindlist) - Gets an array of all available input kinds in OBS.
+  - [x\] [GetSpecialInputs](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#getspecialinputs) - Gets the names of all special inputs.
+  - [x\] [CreateInput](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#createinput) - Creates a new input, adding it as a scene item to the specified scene.
   - [x\] [RemoveInput](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#removeinput) - Removes an existing input.
   - [x\] [SetInputName](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#setinputname) - Sets the name of an input (rename).
-  - [ \] [GetInputDefaultSettings](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#getinputdefaultsettings)
-  - [ \] [GetInputSettings](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#getinputsettings)
-  - [ \] [SetInputSettings](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#setinputsettings)
+  - [x\] [GetInputDefaultSettings](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#getinputdefaultsettings) - Gets the default settings for an input kind.
+  - [x\] [GetInputSettings](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#getinputsettings) - Gets the settings of an input.
+  - [x\] [SetInputSettings](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#setinputsettings) - Sets the settings of an input.
   - [x\] [GetInputMute](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#getinputmute) - Gets the audio mute state of an input.
   - [x\] [SetInputMute](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#setinputmute) - Sets the audio mute state of an input.
   - [x\] [ToggleInputMute](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#toggleinputmute) - Toggles the audio mute state of an input.
@@ -336,13 +336,18 @@ await obs.send('SetVideoSettings', newSettings);
 Events generated by OBS through the websocket can be hooked into by supplying an event listener in the form of `addHandler<T>(Function handler)`. In the sample code below a hook is created that waits for a `SceneItemEnableStateChanged` event. If the specified `SceneItem` is visible the code hides the `SceneItem` after 13 seconds. This code from the `show_scene_item.dart` example could be used in a cron job to show and then hide an OBS `SceneItem` periodically.
 
 ```dart
+import 'package:obs_websocket/event.dart';
+import 'package:obs_websocket/obs_websocket.dart';
+
+// ...
+
 final obsWebSocket = await ObsWebSocket.connect(config['host'], password: config['password']);
 
 // sceneItem to show/hide
 final sceneItem = 'ytBell';
 
 // tell obsWebSocket to listen to events, since the default is to ignore them
-await obsWebSocket.listen(EventSubscription.all.code);
+await obsWebSocket.listen(EventSubscription.all);
 
 // get the current scene
 final currentScene = await obsWebSocket.scenes.getCurrentProgramScene();
@@ -355,7 +360,7 @@ final sceneItemId = await obsWebSocket.sceneItems.getSceneItemId(SceneItemId(
 
 // this handler will only run when a SceneItemEnableStateChanged event is generated
 obsWebSocket.addHandler<SceneItemEnableStateChanged>(
-    (SceneItemEnableStateChanged sceneItemEnableStateChanged) async {
+    (sceneItemEnableStateChanged) async {
   print(
       'event: ${sceneItemEnableStateChanged.sceneName} ${sceneItemEnableStateChanged.sceneItemEnabled}');
 
@@ -405,12 +410,12 @@ if (!sceneItemEnabled) {
   - [x\] [CurrentProfileChanged](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#currentprofilechanged) - The current profile has changed.
   - [x\] [ProfileListChanged](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#profilelistchanged) - The profile list has changed.
 - [Scenes Events](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#scenes-events)
-  - [ \] [SceneCreated](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#scenecreated)
-  - [ \] [SceneRemoved](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#sceneremoved)
-  - [ \] [SceneNameChanged](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#scenenamechanged)
-  - [ \] [CurrentProgramSceneChanged](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#currentprogramscenechanged)
-  - [ \] [CurrentPreviewSceneChanged](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#currentpreviewscenechanged)
-  - [ \] [SceneListChanged](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#scenelistchanged)
+  - [x\] [SceneCreated](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#scenecreated) - A new scene has been created.
+  - [x\] [SceneRemoved](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#sceneremoved) - A scene has been removed.
+  - [x\] [SceneNameChanged](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#scenenamechanged) - The name of a scene has changed.
+  - [x\] [CurrentProgramSceneChanged](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#currentprogramscenechanged) - The current program scene has changed.
+  - [x\] [CurrentPreviewSceneChanged](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#currentpreviewscenechanged) - The current preview scene has changed.
+  - [x\] [SceneListChanged](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#scenelistchanged) - The list of scenes has changed.
 - [Inputs Events](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#inputs-events)
   - [ \] [InputCreated](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#inputcreated)
   - [ \] [InputRemoved](https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#inputremoved)
@@ -557,5 +562,4 @@ Any help from the open-source community is always welcome and needed:
 - Have you already helped in any way?
     - **Many thanks from me, the contributors and everybody that uses this project!**
 
-*If you donate 1 hour of your time, you can contribute a lot,
-because others will do the same, just be part and start with your 1 hour.*
+*If you donate 1 hour of your time, you can contribute a lot, because others will do the same, just be part and start with your 1 hour.*
