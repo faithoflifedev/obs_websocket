@@ -1,5 +1,42 @@
 # Changelog
 
+## 5.2.3
+
+* dependency bump
+* Scenes Events
+  * SceneCreated
+  * SceneRemoved
+  * SceneNameChanged
+  * CurrentProgramSceneChanged
+  * CurrentPreviewSceneChanged
+* Inputs
+  * GetSpecialInputs
+  * CreateInput
+  * GetInputDefaultSettings
+  * GetInputSettings
+  * SetInputSettings
+* Tests
+  * Inputs
+    * GetInputKindList
+    * GetInputList
+    * GetSpecialInputs
+    * CreateInput
+    * RemoveInput
+    * SetInputName
+    * GetInputDefaultSettings
+    * GetInputSettings
+    * SetInputSettings
+    * GetInputMute
+    * SetInputMute
+    * ToggleInputMute
+* cli
+ * Inputs
+  * GetSpecialInputs
+  * CreateInput
+  * GetInputDefaultSettings
+  * GetInputSettings
+  * SetInputSettings
+
 ## 5.1.0+9
 
 * dependency bump
