@@ -16,28 +16,6 @@ main() async {
     onDone: () => print('done'),
   );
 
-  await obs.subscribe(EventSubscription.all);
-
-  obs.addHandler<SceneNameChanged>((sceneNameChanged) async {
-    print('scene name changed: \n$sceneNameChanged');
-  });
-
-  obs.addHandler<SceneListChanged>((sceneListChanged) async {
-    print('scene list changed: \n$sceneListChanged');
-  });
-
-  obs.addHandler<ExitStarted>((exitStarted) async {
-    print('exit started: \n$exitStarted');
-
-    obs.close();
-
-    exit(0);
-  });
-
-  var recordDirectoryResponse = await obs.config.getRecordDirectory();
-
-  print(recordDirectoryResponse.recordDirectory);
-
   var vol = await obs.inputs.getInputVolume(inputName: 'Media Source');
 
   print(vol.inputVolumeMul);
