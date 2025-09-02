@@ -7,9 +7,9 @@ part of 'call_vendor_request_data.dart';
 // **************************************************************************
 
 RequestData _$RequestDataFromJson(Map<String, dynamic> json) => RequestData(
-      eventName: json['event_name'] as String,
-      eventData: json['event_data'],
-    );
+  eventName: json['event_name'] as String,
+  eventData: json['event_data'],
+);
 
 Map<String, dynamic> _$RequestDataToJson(RequestData instance) =>
     <String, dynamic>{

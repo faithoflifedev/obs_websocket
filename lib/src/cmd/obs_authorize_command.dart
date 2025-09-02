@@ -44,15 +44,17 @@ class ObsAuthorizeCommand extends Command {
 
     print('Uri (ws://[host]:[port]):');
 
-    credentials['uri'] =
-        stdin.readLineSync(encoding: Encoding.getByName('utf-8')!);
+    credentials['uri'] = stdin.readLineSync(
+      encoding: Encoding.getByName('utf-8')!,
+    );
 
     print('Password:');
 
     stdin.echoMode = false;
 
-    credentials['password'] =
-        stdin.readLineSync(encoding: Encoding.getByName('utf-8')!);
+    credentials['password'] = stdin.readLineSync(
+      encoding: Encoding.getByName('utf-8')!,
+    );
 
     if (credentials['uri'] == null || credentials['password'] == null) {
       throw Exception('Error: missing required data.');

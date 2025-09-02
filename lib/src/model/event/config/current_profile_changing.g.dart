@@ -7,13 +7,9 @@ part of 'current_profile_changing.dart';
 // **************************************************************************
 
 CurrentProfileChanging _$CurrentProfileChangingFromJson(
-        Map<String, dynamic> json) =>
-    CurrentProfileChanging(
-      profileName: json['profileName'] as String,
-    );
+  Map<String, dynamic> json,
+) => CurrentProfileChanging(profileName: json['profileName'] as String);
 
 Map<String, dynamic> _$CurrentProfileChangingToJson(
-        CurrentProfileChanging instance) =>
-    <String, dynamic>{
-      'profileName': instance.profileName,
-    };
+  CurrentProfileChanging instance,
+) => <String, dynamic>{'profileName': instance.profileName};

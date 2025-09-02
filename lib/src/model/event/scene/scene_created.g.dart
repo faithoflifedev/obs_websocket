@@ -7,10 +7,10 @@ part of 'scene_created.dart';
 // **************************************************************************
 
 SceneCreated _$SceneCreatedFromJson(Map<String, dynamic> json) => SceneCreated(
-      sceneName: json['sceneName'] as String,
-      sceneUuid: json['sceneUuid'] as String,
-      isGroup: json['isGroup'] as bool,
-    );
+  sceneName: json['sceneName'] as String,
+  sceneUuid: json['sceneUuid'] as String,
+  isGroup: json['isGroup'] as bool,
+);
 
 Map<String, dynamic> _$SceneCreatedToJson(SceneCreated instance) =>
     <String, dynamic>{

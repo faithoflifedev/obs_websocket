@@ -7,17 +7,17 @@ part of 'scene_item_enable_state_changed.dart';
 // **************************************************************************
 
 SceneItemEnableStateChanged _$SceneItemEnableStateChangedFromJson(
-        Map<String, dynamic> json) =>
-    SceneItemEnableStateChanged(
-      sceneName: json['sceneName'] as String,
-      sceneItemId: (json['sceneItemId'] as num).toInt(),
-      sceneItemEnabled: json['sceneItemEnabled'] as bool,
-    );
+  Map<String, dynamic> json,
+) => SceneItemEnableStateChanged(
+  sceneName: json['sceneName'] as String,
+  sceneItemId: (json['sceneItemId'] as num).toInt(),
+  sceneItemEnabled: json['sceneItemEnabled'] as bool,
+);
 
 Map<String, dynamic> _$SceneItemEnableStateChangedToJson(
-        SceneItemEnableStateChanged instance) =>
-    <String, dynamic>{
-      'sceneName': instance.sceneName,
-      'sceneItemId': instance.sceneItemId,
-      'sceneItemEnabled': instance.sceneItemEnabled,
-    };
+  SceneItemEnableStateChanged instance,
+) => <String, dynamic>{
+  'sceneName': instance.sceneName,
+  'sceneItemId': instance.sceneItemId,
+  'sceneItemEnabled': instance.sceneItemEnabled,
+};

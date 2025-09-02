@@ -8,11 +8,10 @@ part of 'profile_list_changed.dart';
 
 ProfileListChanged _$ProfileListChangedFromJson(Map<String, dynamic> json) =>
     ProfileListChanged(
-      profiles:
-          (json['profiles'] as List<dynamic>).map((e) => e as String).toList(),
+      profiles: (json['profiles'] as List<dynamic>)
+          .map((e) => e as String)
+          .toList(),
     );
 
 Map<String, dynamic> _$ProfileListChangedToJson(ProfileListChanged instance) =>
-    <String, dynamic>{
-      'profiles': instance.profiles,
-    };
+    <String, dynamic>{'profiles': instance.profiles};

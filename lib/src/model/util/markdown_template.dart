@@ -11,25 +11,16 @@ class MarkdownTemplate {
   final String name;
   final String type;
 
-  MarkdownTemplate({
-    required this.name,
-    required this.type,
-  });
+  MarkdownTemplate({required this.name, required this.type});
 
   factory MarkdownTemplate.fromYamlMap(YamlMap template) {
-    final checkKeys = <String>[
-      'name',
-      'type',
-    ];
+    final checkKeys = <String>['name', 'type'];
 
     if (!template.mapHasAllKeys(checkKeys)) {
       throw Exception('The config file is missing a template key.');
     }
 
-    return MarkdownTemplate(
-      name: template['name'],
-      type: template['type'],
-    );
+    return MarkdownTemplate(name: template['name'], type: template['type']);
   }
 
   factory MarkdownTemplate.fromJson(Map<String, dynamic> json) =>

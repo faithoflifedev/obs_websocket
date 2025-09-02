@@ -8,10 +8,12 @@ part of 'string_list_response.dart';
 
 StringListResponse _$StringListResponseFromJson(Map<String, dynamic> json) =>
     StringListResponse(
-      hotkeys:
-          (json['hotkeys'] as List<dynamic>?)?.map((e) => e as String).toList(),
-      groups:
-          (json['groups'] as List<dynamic>?)?.map((e) => e as String).toList(),
+      hotkeys: (json['hotkeys'] as List<dynamic>?)
+          ?.map((e) => e as String)
+          .toList(),
+      groups: (json['groups'] as List<dynamic>?)
+          ?.map((e) => e as String)
+          .toList(),
       inputKinds: (json['inputKinds'] as List<dynamic>?)
           ?.map((e) => e as String)
           .toList(),

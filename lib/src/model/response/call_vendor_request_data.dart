@@ -16,10 +16,7 @@ class RequestData {
   @JsonKey(name: 'event_data')
   dynamic eventData;
 
-  RequestData({
-    required this.eventName,
-    this.eventData,
-  });
+  RequestData({required this.eventName, this.eventData});
 
   factory RequestData.fromJson(Map<String, dynamic> json) =>
       _$RequestDataFromJson(json);

@@ -26,18 +26,21 @@ class ObsGetSourceActiveCommand extends ObsHelperCommand {
   String get name => 'get-source-active';
 
   ObsGetSourceActiveCommand() {
-    argParser.addOption('source-name',
-        mandatory: true,
-        valueHelp: 'string',
-        help: 'Name of the source to get the active state of');
+    argParser.addOption(
+      'source-name',
+      mandatory: true,
+      valueHelp: 'string',
+      help: 'Name of the source to get the active state of',
+    );
   }
 
   @override
   void run() async {
     await initializeObs();
 
-    final sourceActiveResponse =
-        await obs.sources.active(argResults?['source-name']);
+    final sourceActiveResponse = await obs.sources.active(
+      argResults?['source-name'],
+    );
 
     print(sourceActiveResponse);
 
@@ -57,26 +60,31 @@ class ObsGetSourceScreenshotCommand extends ObsHelperCommand {
 
   ObsGetSourceScreenshotCommand() {
     argParser
-      ..addOption('source-name',
-          mandatory: true,
-          valueHelp: 'string',
-          help: 'Name of the source to take a screenshot of')
-      ..addOption('image-format',
-          mandatory: true,
-          valueHelp: 'string',
-          help:
-              'Image compression format to use. Use GetVersion to get compatible image formats');
+      ..addOption(
+        'source-name',
+        mandatory: true,
+        valueHelp: 'string',
+        help: 'Name of the source to take a screenshot of',
+      )
+      ..addOption(
+        'image-format',
+        mandatory: true,
+        valueHelp: 'string',
+        help:
+            'Image compression format to use. Use GetVersion to get compatible image formats',
+      );
   }
 
   @override
   void run() async {
     await initializeObs();
 
-    final sourceScreenshotResponse =
-        await obs.sources.getSourceScreenshot(SourceScreenshot(
-      sourceName: argResults!['source-name'],
-      imageFormat: argResults!['image-format'],
-    ));
+    final sourceScreenshotResponse = await obs.sources.getSourceScreenshot(
+      SourceScreenshot(
+        sourceName: argResults!['source-name'],
+        imageFormat: argResults!['image-format'],
+      ),
+    );
 
     print(sourceScreenshotResponse);
 
@@ -94,31 +102,38 @@ class ObsSaveSourceScreenshotCommand extends ObsHelperCommand {
 
   ObsSaveSourceScreenshotCommand() {
     argParser
-      ..addOption('source-name',
-          mandatory: true,
-          valueHelp: 'string',
-          help: 'Name of the source to take a screenshot of')
-      ..addOption('image-format',
-          mandatory: true,
-          valueHelp: 'string',
-          help:
-              'Image compression format to use. Use GetVersion to get compatible image formats')
-      ..addOption('image-file-path',
-          mandatory: true,
-          valueHelp: 'string',
-          help: 'Path to save the screenshot file to.');
+      ..addOption(
+        'source-name',
+        mandatory: true,
+        valueHelp: 'string',
+        help: 'Name of the source to take a screenshot of',
+      )
+      ..addOption(
+        'image-format',
+        mandatory: true,
+        valueHelp: 'string',
+        help:
+            'Image compression format to use. Use GetVersion to get compatible image formats',
+      )
+      ..addOption(
+        'image-file-path',
+        mandatory: true,
+        valueHelp: 'string',
+        help: 'Path to save the screenshot file to.',
+      );
   }
 
   @override
   void run() async {
     await initializeObs();
 
-    final sourceScreenshotResponse =
-        await obs.sources.screenshot(SourceScreenshot(
-      sourceName: argResults!['source-name'],
-      imageFormat: argResults!['image-format'],
-      imageFilePath: argResults!['image-file-path'],
-    ));
+    final sourceScreenshotResponse = await obs.sources.screenshot(
+      SourceScreenshot(
+        sourceName: argResults!['source-name'],
+        imageFormat: argResults!['image-format'],
+        imageFilePath: argResults!['image-file-path'],
+      ),
+    );
 
     print(sourceScreenshotResponse);
 

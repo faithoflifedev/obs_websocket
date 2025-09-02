@@ -11,15 +11,16 @@ class Config {
   /// - Complexity Rating: 2/5
   /// - Latest Supported RPC Version: 1
   /// - Added in v5.0.0
-  Future<Map<String, dynamic>> getPersistentData(
-      {required String realm, required String slotName}) async {
-    final response = await obsWebSocket.sendRequest(Request(
-      'GetPersistentData',
-      requestData: {
-        'realm': realm,
-        'slotName': slotName,
-      },
-    ));
+  Future<Map<String, dynamic>> getPersistentData({
+    required String realm,
+    required String slotName,
+  }) async {
+    final response = await obsWebSocket.sendRequest(
+      Request(
+        'GetPersistentData',
+        requestData: {'realm': realm, 'slotName': slotName},
+      ),
+    );
 
     return response!.responseData!;
   }
@@ -29,18 +30,20 @@ class Config {
   /// - Complexity Rating: 2/5
   /// - Latest Supported RPC Version: 1
   /// - Added in v5.0.0
-  Future<void> setPersistentData(
-          {required String realm,
-          required String slotName,
-          required dynamic slotValue}) async =>
-      await obsWebSocket.sendRequest(Request(
-        'SetPersistentData',
-        requestData: {
-          'realm': realm,
-          'slotName': slotName,
-          'slotValue': slotValue
-        },
-      ));
+  Future<void> setPersistentData({
+    required String realm,
+    required String slotName,
+    required dynamic slotValue,
+  }) async => await obsWebSocket.sendRequest(
+    Request(
+      'SetPersistentData',
+      requestData: {
+        'realm': realm,
+        'slotName': slotName,
+        'slotValue': slotValue,
+      },
+    ),
+  );
 
   /// Gets an array of all scene collections
   ///
@@ -48,8 +51,9 @@ class Config {
   /// - Latest Supported RPC Version: 1
   /// - Added in v5.0.0
   Future<SceneCollectionListResponse> getSceneCollectionList() async {
-    final response =
-        await obsWebSocket.sendRequest(Request('GetSceneCollectionList'));
+    final response = await obsWebSocket.sendRequest(
+      Request('GetSceneCollectionList'),
+    );
 
     return SceneCollectionListResponse.fromJson(response!.responseData!);
   }
@@ -60,10 +64,12 @@ class Config {
   /// - Latest Supported RPC Version: 1
   /// - Added in v5.0.0
   Future<void> setCurrentSceneCollection(String sceneCollectionName) async =>
-      await obsWebSocket.sendRequest(Request(
-        'SetCurrentSceneCollection',
-        requestData: {'sceneCollectionName': sceneCollectionName},
-      ));
+      await obsWebSocket.sendRequest(
+        Request(
+          'SetCurrentSceneCollection',
+          requestData: {'sceneCollectionName': sceneCollectionName},
+        ),
+      );
 
   /// Creates a new scene collection, switching to it in the process.
   ///
@@ -73,10 +79,12 @@ class Config {
   /// - Latest Supported RPC Version: 1
   /// - Added in v5.0.0
   Future<void> createSceneCollection(String sceneCollectionName) async =>
-      await obsWebSocket.sendRequest(Request(
-        'CreateSceneCollection',
-        requestData: {'sceneCollectionName': sceneCollectionName},
-      ));
+      await obsWebSocket.sendRequest(
+        Request(
+          'CreateSceneCollection',
+          requestData: {'sceneCollectionName': sceneCollectionName},
+        ),
+      );
 
   /// Gets an array of all profiles
   ///
@@ -95,10 +103,9 @@ class Config {
   /// - Latest Supported RPC Version: 1
   /// - Added in v5.0.0
   Future<void> setCurrentProfile(String profileName) async =>
-      await obsWebSocket.sendRequest(Request(
-        'SetCurrentProfile',
-        requestData: {'profileName': profileName},
-      ));
+      await obsWebSocket.sendRequest(
+        Request('SetCurrentProfile', requestData: {'profileName': profileName}),
+      );
 
   /// Creates a new profile, switching to it in the process
   ///
@@ -106,10 +113,9 @@ class Config {
   /// - Latest Supported RPC Version: 1
   /// - Added in v5.0.0
   Future<void> createProfile(String profileName) async =>
-      await obsWebSocket.sendRequest(Request(
-        'CreateProfile',
-        requestData: {'profileName': profileName},
-      ));
+      await obsWebSocket.sendRequest(
+        Request('CreateProfile', requestData: {'profileName': profileName}),
+      );
 
   /// Removes a profile. If the current profile is chosen, it will change to a different profile first.
   ///
@@ -117,10 +123,9 @@ class Config {
   /// - Latest Supported RPC Version: 1
   /// - Added in v5.0.0
   Future<void> removeProfile(String profileName) async =>
-      await obsWebSocket.sendRequest(Request(
-        'RemoveProfile',
-        requestData: {'profileName': profileName},
-      ));
+      await obsWebSocket.sendRequest(
+        Request('RemoveProfile', requestData: {'profileName': profileName}),
+      );
 
   /// Gets a parameter from the current profile's configuration.
   ///
@@ -131,13 +136,15 @@ class Config {
     required String parameterCategory,
     required String parameterName,
   }) async {
-    final response = await obsWebSocket.sendRequest(Request(
-      'GetProfileParameter',
-      requestData: {
-        'parameterCategory': parameterCategory,
-        'parameterName': parameterName,
-      },
-    ));
+    final response = await obsWebSocket.sendRequest(
+      Request(
+        'GetProfileParameter',
+        requestData: {
+          'parameterCategory': parameterCategory,
+          'parameterName': parameterName,
+        },
+      ),
+    );
 
     return ProfileParameterResponse.fromJson(response!.responseData!);
   }
@@ -147,18 +154,20 @@ class Config {
   /// - Complexity Rating: 4/5
   /// - Latest Supported RPC Version: 1
   /// - Added in v5.0.0
-  Future<void> setProfileParameter(
-          {required String parameterCategory,
-          required String parameterName,
-          required String parameterValue}) async =>
-      await obsWebSocket.sendRequest(Request(
-        'SetProfileParameter',
-        requestData: {
-          'parameterCategory': parameterCategory,
-          'parameterName': parameterName,
-          'parameterValue': parameterValue,
-        },
-      ));
+  Future<void> setProfileParameter({
+    required String parameterCategory,
+    required String parameterName,
+    required String parameterValue,
+  }) async => await obsWebSocket.sendRequest(
+    Request(
+      'SetProfileParameter',
+      requestData: {
+        'parameterCategory': parameterCategory,
+        'parameterName': parameterName,
+        'parameterValue': parameterValue,
+      },
+    ),
+  );
 
   /// Gets the current video settings.
   ///
@@ -177,8 +186,9 @@ class Config {
   /// - Latest Supported RPC Version: 1
   /// - Added in v5.0.0
   Future<VideoSettingsResponse> videoSettings() async {
-    final response =
-        await obsWebSocket.sendRequest(Request('GetVideoSettings'));
+    final response = await obsWebSocket.sendRequest(
+      Request('GetVideoSettings'),
+    );
 
     return VideoSettingsResponse.fromJson(response!.responseData!);
   }
@@ -189,10 +199,9 @@ class Config {
   /// - Latest Supported RPC Version: 1
   /// - Added in v5.0.0
   Future<void> setVideoSettings(VideoSettings videoSettings) async =>
-      await obsWebSocket.sendRequest(Request(
-        'SetVideoSettings',
-        requestData: videoSettings.toJson(),
-      ));
+      await obsWebSocket.sendRequest(
+        Request('SetVideoSettings', requestData: videoSettings.toJson()),
+      );
 
   /// Gets the current stream service settings (stream destination).
   ///
@@ -208,8 +217,9 @@ class Config {
   /// - Latest Supported RPC Version: 1
   /// - Added in v5.0.0
   Future<StreamServiceSettingsResponse> streamServiceSettings() async {
-    final response =
-        await obsWebSocket.sendRequest(Request('GetStreamServiceSettings'));
+    final response = await obsWebSocket.sendRequest(
+      Request('GetStreamServiceSettings'),
+    );
 
     return StreamServiceSettingsResponse.fromJson(response!.responseData!);
   }
@@ -224,14 +234,15 @@ class Config {
   Future<void> setStreamServiceSettings({
     required String streamServiceType,
     required Map<String, dynamic> streamServiceSettings,
-  }) async =>
-      await obsWebSocket.sendRequest(Request(
-        'SetStreamServiceSettings',
-        requestData: {
-          'streamServiceType': streamServiceType,
-          'streamServiceSettings': streamServiceSettings,
-        },
-      ));
+  }) async => await obsWebSocket.sendRequest(
+    Request(
+      'SetStreamServiceSettings',
+      requestData: {
+        'streamServiceType': streamServiceType,
+        'streamServiceSettings': streamServiceSettings,
+      },
+    ),
+  );
 
   /// Gets the current directory that the record output is set to.
   ///
@@ -247,8 +258,9 @@ class Config {
   /// - Latest Supported RPC Version: 1
   /// - Added in v5.0.0
   Future<RecordDirectoryResponse> recordDirectory() async {
-    final response =
-        await obsWebSocket.sendRequest(Request('GetRecordDirectory'));
+    final response = await obsWebSocket.sendRequest(
+      Request('GetRecordDirectory'),
+    );
 
     return RecordDirectoryResponse.fromJson(response!.responseData!);
   }

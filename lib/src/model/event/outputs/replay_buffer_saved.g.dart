@@ -7,11 +7,7 @@ part of 'replay_buffer_saved.dart';
 // **************************************************************************
 
 ReplayBufferSaved _$ReplayBufferSavedFromJson(Map<String, dynamic> json) =>
-    ReplayBufferSaved(
-      savedReplayPath: json['savedReplayPath'] as String,
-    );
+    ReplayBufferSaved(savedReplayPath: json['savedReplayPath'] as String);
 
 Map<String, dynamic> _$ReplayBufferSavedToJson(ReplayBufferSaved instance) =>
-    <String, dynamic>{
-      'savedReplayPath': instance.savedReplayPath,
-    };
+    <String, dynamic>{'savedReplayPath': instance.savedReplayPath};

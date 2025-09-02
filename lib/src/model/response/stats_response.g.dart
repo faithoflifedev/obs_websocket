@@ -23,19 +23,18 @@ StatsResponse _$StatsResponseFromJson(Map<String, dynamic> json) =>
           json['webSocketSessionOutgoingMessages'] as num,
     );
 
-Map<String, dynamic> _$StatsResponseToJson(StatsResponse instance) =>
-    <String, dynamic>{
-      'cpuUsage': instance.cpuUsage,
-      'memoryUsage': instance.memoryUsage,
-      'availableDiskSpace': instance.availableDiskSpace,
-      'activeFps': instance.activeFps,
-      'averageFrameRenderTime': instance.averageFrameRenderTime,
-      'renderSkippedFrames': instance.renderSkippedFrames,
-      'renderTotalFrames': instance.renderTotalFrames,
-      'outputSkippedFrames': instance.outputSkippedFrames,
-      'outputTotalFrames': instance.outputTotalFrames,
-      'webSocketSessionIncomingMessages':
-          instance.webSocketSessionIncomingMessages,
-      'webSocketSessionOutgoingMessages':
-          instance.webSocketSessionOutgoingMessages,
-    };
+Map<String, dynamic> _$StatsResponseToJson(
+  StatsResponse instance,
+) => <String, dynamic>{
+  'cpuUsage': instance.cpuUsage,
+  'memoryUsage': instance.memoryUsage,
+  'availableDiskSpace': instance.availableDiskSpace,
+  'activeFps': instance.activeFps,
+  'averageFrameRenderTime': instance.averageFrameRenderTime,
+  'renderSkippedFrames': instance.renderSkippedFrames,
+  'renderTotalFrames': instance.renderTotalFrames,
+  'outputSkippedFrames': instance.outputSkippedFrames,
+  'outputTotalFrames': instance.outputTotalFrames,
+  'webSocketSessionIncomingMessages': instance.webSocketSessionIncomingMessages,
+  'webSocketSessionOutgoingMessages': instance.webSocketSessionOutgoingMessages,
+};

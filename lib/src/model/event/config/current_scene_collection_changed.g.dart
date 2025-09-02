@@ -7,13 +7,11 @@ part of 'current_scene_collection_changed.dart';
 // **************************************************************************
 
 CurrentSceneCollectionChanged _$CurrentSceneCollectionChangedFromJson(
-        Map<String, dynamic> json) =>
-    CurrentSceneCollectionChanged(
-      sceneCollectionName: json['sceneCollectionName'] as String,
-    );
+  Map<String, dynamic> json,
+) => CurrentSceneCollectionChanged(
+  sceneCollectionName: json['sceneCollectionName'] as String,
+);
 
 Map<String, dynamic> _$CurrentSceneCollectionChangedToJson(
-        CurrentSceneCollectionChanged instance) =>
-    <String, dynamic>{
-      'sceneCollectionName': instance.sceneCollectionName,
-    };
+  CurrentSceneCollectionChanged instance,
+) => <String, dynamic>{'sceneCollectionName': instance.sceneCollectionName};

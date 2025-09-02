@@ -12,10 +12,7 @@ class CreateInputResponse {
   /// r	ID of the newly created scene item
   final int sceneItemId;
 
-  CreateInputResponse({
-    required this.inputUuid,
-    required this.sceneItemId,
-  });
+  CreateInputResponse({required this.inputUuid, required this.sceneItemId});
 
   factory CreateInputResponse.fromJson(Map<String, dynamic> json) =>
       _$CreateInputResponseFromJson(json);

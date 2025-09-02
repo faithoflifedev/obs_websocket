@@ -20,10 +20,7 @@ class IntegerResponse {
     return id;
   }
 
-  IntegerResponse({
-    this.sceneItemId,
-    this.sceneItemIndex,
-  });
+  IntegerResponse({this.sceneItemId, this.sceneItemIndex});
 
   factory IntegerResponse.fromJson(Map<String, dynamic> json) =>
       _$IntegerResponseFromJson(json);

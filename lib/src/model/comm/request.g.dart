@@ -7,7 +7,7 @@ part of 'request.dart';
 // **************************************************************************
 
 Request _$RequestFromJson(Map<String, dynamic> json) => Request(
-      json['requestType'] as String,
-      requestData: json['requestData'] as Map<String, dynamic>?,
-      expectResponse: json['expectResponse'] as bool?,
-    );
+  json['requestType'] as String,
+  requestData: json['requestData'] as Map<String, dynamic>?,
+  expectResponse: json['expectResponse'] as bool?,
+);

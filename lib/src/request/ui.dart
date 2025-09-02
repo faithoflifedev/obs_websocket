@@ -12,8 +12,9 @@ class Ui {
   ///  - Latest Supported RPC Version: 1
   ///  - Added in v5.0.0
   Future<bool> getStudioModeEnabled() async {
-    final response =
-        await obsWebSocket.sendRequest(Request('GetStudioModeEnabled'));
+    final response = await obsWebSocket.sendRequest(
+      Request('GetStudioModeEnabled'),
+    );
 
     return BooleanResponse.fromJson(response!.responseData!).enabled;
   }
@@ -24,10 +25,12 @@ class Ui {
   ///  - Latest Supported RPC Version: 1
   ///  - Added in v5.0.0
   Future<void> setStudioModeEnabled(bool studioModeEnabled) async =>
-      await obsWebSocket.sendRequest(Request(
-        'SetStudioModeEnabled',
-        requestData: {'studioModeEnabled': studioModeEnabled},
-      ));
+      await obsWebSocket.sendRequest(
+        Request(
+          'SetStudioModeEnabled',
+          requestData: {'studioModeEnabled': studioModeEnabled},
+        ),
+      );
 
   /// Opens the properties dialog of an input.
   ///
@@ -35,10 +38,12 @@ class Ui {
   ///  - Latest Supported RPC Version: 1
   ///  - Added in v5.0.0
   Future<void> openInputPropertiesDialog(String inputName) async =>
-      await obsWebSocket.sendRequest(Request(
-        'OpenInputPropertiesDialog',
-        requestData: {'inputName': inputName},
-      ));
+      await obsWebSocket.sendRequest(
+        Request(
+          'OpenInputPropertiesDialog',
+          requestData: {'inputName': inputName},
+        ),
+      );
 
   /// Opens the filters dialog of an input.
   ///
@@ -46,10 +51,12 @@ class Ui {
   ///  - Latest Supported RPC Version: 1
   ///  - Added in v5.0.0
   Future<void> openInputFiltersDialog(String inputName) async =>
-      await obsWebSocket.sendRequest(Request(
-        'OpenInputFiltersDialog',
-        requestData: {'inputName': inputName},
-      ));
+      await obsWebSocket.sendRequest(
+        Request(
+          'OpenInputFiltersDialog',
+          requestData: {'inputName': inputName},
+        ),
+      );
 
   /// Opens the interact dialog of an input.
   ///
@@ -57,10 +64,12 @@ class Ui {
   ///  - Latest Supported RPC Version: 1
   ///  - Added in v5.0.0
   Future<void> openInputInteractDialog(String inputName) async =>
-      await obsWebSocket.sendRequest(Request(
-        'OpenInputInteractDialog',
-        requestData: {'inputName': inputName},
-      ));
+      await obsWebSocket.sendRequest(
+        Request(
+          'OpenInputInteractDialog',
+          requestData: {'inputName': inputName},
+        ),
+      );
 
   /// Gets a list of connected monitors and information about them.
   ///
@@ -70,8 +79,9 @@ class Ui {
   Future<List<Monitor>> getMonitorList() async {
     final response = await obsWebSocket.sendRequest(Request('GetMonitorList'));
 
-    final monitorListResponse =
-        MonitorListResponse.fromJson(response!.responseData!);
+    final monitorListResponse = MonitorListResponse.fromJson(
+      response!.responseData!,
+    );
 
     return monitorListResponse.monitors;
   }
@@ -88,16 +98,20 @@ class Ui {
   /// - Complexity Rating: 3/5
   /// - Latest Supported RPC Version: 1
   /// - Added in v5.0.0
-  Future<void> openVideoMixProjector(String videoMixType,
-          {int? monitorIndex = -1, String? projectorGeometry}) async =>
-      await obsWebSocket.sendRequest(Request(
-        'OpenVideoMixProjector',
-        requestData: {
-          'videoMixType': videoMixType,
-          'monitorIndex': monitorIndex,
-          'projectorGeometry': projectorGeometry,
-        }..removeWhere((key, value) => value == null),
-      ));
+  Future<void> openVideoMixProjector(
+    String videoMixType, {
+    int? monitorIndex = -1,
+    String? projectorGeometry,
+  }) async => await obsWebSocket.sendRequest(
+    Request(
+      'OpenVideoMixProjector',
+      requestData: {
+        'videoMixType': videoMixType,
+        'monitorIndex': monitorIndex,
+        'projectorGeometry': projectorGeometry,
+      },
+    ),
+  );
 
   /// Opens a projector for a source.
   ///
@@ -106,14 +120,18 @@ class Ui {
   /// - Complexity Rating: 3/5
   /// - Latest Supported RPC Version: 1
   /// - Added in v5.0.0
-  Future<void> openSourceProjector(String sourceName,
-          {int? monitorIndex = -1, String? projectorGeometry}) async =>
-      await obsWebSocket.sendRequest(Request(
-        'OpenSourceProjector',
-        requestData: {
-          'sourceName': sourceName,
-          'monitorIndex': monitorIndex,
-          'projectorGeometry': projectorGeometry,
-        }..removeWhere((key, value) => value == null),
-      ));
+  Future<void> openSourceProjector(
+    String sourceName, {
+    int? monitorIndex = -1,
+    String? projectorGeometry,
+  }) async => await obsWebSocket.sendRequest(
+    Request(
+      'OpenSourceProjector',
+      requestData: {
+        'sourceName': sourceName,
+        'monitorIndex': monitorIndex,
+        'projectorGeometry': projectorGeometry,
+      },
+    ),
+  );
 }

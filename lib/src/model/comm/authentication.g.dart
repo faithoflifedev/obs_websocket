@@ -13,7 +13,4 @@ Authentication _$AuthenticationFromJson(Map<String, dynamic> json) =>
     );
 
 Map<String, dynamic> _$AuthenticationToJson(Authentication instance) =>
-    <String, dynamic>{
-      'challenge': instance.challenge,
-      'salt': instance.salt,
-    };
+    <String, dynamic>{'challenge': instance.challenge, 'salt': instance.salt};

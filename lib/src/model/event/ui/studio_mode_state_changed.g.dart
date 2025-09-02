@@ -7,13 +7,11 @@ part of 'studio_mode_state_changed.dart';
 // **************************************************************************
 
 StudioModeStateChanged _$StudioModeStateChangedFromJson(
-        Map<String, dynamic> json) =>
-    StudioModeStateChanged(
-      studioModeEnabled: json['studioModeEnabled'] as bool,
-    );
+  Map<String, dynamic> json,
+) => StudioModeStateChanged(
+  studioModeEnabled: json['studioModeEnabled'] as bool,
+);
 
 Map<String, dynamic> _$StudioModeStateChangedToJson(
-        StudioModeStateChanged instance) =>
-    <String, dynamic>{
-      'studioModeEnabled': instance.studioModeEnabled,
-    };
+  StudioModeStateChanged instance,
+) => <String, dynamic>{'studioModeEnabled': instance.studioModeEnabled};

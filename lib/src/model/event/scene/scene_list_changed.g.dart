@@ -14,6 +14,4 @@ SceneListChanged _$SceneListChangedFromJson(Map<String, dynamic> json) =>
     );
 
 Map<String, dynamic> _$SceneListChangedToJson(SceneListChanged instance) =>
-    <String, dynamic>{
-      'scenes': instance.scenes,
-    };
+    <String, dynamic>{'scenes': instance.scenes};

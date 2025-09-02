@@ -10,9 +10,7 @@ part 'input_kind_response.g.dart';
 class InputKindResponse {
   final List<Input> inputs;
 
-  InputKindResponse({
-    required this.inputs,
-  });
+  InputKindResponse({required this.inputs});
 
   factory InputKindResponse.fromJson(Map<String, dynamic> json) =>
       _$InputKindResponseFromJson(json);

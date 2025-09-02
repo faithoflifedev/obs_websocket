@@ -11,9 +11,7 @@ class SceneListChanged {
   /// Updated array of scenes
   final List<Scene> scenes;
 
-  SceneListChanged({
-    required this.scenes,
-  });
+  SceneListChanged({required this.scenes});
 
   factory SceneListChanged.fromJson(Map<String, dynamic> json) =>
       _$SceneListChangedFromJson(json);

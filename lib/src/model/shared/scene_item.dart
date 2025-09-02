@@ -10,12 +10,8 @@ class SceneItem extends Scene {
   /// Numeric ID of the scene item
   final int sceneItemId;
 
-  SceneItem({
-    required super.sceneName,
-    required this.sceneItemId,
-  }) : super(
-          sceneIndex: sceneItemId,
-        );
+  SceneItem({required super.sceneName, required this.sceneItemId})
+    : super(sceneIndex: sceneItemId);
 
   factory SceneItem.fromJson(Map<String, dynamic> json) =>
       _$SceneItemFromJson(json);

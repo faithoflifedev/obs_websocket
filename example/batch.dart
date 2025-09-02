@@ -3,7 +3,7 @@ import 'package:obs_websocket/obs_websocket.dart';
 import 'package:universal_io/io.dart';
 import 'package:yaml/yaml.dart';
 
-main() async {
+void main(List<String> args) async {
   final config = loadYaml(File('config.yaml').readAsStringSync());
 
   final obs = await ObsWebSocket.connect(

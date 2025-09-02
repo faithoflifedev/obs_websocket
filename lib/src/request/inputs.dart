@@ -12,11 +12,9 @@ class Inputs {
   /// - Latest Supported RPC Version: 1
   /// - Added in v5.0.0
   Future<List<Input>> getInputList(String? inputKind) async {
-    final response = await obsWebSocket.sendRequest(Request(
-      'GetInputList',
-      requestData: {'inputKind': inputKind}
-        ..removeWhere((key, value) => value == null),
-    ));
+    final response = await obsWebSocket.sendRequest(
+      Request('GetInputList', requestData: {'inputKind': inputKind}),
+    );
 
     if (response == null || response.responseData == null) return <Input>[];
 
@@ -29,11 +27,9 @@ class Inputs {
   /// - Latest Supported RPC Version: 1
   /// - Added in v5.0.0
   Future<List<String>> getInputKindList([bool unversioned = false]) async {
-    final response = await obsWebSocket.sendRequest(Request(
-      'GetInputKindList',
-      requestData: {'unversioned': unversioned}
-        ..removeWhere((key, value) => value == null),
-    ));
+    final response = await obsWebSocket.sendRequest(
+      Request('GetInputKindList', requestData: {'unversioned': unversioned}),
+    );
 
     if (response == null || response.responseData == null) return [];
 
@@ -53,9 +49,9 @@ class Inputs {
   /// - Latest Supported RPC Version: 1
   /// - Added in v5.0.0
   Future<SpecialInputsResponse> getSpecialInputs() async {
-    final response = await obsWebSocket.sendRequest(Request(
-      'GetSpecialInputs',
-    ));
+    final response = await obsWebSocket.sendRequest(
+      Request('GetSpecialInputs'),
+    );
 
     return SpecialInputsResponse.fromJson(response!.responseData!);
   }
@@ -72,15 +68,14 @@ class Inputs {
     required String inputKind,
     dynamic inputSettings,
     bool? sceneItemEnabled,
-  }) async =>
-      createInput(
-        sceneName: sceneName,
-        sceneUuid: sceneUuid,
-        inputName: inputName,
-        inputKind: inputKind,
-        inputSettings: inputSettings,
-        sceneItemEnabled: sceneItemEnabled,
-      );
+  }) async => createInput(
+    sceneName: sceneName,
+    sceneUuid: sceneUuid,
+    inputName: inputName,
+    inputKind: inputKind,
+    inputSettings: inputSettings,
+    sceneItemEnabled: sceneItemEnabled,
+  );
 
   /// Creates a new input, adding it as a scene item to the specified scene.
   ///
@@ -95,17 +90,19 @@ class Inputs {
     Map<String, dynamic>? inputSettings,
     bool? sceneItemEnabled,
   }) async {
-    final response = await obsWebSocket.sendRequest(Request(
-      'CreateInput',
-      requestData: {
-        'sceneName': sceneName,
-        'sceneUuid': sceneUuid,
-        'inputName': inputName,
-        'inputKind': inputKind,
-        'inputSettings': inputSettings,
-        'sceneItemEnabled': sceneItemEnabled,
-      }..removeWhere((key, value) => value == null),
-    ));
+    final response = await obsWebSocket.sendRequest(
+      Request(
+        'CreateInput',
+        requestData: {
+          'sceneName': sceneName,
+          'sceneUuid': sceneUuid,
+          'inputName': inputName,
+          'inputKind': inputKind,
+          'inputSettings': inputSettings,
+          'sceneItemEnabled': sceneItemEnabled,
+        },
+      ),
+    );
 
     return CreateInputResponse.fromJson(response!.responseData!);
   }
@@ -117,10 +114,7 @@ class Inputs {
   /// - Complexity Rating: 2/5
   /// - Latest Supported RPC Version: 1
   /// - Added in v5.0.0
-  Future<void> removeInput({
-    String? inputName,
-    String? inputUuid,
-  }) async =>
+  Future<void> removeInput({String? inputName, String? inputUuid}) async =>
       await remove(inputName: inputName, inputUuid: inputUuid);
 
   /// Removes an existing input.
@@ -130,21 +124,17 @@ class Inputs {
   /// - Complexity Rating: 2/5
   /// - Latest Supported RPC Version: 1
   /// - Added in v5.0.0
-  Future<void> remove({
-    String? inputName,
-    String? inputUuid,
-  }) async {
+  Future<void> remove({String? inputName, String? inputUuid}) async {
     if (inputName == null && inputUuid == null) {
       throw ArgumentError('inputName or inputUuid must be provided');
     }
 
-    await obsWebSocket.sendRequest(Request(
-      'RemoveInput',
-      requestData: {
-        'inputName': inputName,
-        'inputUuid': inputUuid,
-      }..removeWhere((key, value) => value == null),
-    ));
+    await obsWebSocket.sendRequest(
+      Request(
+        'RemoveInput',
+        requestData: {'inputName': inputName, 'inputUuid': inputUuid},
+      ),
+    );
   }
 
   /// Sets the name of an input (rename).
@@ -156,12 +146,11 @@ class Inputs {
     String? inputName,
     String? inputUuid,
     required String newInputName,
-  }) async =>
-      await setName(
-        inputName: inputName,
-        inputUuid: inputUuid,
-        newInputName: newInputName,
-      );
+  }) async => await setName(
+    inputName: inputName,
+    inputUuid: inputUuid,
+    newInputName: newInputName,
+  );
 
   /// Sets the name of an input (rename).
   ///
@@ -173,14 +162,16 @@ class Inputs {
     String? inputUuid,
     required String newInputName,
   }) async {
-    await obsWebSocket.sendRequest(Request(
-      'SetInputName',
-      requestData: {
-        'inputName': inputName,
-        'inputUuid': inputUuid,
-        'newInputName': newInputName,
-      },
-    ));
+    await obsWebSocket.sendRequest(
+      Request(
+        'SetInputName',
+        requestData: {
+          'inputName': inputName,
+          'inputUuid': inputUuid,
+          'newInputName': newInputName,
+        },
+      ),
+    );
   }
 
   /// Gets the default settings for an input kind.
@@ -191,10 +182,9 @@ class Inputs {
   Future<InputDefaultSettingsResponse> getInputDefaultSettings({
     required String inputKind,
   }) async {
-    final response = await obsWebSocket
-        .sendRequest(Request('GetInputDefaultSettings', requestData: {
-      'inputKind': inputKind,
-    }));
+    final response = await obsWebSocket.sendRequest(
+      Request('GetInputDefaultSettings', requestData: {'inputKind': inputKind}),
+    );
 
     return InputDefaultSettingsResponse.fromJson(response!.responseData!);
   }
@@ -206,8 +196,7 @@ class Inputs {
   /// - Added in v5.0.0
   Future<InputDefaultSettingsResponse> defaultSettings({
     required String inputKind,
-  }) async =>
-      getInputDefaultSettings(inputKind: inputKind);
+  }) async => getInputDefaultSettings(inputKind: inputKind);
 
   /// Gets the settings of an input.
   ///
@@ -224,13 +213,12 @@ class Inputs {
       throw ArgumentError('inputName or inputUuid must be provided');
     }
 
-    final response = await obsWebSocket.sendRequest(Request(
-      'GetInputSettings',
-      requestData: {
-        'inputName': inputName,
-        'inputUuid': inputUuid,
-      }..removeWhere((key, value) => value == null),
-    ));
+    final response = await obsWebSocket.sendRequest(
+      Request(
+        'GetInputSettings',
+        requestData: {'inputName': inputName, 'inputUuid': inputUuid},
+      ),
+    );
 
     return InputSettingsResponse.fromJson(response!.responseData!);
   }
@@ -245,11 +233,7 @@ class Inputs {
   Future<InputSettingsResponse> settings({
     String? inputName,
     String? inputUuid,
-  }) async =>
-      getInputSettings(
-        inputName: inputName,
-        inputUuid: inputUuid,
-      );
+  }) async => getInputSettings(inputName: inputName, inputUuid: inputUuid);
 
   /// Sets the settings of an input.
   ///
@@ -263,16 +247,17 @@ class Inputs {
     String? inputUuid,
     required Map<String, dynamic> inputSettings,
     bool? overlay,
-  }) async =>
-      await obsWebSocket.sendRequest(Request(
-        'SetInputSettings',
-        requestData: {
-          'inputName': inputName,
-          'inputUuid': inputUuid,
-          'inputSettings': inputSettings,
-          'overlay': overlay,
-        }..removeWhere((key, value) => value == null),
-      ));
+  }) async => await obsWebSocket.sendRequest(
+    Request(
+      'SetInputSettings',
+      requestData: {
+        'inputName': inputName,
+        'inputUuid': inputUuid,
+        'inputSettings': inputSettings,
+        'overlay': overlay,
+      },
+    ),
+  );
 
   /// Sets the settings of an input.
   ///
@@ -286,13 +271,12 @@ class Inputs {
     String? inputUuid,
     required Map<String, dynamic> inputSettings,
     bool? overlay,
-  }) async =>
-      setInputSettings(
-        inputName: inputName,
-        inputUuid: inputUuid,
-        inputSettings: inputSettings,
-        overlay: overlay,
-      );
+  }) async => setInputSettings(
+    inputName: inputName,
+    inputUuid: inputUuid,
+    inputSettings: inputSettings,
+    overlay: overlay,
+  );
 
   /// Gets the audio mute state of an input.
   ///
@@ -307,10 +291,9 @@ class Inputs {
   /// - Latest Supported RPC Version: 1
   /// - Added in v5.0.0
   Future<bool> getInputMute(String inputName) async {
-    final response = await obsWebSocket.sendRequest(Request(
-      'GetInputMute',
-      requestData: {'inputName': inputName},
-    ));
+    final response = await obsWebSocket.sendRequest(
+      Request('GetInputMute', requestData: {'inputName': inputName}),
+    );
 
     return BooleanResponse.fromJson(response!.responseData!).enabled;
   }
@@ -329,14 +312,16 @@ class Inputs {
       throw ArgumentError('inputName or inputUuid must be provided');
     }
 
-    await obsWebSocket.sendRequest(Request(
-      'SetInputMute',
-      requestData: {
-        'inputName': inputName,
-        'inputUuid': inputUuid,
-        'inputMuted': inputMuted,
-      }..removeWhere((key, value) => value == null),
-    ));
+    await obsWebSocket.sendRequest(
+      Request(
+        'SetInputMute',
+        requestData: {
+          'inputName': inputName,
+          'inputUuid': inputUuid,
+          'inputMuted': inputMuted,
+        },
+      ),
+    );
   }
 
   /// Sets the audio mute state of an input.
@@ -348,43 +333,32 @@ class Inputs {
     String? inputName,
     String? inputUuid,
     required bool inputMuted,
-  }) async =>
-      setInputMute(
-        inputMuted: inputMuted,
-        inputName: inputName,
-        inputUuid: inputUuid,
-      );
+  }) async => setInputMute(
+    inputMuted: inputMuted,
+    inputName: inputName,
+    inputUuid: inputUuid,
+  );
 
   /// Toggles the audio mute state of an input.
   ///
   /// - Complexity Rating: 2/5
   /// - Latest Supported RPC Version: 1
   /// - Added in v5.0.0
-  Future<bool> toggleMute({
-    String? inputName,
-    String? inputUuid,
-  }) async =>
-      toggleInputMute(
-        inputName: inputName,
-        inputUuid: inputUuid,
-      );
+  Future<bool> toggleMute({String? inputName, String? inputUuid}) async =>
+      toggleInputMute(inputName: inputName, inputUuid: inputUuid);
 
   /// Toggles the audio mute state of an input.
   ///
   /// - Complexity Rating: 2/5
   /// - Latest Supported RPC Version: 1
   /// - Added in v5.0.0
-  Future<bool> toggleInputMute({
-    String? inputName,
-    String? inputUuid,
-  }) async {
-    final response = await obsWebSocket.sendRequest(Request(
-      'ToggleInputMute',
-      requestData: {
-        'inputName': inputName,
-        'inputUuid': inputUuid,
-      },
-    ));
+  Future<bool> toggleInputMute({String? inputName, String? inputUuid}) async {
+    final response = await obsWebSocket.sendRequest(
+      Request(
+        'ToggleInputMute',
+        requestData: {'inputName': inputName, 'inputUuid': inputUuid},
+      ),
+    );
 
     return BooleanResponse.fromJson(response!.responseData!).enabled;
   }
@@ -402,13 +376,12 @@ class Inputs {
       throw ArgumentError('inputName or inputUuid must be provided');
     }
 
-    final response = await obsWebSocket.sendRequest(Request(
-      'GetInputVolume',
-      requestData: {
-        'inputName': inputName,
-        'inputUuid': inputUuid,
-      }..removeWhere((key, value) => value == null),
-    ));
+    final response = await obsWebSocket.sendRequest(
+      Request(
+        'GetInputVolume',
+        requestData: {'inputName': inputName, 'inputUuid': inputUuid},
+      ),
+    );
 
     return InputVolumeResponse.fromJson(response!.responseData!);
   }

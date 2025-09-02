@@ -14,9 +14,9 @@ BaseSceneGroupEvent _$BaseSceneGroupEventFromJson(Map<String, dynamic> json) =>
     );
 
 Map<String, dynamic> _$BaseSceneGroupEventToJson(
-        BaseSceneGroupEvent instance) =>
-    <String, dynamic>{
-      'sceneName': instance.sceneName,
-      'sceneUuid': instance.sceneUuid,
-      'isGroup': instance.isGroup,
-    };
+  BaseSceneGroupEvent instance,
+) => <String, dynamic>{
+  'sceneName': instance.sceneName,
+  'sceneUuid': instance.sceneUuid,
+  'isGroup': instance.isGroup,
+};

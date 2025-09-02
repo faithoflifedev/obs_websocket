@@ -9,9 +9,7 @@ class RecordDirectoryResponse {
   /// Output directory
   final String recordDirectory;
 
-  RecordDirectoryResponse({
-    required this.recordDirectory,
-  });
+  RecordDirectoryResponse({required this.recordDirectory});
 
   factory RecordDirectoryResponse.fromJson(Map<String, dynamic> json) =>
       _$RecordDirectoryResponseFromJson(json);

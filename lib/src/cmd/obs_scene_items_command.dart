@@ -25,19 +25,22 @@ class ObsGetSceneItemListCommand extends ObsHelperCommand {
   String get name => 'get-scene-item-list';
 
   ObsGetSceneItemListCommand() {
-    argParser.addOption('scene-name',
-        abbr: 'n',
-        mandatory: true,
-        valueHelp: 'string',
-        help: 'Name of the scene to get the items of');
+    argParser.addOption(
+      'scene-name',
+      abbr: 'n',
+      mandatory: true,
+      valueHelp: 'string',
+      help: 'Name of the scene to get the items of',
+    );
   }
 
   @override
   void run() async {
     await initializeObs();
 
-    final sceneItemDetailList =
-        await obs.sceneItems.getSceneItemList(argResults!['scene-name']);
+    final sceneItemDetailList = await obs.sceneItems.getSceneItemList(
+      argResults!['scene-name'],
+    );
 
     print(sceneItemDetailList);
 
@@ -55,11 +58,13 @@ class ObsGetSceneItemLockedCommand extends ObsHelperCommand {
 
   ObsGetSceneItemLockedCommand() {
     argParser
-      ..addOption('scene-name',
-          abbr: 'n',
-          mandatory: true,
-          valueHelp: 'string',
-          help: 'Name of the scene the item is in')
+      ..addOption(
+        'scene-name',
+        abbr: 'n',
+        mandatory: true,
+        valueHelp: 'string',
+        help: 'Name of the scene the item is in',
+      )
       ..addOption(
         'scene-item-id',
         abbr: 'i',
@@ -74,8 +79,9 @@ class ObsGetSceneItemLockedCommand extends ObsHelperCommand {
     await initializeObs();
 
     final isLocked = await obs.sceneItems.getLocked(
-        sceneName: argResults!['scene-name'],
-        sceneItemId: int.parse(argResults!['scene-item-id']));
+      sceneName: argResults!['scene-name'],
+      sceneItemId: int.parse(argResults!['scene-item-id']),
+    );
 
     print(isLocked);
 
@@ -93,11 +99,13 @@ class ObsSetSceneItemLockedCommand extends ObsHelperCommand {
 
   ObsSetSceneItemLockedCommand() {
     argParser
-      ..addOption('scene-name',
-          abbr: 'n',
-          mandatory: true,
-          valueHelp: 'string',
-          help: 'Name of the scene the item is in')
+      ..addOption(
+        'scene-name',
+        abbr: 'n',
+        mandatory: true,
+        valueHelp: 'string',
+        help: 'Name of the scene the item is in',
+      )
       ..addOption(
         'scene-item-id',
         abbr: 'i',
@@ -117,9 +125,10 @@ class ObsSetSceneItemLockedCommand extends ObsHelperCommand {
     await initializeObs();
 
     await obs.sceneItems.setLocked(
-        sceneName: argResults!['scene-name'],
-        sceneItemId: int.parse(argResults!['scene-item-id']),
-        sceneItemLocked: argResults!['scene-item-locked']);
+      sceneName: argResults!['scene-name'],
+      sceneItemId: int.parse(argResults!['scene-item-id']),
+      sceneItemLocked: argResults!['scene-item-locked'],
+    );
 
     obs.close();
   }

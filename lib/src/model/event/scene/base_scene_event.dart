@@ -13,10 +13,7 @@ class BaseSceneEvent implements BaseEvent {
   /// UUID of the new scene
   final String sceneUuid;
 
-  BaseSceneEvent({
-    required this.sceneName,
-    required this.sceneUuid,
-  });
+  BaseSceneEvent({required this.sceneName, required this.sceneUuid});
 
   factory BaseSceneEvent.fromJson(Map<String, dynamic> json) =>
       _$BaseSceneEventFromJson(json);

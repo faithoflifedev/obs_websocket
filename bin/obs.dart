@@ -5,29 +5,38 @@ import 'package:universal_io/io.dart';
 
 void main(List<String> arguments) async {
   CommandRunner('obs', 'A command line interface for controlling OBS.')
-    ..argParser.addOption('uri',
-        abbr: 'u',
-        valueHelp: 'ws://[host]:[port]',
-        help: 'The url and port for OBS websocket')
-    ..argParser.addOption('timeout',
-        abbr: 't',
-        valueHelp: 'int',
-        help: 'The timeout in seconds for the web socket connection.',
-        callback: (value) =>
-            Validate.isNull(value) || Validate.isGreaterOrEqual(value, 1))
-    ..argParser.addOption('log-level',
-        abbr: 'l',
-        allowed: ['all', 'debug', 'info', 'warning', 'error', 'off'],
-        defaultsTo: 'off')
-    ..argParser.addOption('passwd',
-        abbr: 'p',
-        valueHelp: 'string',
-        help: 'The OBS websocket password, only required if enabled in OBS')
+    ..argParser.addOption(
+      'uri',
+      abbr: 'u',
+      valueHelp: 'ws://[host]:[port]',
+      help: 'The url and port for OBS websocket',
+    )
+    ..argParser.addOption(
+      'timeout',
+      abbr: 't',
+      valueHelp: 'int',
+      help: 'The timeout in seconds for the web socket connection.',
+      callback: (value) =>
+          Validate.isNull(value) || Validate.isGreaterOrEqual(value, 1),
+    )
+    ..argParser.addOption(
+      'log-level',
+      abbr: 'l',
+      allowed: ['all', 'debug', 'info', 'warning', 'error', 'off'],
+      defaultsTo: 'off',
+    )
+    ..argParser.addOption(
+      'passwd',
+      abbr: 'p',
+      valueHelp: 'string',
+      help: 'The OBS websocket password, only required if enabled in OBS',
+    )
     ..addCommand(ObsAuthorizeCommand())
     ..addCommand(ObsInputsCommand())
     ..addCommand(ObsListenCommand())
     ..addCommand(ObsGeneralCommand())
     ..addCommand(ObsConfigCommand())
+    ..addCommand(ObsMediaInputsCommand())
     ..addCommand(ObsSendCommand())
     ..addCommand(ObsSourcesCommand())
     // ..addCommand(ObsProfilesCommand())

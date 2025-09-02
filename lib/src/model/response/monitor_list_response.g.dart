@@ -14,7 +14,5 @@ MonitorListResponse _$MonitorListResponseFromJson(Map<String, dynamic> json) =>
     );
 
 Map<String, dynamic> _$MonitorListResponseToJson(
-        MonitorListResponse instance) =>
-    <String, dynamic>{
-      'monitors': instance.monitors,
-    };
+  MonitorListResponse instance,
+) => <String, dynamic>{'monitors': instance.monitors};

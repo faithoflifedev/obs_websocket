@@ -12,10 +12,7 @@ class InputSettingsResponse {
   /// The kind of the input
   final String inputKind;
 
-  InputSettingsResponse({
-    required this.inputSettings,
-    required this.inputKind,
-  });
+  InputSettingsResponse({required this.inputSettings, required this.inputKind});
 
   factory InputSettingsResponse.fromJson(Map<String, dynamic> json) =>
       _$InputSettingsResponseFromJson(json);

@@ -7,15 +7,15 @@ part of 'profile_parameter_response.dart';
 // **************************************************************************
 
 ProfileParameterResponse _$ProfileParameterResponseFromJson(
-        Map<String, dynamic> json) =>
-    ProfileParameterResponse(
-      parameterValue: json['parameterValue'] as String,
-      defaultParameterValue: json['defaultParameterValue'] as String,
-    );
+  Map<String, dynamic> json,
+) => ProfileParameterResponse(
+  parameterValue: json['parameterValue'] as String,
+  defaultParameterValue: json['defaultParameterValue'] as String,
+);
 
 Map<String, dynamic> _$ProfileParameterResponseToJson(
-        ProfileParameterResponse instance) =>
-    <String, dynamic>{
-      'parameterValue': instance.parameterValue,
-      'defaultParameterValue': instance.defaultParameterValue,
-    };
+  ProfileParameterResponse instance,
+) => <String, dynamic>{
+  'parameterValue': instance.parameterValue,
+  'defaultParameterValue': instance.defaultParameterValue,
+};

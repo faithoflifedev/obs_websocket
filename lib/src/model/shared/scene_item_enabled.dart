@@ -9,12 +9,8 @@ part 'scene_item_enabled.g.dart';
 class SceneItemEnabled extends Scene {
   final int sceneItemId;
 
-  SceneItemEnabled({
-    required super.sceneName,
-    required this.sceneItemId,
-  }) : super(
-          sceneIndex: sceneItemId,
-        );
+  SceneItemEnabled({required super.sceneName, required this.sceneItemId})
+    : super(sceneIndex: sceneItemId);
 
   factory SceneItemEnabled.fromJson(Map<String, dynamic> json) =>
       _$SceneItemEnabledFromJson(json);

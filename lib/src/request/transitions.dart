@@ -24,8 +24,12 @@ class Transitions {
   /// - Latest Supported RPC Version: 1
   /// - Added in v5.0.0
   Future<void> setCurrentSceneTransition(String transitionName) async =>
-      await obsWebSocket.sendRequest(Request('SetCurrentSceneTransition',
-          requestData: {'transitionName': transitionName}));
+      await obsWebSocket.sendRequest(
+        Request(
+          'SetCurrentSceneTransition',
+          requestData: {'transitionName': transitionName},
+        ),
+      );
 
   /// Sets the duration of the current scene transition, if it is not fixed.
   ///
@@ -45,10 +49,13 @@ class Transitions {
   ///
   /// [transitionDuration] in milliseconds, >= 50, <= 20000
   Future<void> setCurrentSceneTransitionDuration(
-          int transitionDuration) async =>
-      await obsWebSocket.sendRequest(Request(
-          'SetCurrentSceneTransitionDuration',
-          requestData: {'transitionDuration': transitionDuration}));
+    int transitionDuration,
+  ) async => await obsWebSocket.sendRequest(
+    Request(
+      'SetCurrentSceneTransitionDuration',
+      requestData: {'transitionDuration': transitionDuration},
+    ),
+  );
 
   /// Triggers the current scene transition. Same functionality as the Transition button in studio mode.
   ///

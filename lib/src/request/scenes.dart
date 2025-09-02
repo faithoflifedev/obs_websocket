@@ -72,8 +72,9 @@ class Scenes {
   /// - Latest Supported RPC Version: 1
   /// - Added in v5.0.0
   Future<String> getCurrentProgram() async {
-    final response =
-        await obsWebSocket.sendRequest(Request('GetCurrentProgramScene'));
+    final response = await obsWebSocket.sendRequest(
+      Request('GetCurrentProgramScene'),
+    );
 
     return StringResponse.fromJson(response!.responseData!).value;
   }
@@ -92,10 +93,12 @@ class Scenes {
   /// - Latest Supported RPC Version: 1
   /// - Added in v5.0.0
   Future<void> setCurrentProgram(String sceneName) async =>
-      await obsWebSocket.sendRequest(Request(
-        'SetCurrentProgramScene',
-        requestData: {'sceneName': sceneName},
-      ));
+      await obsWebSocket.sendRequest(
+        Request(
+          'SetCurrentProgramScene',
+          requestData: {'sceneName': sceneName},
+        ),
+      );
 
   /// Gets the current preview scene.
   ///
@@ -110,8 +113,9 @@ class Scenes {
   /// - Latest Supported RPC Version: 1
   /// - Added in v5.0.0
   Future<String> getCurrentPreview() async {
-    final response =
-        await obsWebSocket.sendRequest(Request('GetCurrentPreviewScene'));
+    final response = await obsWebSocket.sendRequest(
+      Request('GetCurrentPreviewScene'),
+    );
 
     return StringResponse.fromJson(response!.responseData!).value;
   }
@@ -130,10 +134,12 @@ class Scenes {
   /// - Latest Supported RPC Version: 1
   /// - Added in v5.0.0
   Future<void> setCurrentPreview(String sceneName) async =>
-      await obsWebSocket.sendRequest(Request(
-        'SetCurrentPreviewScene',
-        requestData: {'sceneName': sceneName},
-      ));
+      await obsWebSocket.sendRequest(
+        Request(
+          'SetCurrentPreviewScene',
+          requestData: {'sceneName': sceneName},
+        ),
+      );
 
   /// Creates a new scene in OBS.
   ///
@@ -147,11 +153,9 @@ class Scenes {
   /// - Complexity Rating: 2/5
   /// - Latest Supported RPC Version: 1
   /// - Added in v5.0.0
-  Future<void> create(String sceneName) async =>
-      await obsWebSocket.sendRequest(Request(
-        'CreateScene',
-        requestData: {'sceneName': sceneName},
-      ));
+  Future<void> create(String sceneName) async => await obsWebSocket.sendRequest(
+    Request('CreateScene', requestData: {'sceneName': sceneName}),
+  );
 
   /// Removes a scene from OBS.
   ///
@@ -165,11 +169,9 @@ class Scenes {
   /// - Complexity Rating: 2/5
   /// - Latest Supported RPC Version: 1
   /// - Added in v5.0.0
-  Future<void> remove(String sceneName) async =>
-      await obsWebSocket.sendRequest(Request(
-        'RemoveScene',
-        requestData: {'sceneName': sceneName},
-      ));
+  Future<void> remove(String sceneName) async => await obsWebSocket.sendRequest(
+    Request('RemoveScene', requestData: {'sceneName': sceneName}),
+  );
 
   /// Sets the name of a scene (rename).
   ///
@@ -183,11 +185,9 @@ class Scenes {
   /// - Complexity Rating: 2/5
   /// - Latest Supported RPC Version: 1
   /// - Added in v5.0.0
-  Future<void> set(String sceneName) async =>
-      await obsWebSocket.sendRequest(Request(
-        'SetSceneName',
-        requestData: {'sceneName': sceneName},
-      ));
+  Future<void> set(String sceneName) async => await obsWebSocket.sendRequest(
+    Request('SetSceneName', requestData: {'sceneName': sceneName}),
+  );
 
   /// Gets the scene transition overridden for a scene.
   ///
@@ -195,14 +195,18 @@ class Scenes {
   /// Latest Supported RPC Version: 1
   /// Added in v5.0.0
   Future<SceneSceneTransitionOverrideResponse> getSceneSceneTransitionOverride(
-      String sceneName) async {
-    final response = await obsWebSocket.sendRequest(Request(
-      'GetSceneSceneTransitionOverride',
-      requestData: {'sceneName': sceneName},
-    ));
+    String sceneName,
+  ) async {
+    final response = await obsWebSocket.sendRequest(
+      Request(
+        'GetSceneSceneTransitionOverride',
+        requestData: {'sceneName': sceneName},
+      ),
+    );
 
     return SceneSceneTransitionOverrideResponse.fromJson(
-        response!.responseData!);
+      response!.responseData!,
+    );
   }
 
   /// Sets the scene transition overridden for a scene.
@@ -210,12 +214,18 @@ class Scenes {
   /// Complexity Rating: 2/5
   /// Latest Supported RPC Version: 1
   /// Added in v5.0.0
-  Future<void> setSceneSceneTransitionOverride(String sceneName,
-          {String? transitionName, int? transitionDuration}) async =>
-      await obsWebSocket
-          .sendRequest(Request('SetSceneSceneTransitionOverride', requestData: {
+  Future<void> setSceneSceneTransitionOverride(
+    String sceneName, {
+    String? transitionName,
+    int? transitionDuration,
+  }) async => await obsWebSocket.sendRequest(
+    Request(
+      'SetSceneSceneTransitionOverride',
+      requestData: {
         'sceneName': sceneName,
         'transitionName': transitionName,
         'transitionDuration': transitionDuration,
-      }));
+      },
+    ),
+  );
 }

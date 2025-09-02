@@ -7,13 +7,13 @@ part of 'input.dart';
 // **************************************************************************
 
 Input _$InputFromJson(Map<String, dynamic> json) => Input(
-      inputKind: json['inputKind'] as String,
-      inputName: json['inputName'] as String,
-      unversionedInputKind: json['unversionedInputKind'] as String,
-    );
+  inputKind: json['inputKind'] as String,
+  inputName: json['inputName'] as String,
+  unversionedInputKind: json['unversionedInputKind'] as String,
+);
 
 Map<String, dynamic> _$InputToJson(Input instance) => <String, dynamic>{
-      'inputKind': instance.inputKind,
-      'inputName': instance.inputName,
-      'unversionedInputKind': instance.unversionedInputKind,
-    };
+  'inputKind': instance.inputKind,
+  'inputName': instance.inputName,
+  'unversionedInputKind': instance.unversionedInputKind,
+};

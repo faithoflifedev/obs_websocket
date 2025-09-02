@@ -16,7 +16,8 @@ SceneItemDetail _$SceneItemDetailFromJson(Map<String, dynamic> json) =>
       sceneItemIndex: (json['sceneItemIndex'] as num).toInt(),
       sceneItemLocked: json['sceneItemLocked'] as bool,
       sceneItemTransform: Transform.fromJson(
-          json['sceneItemTransform'] as Map<String, dynamic>),
+        json['sceneItemTransform'] as Map<String, dynamic>,
+      ),
       sourceName: json['sourceName'] as String,
       sourceType: json['sourceType'] as String,
     );

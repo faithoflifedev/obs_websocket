@@ -9,9 +9,7 @@ part 'scene_item_list_response.g.dart';
 class SceneItemListResponse {
   final List<SceneItemDetail> sceneItems;
 
-  SceneItemListResponse({
-    required this.sceneItems,
-  });
+  SceneItemListResponse({required this.sceneItems});
 
   factory SceneItemListResponse.fromJson(Map<String, dynamic> json) =>
       _$SceneItemListResponseFromJson(json);

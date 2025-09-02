@@ -39,8 +39,8 @@ class Sources {
   /// - Latest Supported RPC Version: 1
   /// - Added in v5.0.0
   Future<SourceScreenshotResponse> getSourceScreenshot(
-          SourceScreenshot sourceScreenshot) async =>
-      await screenshot(sourceScreenshot);
+    SourceScreenshot sourceScreenshot,
+  ) async => await screenshot(sourceScreenshot);
 
   /// Gets a Base64-encoded screenshot of a source.
   ///
@@ -52,11 +52,11 @@ class Sources {
   /// - Latest Supported RPC Version: 1
   /// - Added in v5.0.0
   Future<SourceScreenshotResponse> screenshot(
-      SourceScreenshot sourceScreenshot) async {
-    final response = await obsWebSocket.sendRequest(Request(
-      'GetSourceScreenshot',
-      requestData: sourceScreenshot.toJson(),
-    ));
+    SourceScreenshot sourceScreenshot,
+  ) async {
+    final response = await obsWebSocket.sendRequest(
+      Request('GetSourceScreenshot', requestData: sourceScreenshot.toJson()),
+    );
 
     return SourceScreenshotResponse.fromJson(response!.responseData!);
   }
@@ -71,8 +71,8 @@ class Sources {
   /// - Latest Supported RPC Version: 1
   /// - Added in v5.0.0
   Future<SourceScreenshotResponse> saveSourceScreenshot(
-          SourceScreenshot sourceScreenshot) async =>
-      await saveScreenshot(sourceScreenshot);
+    SourceScreenshot sourceScreenshot,
+  ) async => await saveScreenshot(sourceScreenshot);
 
   /// Saves a screenshot of a source to the filesystem.
   ///
@@ -84,11 +84,11 @@ class Sources {
   /// - Latest Supported RPC Version: 1
   /// - Added in v5.0.0
   Future<SourceScreenshotResponse> saveScreenshot(
-      SourceScreenshot sourceScreenshot) async {
-    final response = await obsWebSocket.sendRequest(Request(
-      'SaveSourceScreenshot',
-      requestData: sourceScreenshot.toJson(),
-    ));
+    SourceScreenshot sourceScreenshot,
+  ) async {
+    final response = await obsWebSocket.sendRequest(
+      Request('SaveSourceScreenshot', requestData: sourceScreenshot.toJson()),
+    );
 
     return SourceScreenshotResponse.fromJson(response!.responseData!);
   }

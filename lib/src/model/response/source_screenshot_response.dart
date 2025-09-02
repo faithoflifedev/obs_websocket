@@ -15,9 +15,7 @@ class SourceScreenshotResponse {
 
   String get base64Raw => imageData.split(',')[1];
 
-  SourceScreenshotResponse({
-    required this.imageData,
-  });
+  SourceScreenshotResponse({required this.imageData});
 
   factory SourceScreenshotResponse.fromJson(Map<String, dynamic> json) =>
       _$SourceScreenshotResponseFromJson(json);

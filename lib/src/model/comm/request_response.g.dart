@@ -10,8 +10,9 @@ RequestResponse _$RequestResponseFromJson(Map<String, dynamic> json) =>
     RequestResponse(
       requestType: json['requestType'] as String,
       requestId: json['requestId'] as String,
-      requestStatus:
-          RequestStatus.fromJson(json['requestStatus'] as Map<String, dynamic>),
+      requestStatus: RequestStatus.fromJson(
+        json['requestStatus'] as Map<String, dynamic>,
+      ),
       responseData: json['responseData'] as Map<String, dynamic>?,
     );
 

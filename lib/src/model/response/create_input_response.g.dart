@@ -13,8 +13,8 @@ CreateInputResponse _$CreateInputResponseFromJson(Map<String, dynamic> json) =>
     );
 
 Map<String, dynamic> _$CreateInputResponseToJson(
-        CreateInputResponse instance) =>
-    <String, dynamic>{
-      'inputUuid': instance.inputUuid,
-      'sceneItemId': instance.sceneItemId,
-    };
+  CreateInputResponse instance,
+) => <String, dynamic>{
+  'inputUuid': instance.inputUuid,
+  'sceneItemId': instance.sceneItemId,
+};

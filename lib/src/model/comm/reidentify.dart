@@ -9,9 +9,7 @@ part 'reidentify.g.dart';
 class ReIdentify {
   final int? eventSubscriptions;
 
-  ReIdentify({
-    this.eventSubscriptions,
-  });
+  ReIdentify({this.eventSubscriptions});
 
   factory ReIdentify.fromJson(Map<String, dynamic> json) =>
       _$ReIdentifyFromJson(json);

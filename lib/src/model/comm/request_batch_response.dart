@@ -10,10 +10,7 @@ class RequestBatchResponse {
   final String requestId;
   final List<RequestResponse> results;
 
-  RequestBatchResponse({
-    required this.requestId,
-    required this.results,
-  });
+  RequestBatchResponse({required this.requestId, required this.results});
 
   factory RequestBatchResponse.fromJson(Map<String, dynamic> json) =>
       _$RequestBatchResponseFromJson(json);

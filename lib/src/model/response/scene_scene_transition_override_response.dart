@@ -15,8 +15,8 @@ class SceneSceneTransitionOverrideResponse {
   });
 
   factory SceneSceneTransitionOverrideResponse.fromJson(
-          Map<String, dynamic> json) =>
-      _$SceneSceneTransitionOverrideResponseFromJson(json);
+    Map<String, dynamic> json,
+  ) => _$SceneSceneTransitionOverrideResponseFromJson(json);
 
   Map<String, dynamic> toJson() =>
       _$SceneSceneTransitionOverrideResponseToJson(this);

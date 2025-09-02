@@ -18,11 +18,7 @@ class StringListResponse {
     return check;
   }
 
-  StringListResponse({
-    this.hotkeys,
-    this.groups,
-    this.inputKinds,
-  });
+  StringListResponse({this.hotkeys, this.groups, this.inputKinds});
 
   factory StringListResponse.fromJson(Map<String, dynamic> json) =>
       _$StringListResponseFromJson(json);

@@ -12,9 +12,7 @@ class CustomEvent implements BaseEvent {
   /// Custom event data
   final Map<String, dynamic> eventData;
 
-  CustomEvent({
-    required this.eventData,
-  });
+  CustomEvent({required this.eventData});
 
   factory CustomEvent.fromJson(Map<String, dynamic> json) =>
       _$CustomEventFromJson(json);

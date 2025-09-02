@@ -10,9 +10,7 @@ part 'monitor_list_response.g.dart';
 class MonitorListResponse {
   final List<Monitor> monitors;
 
-  MonitorListResponse({
-    required this.monitors,
-  });
+  MonitorListResponse({required this.monitors});
 
   factory MonitorListResponse.fromJson(Map<String, dynamic> json) =>
       _$MonitorListResponseFromJson(json);

@@ -12,8 +12,9 @@ class Outputs {
   /// - Latest Supported RPC Version: 1
   /// - Added in v5.0.0
   Future<bool> getVirtualCamStatus() async {
-    final response =
-        await obsWebSocket.sendRequest(Request('GetVirtualCamStatus'));
+    final response = await obsWebSocket.sendRequest(
+      Request('GetVirtualCamStatus'),
+    );
 
     return BooleanResponse.fromJson(response!.responseData!).enabled;
   }
@@ -24,8 +25,9 @@ class Outputs {
   /// - Latest Supported RPC Version: 1
   /// - Added in v5.0.0
   Future<bool> toggleVirtualCam() async {
-    final response =
-        await obsWebSocket.sendRequest(Request('ToggleVirtualCam'));
+    final response = await obsWebSocket.sendRequest(
+      Request('ToggleVirtualCam'),
+    );
 
     return BooleanResponse.fromJson(response!.responseData!).enabled;
   }
@@ -52,8 +54,9 @@ class Outputs {
   /// - Latest Supported RPC Version: 1
   /// - Added in v5.0.0
   Future<bool> getReplayBufferStatus() async {
-    final response =
-        await obsWebSocket.sendRequest(Request('GetReplayBufferStatus'));
+    final response = await obsWebSocket.sendRequest(
+      Request('GetReplayBufferStatus'),
+    );
 
     return BooleanResponse.fromJson(response!.responseData!).enabled;
   }

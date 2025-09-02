@@ -44,8 +44,9 @@ class Stream {
   /// - Latest Supported RPC Version: 1
   /// - Added in v5.0.0
   Future<bool> toggle() async {
-    final response = await obsWebSocket
-        .sendRequest(Request('ToggleStream', expectResponse: true));
+    final response = await obsWebSocket.sendRequest(
+      Request('ToggleStream', expectResponse: true),
+    );
 
     return BooleanResponse.fromJson(response!.responseData!).enabled;
   }
@@ -86,8 +87,7 @@ class Stream {
   /// - Latest Supported RPC Version: 1
   /// - Added in v5.0.0
   Future<void> sendStreamCaption(String captionText) async =>
-      await obsWebSocket.sendRequest(Request(
-        'SendStreamCaption',
-        requestData: {'captionText': captionText},
-      ));
+      await obsWebSocket.sendRequest(
+        Request('SendStreamCaption', requestData: {'captionText': captionText}),
+      );
 }

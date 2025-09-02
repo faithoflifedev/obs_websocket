@@ -12,9 +12,7 @@ class ReplayBufferSaved implements BaseEvent {
   /// Path of the saved replay file
   final String savedReplayPath;
 
-  ReplayBufferSaved({
-    required this.savedReplayPath,
-  });
+  ReplayBufferSaved({required this.savedReplayPath});
 
   factory ReplayBufferSaved.fromJson(Map<String, dynamic> json) =>
       _$ReplayBufferSavedFromJson(json);

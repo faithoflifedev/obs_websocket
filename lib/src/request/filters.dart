@@ -15,10 +15,7 @@ class Filters {
     required String sourceName,
     required String filterName,
   }) async =>
-      await removeSourceFilter(
-        sourceName: sourceName,
-        filterName: filterName,
-      );
+      await removeSourceFilter(sourceName: sourceName, filterName: filterName);
 
   /// Removes a filter from a source.
   ///
@@ -28,11 +25,12 @@ class Filters {
   Future<void> removeSourceFilter({
     required String sourceName,
     required String filterName,
-  }) async =>
-      await obsWebSocket.sendRequest(Request(
-        'RemoveSourceFilter',
-        requestData: {'sourceName': sourceName, 'filterName': filterName},
-      ));
+  }) async => await obsWebSocket.sendRequest(
+    Request(
+      'RemoveSourceFilter',
+      requestData: {'sourceName': sourceName, 'filterName': filterName},
+    ),
+  );
 
   /// Sets the name of a source filter (rename).
   ///
@@ -43,12 +41,11 @@ class Filters {
     required String sourceName,
     required String filterName,
     required String newFilterName,
-  }) async =>
-      await setSourceFilterName(
-        sourceName: sourceName,
-        filterName: filterName,
-        newFilterName: newFilterName,
-      );
+  }) async => await setSourceFilterName(
+    sourceName: sourceName,
+    filterName: filterName,
+    newFilterName: newFilterName,
+  );
 
   /// Sets the name of a source filter (rename).
   ///
@@ -59,15 +56,16 @@ class Filters {
     required String sourceName,
     required String filterName,
     required String newFilterName,
-  }) async =>
-      await obsWebSocket.sendRequest(Request(
-        'SetSourceFilterName',
-        requestData: {
-          'sourceName': sourceName,
-          'filterName': filterName,
-          'newFilterName': newFilterName,
-        },
-      ));
+  }) async => await obsWebSocket.sendRequest(
+    Request(
+      'SetSourceFilterName',
+      requestData: {
+        'sourceName': sourceName,
+        'filterName': filterName,
+        'newFilterName': newFilterName,
+      },
+    ),
+  );
 
   /// Sets the index position of a filter on a source.
   ///
@@ -78,12 +76,11 @@ class Filters {
     required String sourceName,
     required String filterName,
     required int filterIndex,
-  }) async =>
-      await setSourceFilterIndex(
-        sourceName: sourceName,
-        filterName: filterName,
-        filterIndex: filterIndex,
-      );
+  }) async => await setSourceFilterIndex(
+    sourceName: sourceName,
+    filterName: filterName,
+    filterIndex: filterIndex,
+  );
 
   /// Sets the index position of a filter on a source.
   ///
@@ -94,15 +91,16 @@ class Filters {
     required String sourceName,
     required String filterName,
     required int filterIndex,
-  }) async =>
-      await obsWebSocket.sendRequest(Request(
-        'SetSourceFilterIndex',
-        requestData: {
-          'sourceName': sourceName,
-          'filterName': filterName,
-          'filterIndex': filterIndex,
-        },
-      ));
+  }) async => await obsWebSocket.sendRequest(
+    Request(
+      'SetSourceFilterIndex',
+      requestData: {
+        'sourceName': sourceName,
+        'filterName': filterName,
+        'filterIndex': filterIndex,
+      },
+    ),
+  );
 
   /// Sets the enable state of a source filter.
   ///
@@ -113,12 +111,11 @@ class Filters {
     required String sourceName,
     required String filterName,
     required bool filterEnabled,
-  }) async =>
-      await setSourceFilterEnabled(
-        sourceName: sourceName,
-        filterName: filterName,
-        filterEnabled: filterEnabled,
-      );
+  }) async => await setSourceFilterEnabled(
+    sourceName: sourceName,
+    filterName: filterName,
+    filterEnabled: filterEnabled,
+  );
 
   /// Sets the enable state of a source filter.
   ///
@@ -129,13 +126,14 @@ class Filters {
     required String sourceName,
     required String filterName,
     required bool filterEnabled,
-  }) async =>
-      await obsWebSocket.sendRequest(Request(
-        'SetSourceFilterEnabled',
-        requestData: {
-          'sourceName': sourceName,
-          'filterName': filterName,
-          'filterEnabled': filterEnabled,
-        },
-      ));
+  }) async => await obsWebSocket.sendRequest(
+    Request(
+      'SetSourceFilterEnabled',
+      requestData: {
+        'sourceName': sourceName,
+        'filterName': filterName,
+        'filterEnabled': filterEnabled,
+      },
+    ),
+  );
 }

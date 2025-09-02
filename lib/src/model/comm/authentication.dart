@@ -9,10 +9,7 @@ class Authentication {
   final String challenge;
   final String salt;
 
-  Authentication({
-    required this.challenge,
-    required this.salt,
-  });
+  Authentication({required this.challenge, required this.salt});
 
   factory Authentication.fromJson(Map<String, dynamic> json) =>
       _$AuthenticationFromJson(json);

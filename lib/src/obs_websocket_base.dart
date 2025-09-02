@@ -142,9 +142,7 @@ class ObsWebSocket with UiLoggy {
       LogLevel.error,
       stackTraceLevel: LogLevel.off,
     ),
-    LoggyPrinter printer = const PrettyPrinter(
-      showColors: false,
-    ),
+    LoggyPrinter printer = const PrettyPrinter(showColors: false),
   }) async {
     Loggy.initLoggy(logPrinter: printer, logOptions: logOptions);
 
@@ -154,8 +152,10 @@ class ObsWebSocket with UiLoggy {
 
     logDebug('connecting to $connectUrl');
 
-    final webSocketChannel =
-        await Connect().connect(connectUrl: connectUrl, timeout: timeout);
+    final webSocketChannel = await Connect().connect(
+      connectUrl: connectUrl,
+      timeout: timeout,
+    );
 
     final obsWebSocket = ObsWebSocket(
       webSocketChannel,
@@ -265,18 +265,12 @@ class ObsWebSocket with UiLoggy {
 
   /// Listen to a specific event subscription, the original code
   Future<void> listenForMask(int eventSubscriptions) async => await sendOpcode(
-        ReIdentifyOpcode(
-          ReIdentify(
-            eventSubscriptions: eventSubscriptions,
-          ),
-        ),
-      );
+    ReIdentifyOpcode(ReIdentify(eventSubscriptions: eventSubscriptions)),
+  );
 
   /// Listen to a specific event subscription.
   @Deprecated('Use subscribe instead')
-  Future<void> listen(
-    dynamic eventSubscription,
-  ) async =>
+  Future<void> listen(dynamic eventSubscription) async =>
       await listenForMask(switch (eventSubscription.runtimeType) {
         const (EventSubscription) => eventSubscription.code,
         const (int) => eventSubscription,
@@ -294,8 +288,11 @@ class ObsWebSocket with UiLoggy {
     if (listeners.isNotEmpty) {
       for (var handler in listeners) {
         if (fromJsonSingleton.factories.containsKey(event.eventType)) {
-          handler(fromJsonSingleton
-              .factories[event.eventType]!(event.eventData ?? {}));
+          handler(
+            fromJsonSingleton.factories[event.eventType]!(
+              event.eventData ?? {},
+            ),
+          );
         }
       }
     } else {
@@ -341,12 +338,10 @@ class ObsWebSocket with UiLoggy {
     }
   }
 
-  Future<RequestResponse?> send(String command,
-          [Map<String, dynamic>? args]) async =>
-      await sendRequest(Request(
-        command,
-        requestData: args,
-      ));
+  Future<RequestResponse?> send(
+    String command, [
+    Map<String, dynamic>? args,
+  ]) async => await sendRequest(Request(command, requestData: args));
 
   Future<RequestBatchResponse> sendBatch(List<Request> requests) async {
     RequestBatchResponse? requestBatchResponse;
@@ -368,7 +363,8 @@ class ObsWebSocket with UiLoggy {
         requestBatchResponse = RequestBatchResponse.fromJson(response.d);
 
         loggy.debug(
-            'batch response size: ${requestBatchResponse.results.length}');
+          'batch response size: ${requestBatchResponse.results.length}',
+        );
 
         if (requestBatchResponse.requestId == requestBatch.requestId) break;
       }
@@ -397,7 +393,8 @@ class ObsWebSocket with UiLoggy {
         requestResponse = RequestResponse.fromJson(response.d);
 
         loggy.debug(
-            'response status: ${requestResponse.requestType} ${requestResponse.requestStatus}');
+          'response status: ${requestResponse.requestType} ${requestResponse.requestStatus}',
+        );
 
         if (request.requestId == requestResponse.requestId) {
           _checkResponse(request, requestResponse);
@@ -413,7 +410,8 @@ class ObsWebSocket with UiLoggy {
   void _checkResponse(Request request, RequestResponse response) {
     if (request.hasResponseData && !response.requestStatus.result) {
       throw Exception(
-          'Problem with command: ${request.requestType}, Error Code: ${response.requestStatus.code}, Message: ${response.requestStatus.comment}');
+        'Problem with command: ${request.requestType}, Error Code: ${response.requestStatus.code}, Message: ${response.requestStatus.comment}',
+      );
     }
   }
 }

@@ -8,9 +8,7 @@ part 'identified.g.dart';
 class Identified {
   final int negotiatedRpcVersion;
 
-  Identified({
-    required this.negotiatedRpcVersion,
-  });
+  Identified({required this.negotiatedRpcVersion});
 
   factory Identified.fromJson(Map<String, dynamic> json) =>
       _$IdentifiedFromJson(json);

@@ -77,10 +77,12 @@ class ObsBroadcastCustomEventCommand extends ObsHelperCommand {
   String get name => 'broadcast-custom-event';
 
   ObsBroadcastCustomEventCommand() {
-    argParser.addOption('event-data',
-        mandatory: true,
-        valueHelp: 'json',
-        help: 'Data payload to emit to all receivers');
+    argParser.addOption(
+      'event-data',
+      mandatory: true,
+      valueHelp: 'json',
+      help: 'Data payload to emit to all receivers',
+    );
   }
 
   @override
@@ -105,17 +107,23 @@ class ObsCallVendorRequestCommand extends ObsHelperCommand {
 
   ObsCallVendorRequestCommand() {
     argParser
-      ..addOption('vendor-name',
-          mandatory: true,
-          valueHelp: 'string',
-          help: 'Name of the vendor to use')
-      ..addOption('request-type',
-          mandatory: true,
-          valueHelp: 'string',
-          help: 'The request type to call')
-      ..addOption('request-data',
-          valueHelp: 'json',
-          help: 'JSON encoded object containing appropriate request data');
+      ..addOption(
+        'vendor-name',
+        mandatory: true,
+        valueHelp: 'string',
+        help: 'Name of the vendor to use',
+      )
+      ..addOption(
+        'request-type',
+        mandatory: true,
+        valueHelp: 'string',
+        help: 'The request type to call',
+      )
+      ..addOption(
+        'request-data',
+        valueHelp: 'json',
+        help: 'JSON encoded object containing appropriate request data',
+      );
   }
 
   @override
@@ -123,9 +131,10 @@ class ObsCallVendorRequestCommand extends ObsHelperCommand {
     await initializeObs();
 
     final callVendorRequestResponse = await obs.general.callVendorRequest(
-        vendorName: argResults!['vendor-name'],
-        requestType: argResults!['request-type'],
-        requestData: argResults?['request-data']);
+      vendorName: argResults!['vendor-name'],
+      requestType: argResults!['request-type'],
+      requestData: argResults?['request-data'],
+    );
 
     print(callVendorRequestResponse);
 
@@ -144,13 +153,17 @@ class ObsBrowserEventCommand extends ObsHelperCommand {
 
   ObsBrowserEventCommand() {
     argParser
-      ..addOption('event-name',
-          mandatory: true,
-          valueHelp: 'string',
-          help: 'Name of the vendor to use')
-      ..addOption('event-data',
-          valueHelp: 'json',
-          help: 'JSON encoded object containing appropriate event data');
+      ..addOption(
+        'event-name',
+        mandatory: true,
+        valueHelp: 'string',
+        help: 'Name of the vendor to use',
+      )
+      ..addOption(
+        'event-data',
+        valueHelp: 'json',
+        help: 'JSON encoded object containing appropriate event data',
+      );
   }
 
   @override
@@ -158,8 +171,9 @@ class ObsBrowserEventCommand extends ObsHelperCommand {
     await initializeObs();
 
     final callVendorRequestResponse = await obs.general.obsBrowserEvent(
-        eventName: argResults!['event-name'],
-        eventData: argResults?['event-data']);
+      eventName: argResults!['event-name'],
+      eventData: argResults?['event-data'],
+    );
 
     print(callVendorRequestResponse);
 
@@ -197,10 +211,12 @@ class ObsTriggerHotkeyByNameCommand extends ObsHelperCommand {
   String get name => 'trigger-hotkey-by-name';
 
   ObsTriggerHotkeyByNameCommand() {
-    argParser.addOption('hotkey-name',
-        mandatory: true,
-        valueHelp: 'string',
-        help: 'Name of the hotkey to trigger');
+    argParser.addOption(
+      'hotkey-name',
+      mandatory: true,
+      valueHelp: 'string',
+      help: 'Name of the hotkey to trigger',
+    );
   }
 
   @override
@@ -224,13 +240,18 @@ class ObsTriggerHotkeyByKeySequenceCommand extends ObsHelperCommand {
 
   ObsTriggerHotkeyByKeySequenceCommand() {
     argParser
-      ..addOption('key-id',
-          mandatory: true,
-          valueHelp: 'string',
-          help:
-              'The OBS key ID to use. See https://github.com/obsproject/obs-studio/blob/master/libobs/obs-hotkeys.h')
-      ..addOption('key-modifiers',
-          valueHelp: 'json', help: 'Object containing key modifiers to apply');
+      ..addOption(
+        'key-id',
+        mandatory: true,
+        valueHelp: 'string',
+        help:
+            'The OBS key ID to use. See https://github.com/obsproject/obs-studio/blob/master/libobs/obs-hotkeys.h',
+      )
+      ..addOption(
+        'key-modifiers',
+        valueHelp: 'json',
+        help: 'Object containing key modifiers to apply',
+      );
   }
 
   @override
@@ -239,8 +260,9 @@ class ObsTriggerHotkeyByKeySequenceCommand extends ObsHelperCommand {
 
     await obs.general.triggerHotkeyByKeySequence(
       keyId: argResults!['key-id'],
-      keyModifiers:
-          KeyModifiers.fromJson(json.decode(argResults!['key-modifiers'])),
+      keyModifiers: KeyModifiers.fromJson(
+        json.decode(argResults!['key-modifiers']),
+      ),
     );
 
     obs.close();

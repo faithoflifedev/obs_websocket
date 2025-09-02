@@ -1,5 +1,12 @@
 # Changelog
 
+## 5.2.3+1
+
+* dependency bump
+* Media Inputs
+  - Added GetMediaInputStatus request
+  - Added inputUuid parameter to SetMediaInputCursor and OffsetMediaInputCursor requests
+  - Added TriggerMediaInputAction request
 ## 5.2.3
 
 * dependency bump

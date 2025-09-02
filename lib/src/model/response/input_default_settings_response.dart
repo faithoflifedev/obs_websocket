@@ -9,9 +9,7 @@ class InputDefaultSettingsResponse {
   /// Object of default settings for the input kind
   final Map<String, dynamic> defaultInputSettings;
 
-  InputDefaultSettingsResponse({
-    required this.defaultInputSettings,
-  });
+  InputDefaultSettingsResponse({required this.defaultInputSettings});
 
   factory InputDefaultSettingsResponse.fromJson(Map<String, dynamic> json) =>
       _$InputDefaultSettingsResponseFromJson(json);

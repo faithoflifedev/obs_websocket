@@ -14,10 +14,7 @@ class SourceActiveResponse {
   /// Whether the source is showing in the UI (Preview, Projector, Properties)
   final bool videoShowing;
 
-  SourceActiveResponse({
-    required this.videoActive,
-    required this.videoShowing,
-  });
+  SourceActiveResponse({required this.videoActive, required this.videoShowing});
 
   factory SourceActiveResponse.fromJson(Map<String, dynamic> json) =>
       _$SourceActiveResponseFromJson(json);

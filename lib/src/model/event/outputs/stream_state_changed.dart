@@ -15,10 +15,7 @@ class StreamStateChanged implements BaseEvent {
   /// The specific state of the output
   final String outputState;
 
-  StreamStateChanged({
-    required this.outputActive,
-    required this.outputState,
-  });
+  StreamStateChanged({required this.outputActive, required this.outputState});
 
   factory StreamStateChanged.fromJson(Map<String, dynamic> json) =>
       _$StreamStateChangedFromJson(json);

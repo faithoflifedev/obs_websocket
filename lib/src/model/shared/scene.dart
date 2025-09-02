@@ -14,11 +14,7 @@ class Scene {
   /// UUID of the scene
   final String? sceneUuid;
 
-  Scene({
-    required this.sceneName,
-    required this.sceneIndex,
-    this.sceneUuid,
-  });
+  Scene({required this.sceneName, required this.sceneIndex, this.sceneUuid});
 
   factory Scene.fromJson(Map<String, dynamic> json) => _$SceneFromJson(json);
 

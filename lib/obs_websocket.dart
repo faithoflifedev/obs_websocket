@@ -3,6 +3,9 @@
 /// Hamilton, with new commands specific to OBS Studio.
 library;
 
+export 'src/enum/obs_media_input_action.dart';
+export 'src/enum/obs_media_state.dart';
+
 export 'src/model/comm/authentication.dart';
 export 'src/model/comm/event.dart';
 export 'src/model/comm/hello.dart';
@@ -25,6 +28,7 @@ export 'src/model/response/input_settings_response.dart';
 export 'src/model/response/input.dart';
 export 'src/model/response/input_volume_response.dart';
 export 'src/model/response/integer_response.dart';
+export 'src/model/response/media_input_status_response.dart';
 export 'src/model/response/monitor_list_response.dart';
 export 'src/model/response/profile_list_response.dart';
 export 'src/model/response/profile_parameter_response.dart';

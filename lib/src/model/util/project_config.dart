@@ -40,7 +40,7 @@ class ProjectConfig {
       'templates',
       'version',
       'commit',
-      'change'
+      'change',
     ];
 
     if (!config.mapHasAllKeys(checkKeys)) {

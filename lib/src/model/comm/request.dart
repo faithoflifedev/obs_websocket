@@ -16,11 +16,8 @@ class Request {
 
   bool get hasResponseData => expectResponse!;
 
-  Request(
-    this.requestType, {
-    this.requestData,
-    this.expectResponse,
-  }) : requestId = Uuid().v4() {
+  Request(this.requestType, {this.requestData, this.expectResponse})
+    : requestId = Uuid().v4() {
     expectResponse ??= requestType.startsWith('Get');
   }
 
@@ -30,10 +27,10 @@ class Request {
   Opcode toOpcode() => RequestOpcode(this);
 
   Map<String, dynamic> toJson() => {
-        'requestType': requestType,
-        'requestId': requestId,
-        'requestData': requestData
-      };
+    'requestType': requestType,
+    'requestId': requestId,
+    'requestData': requestData,
+  }..removeWhere((key, value) => value == null);
 
   @override
   String toString() => json.encode(toJson());

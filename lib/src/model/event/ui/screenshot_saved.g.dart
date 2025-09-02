@@ -7,11 +7,7 @@ part of 'screenshot_saved.dart';
 // **************************************************************************
 
 ScreenshotSaved _$ScreenshotSavedFromJson(Map<String, dynamic> json) =>
-    ScreenshotSaved(
-      savedScreenshotPath: json['savedScreenshotPath'] as String,
-    );
+    ScreenshotSaved(savedScreenshotPath: json['savedScreenshotPath'] as String);
 
 Map<String, dynamic> _$ScreenshotSavedToJson(ScreenshotSaved instance) =>
-    <String, dynamic>{
-      'savedScreenshotPath': instance.savedScreenshotPath,
-    };
+    <String, dynamic>{'savedScreenshotPath': instance.savedScreenshotPath};

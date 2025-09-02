@@ -64,8 +64,10 @@ class ObsGetInputKindListCommand extends ObsHelperCommand {
   String get name => 'get-input-kind-list';
 
   ObsGetInputKindListCommand() {
-    argParser.addFlag('unversioned',
-        help: 'Whether to get unversioned input kinds.');
+    argParser.addFlag(
+      'unversioned',
+      help: 'Whether to get unversioned input kinds.',
+    );
   }
 
   @override
@@ -113,10 +115,14 @@ class ObsCreateInputCommand extends ObsHelperCommand {
 
   ObsCreateInputCommand() {
     argParser
-      ..addOption('sceneName',
-          help: 'Name of the scene to add the input to as a scene item')
-      ..addOption('sceneUuid',
-          help: 'UUID of the scene to add the input to as a scene item')
+      ..addOption(
+        'sceneName',
+        help: 'Name of the scene to add the input to as a scene item',
+      )
+      ..addOption(
+        'sceneUuid',
+        help: 'UUID of the scene to add the input to as a scene item',
+      )
       ..addOption(
         'inputName',
         help: 'Name of the new input to created',
@@ -127,10 +133,14 @@ class ObsCreateInputCommand extends ObsHelperCommand {
         help: 'The kind of input to be created',
         mandatory: true,
       )
-      ..addOption('inputSettings',
-          help: 'Settings object to initialize the input with')
-      ..addOption('sceneItemEnabled',
-          help: 'Whether to set the created scene item to enabled or disabled');
+      ..addOption(
+        'inputSettings',
+        help: 'Settings object to initialize the input with',
+      )
+      ..addOption(
+        'sceneItemEnabled',
+        help: 'Whether to set the created scene item to enabled or disabled',
+      );
   }
 
   @override
@@ -193,10 +203,7 @@ class ObsRemoveInputCommand extends ObsHelperCommand {
       );
     }
 
-    await obs.inputs.removeInput(
-      inputName: inputName,
-      inputUuid: inputUuid,
-    );
+    await obs.inputs.removeInput(inputName: inputName, inputUuid: inputUuid);
 
     obs.close();
   }
@@ -246,8 +253,10 @@ class ObsGetInputDefaultSettingsCommand extends ObsHelperCommand {
   String get name => 'get-input-default-settings';
 
   ObsGetInputDefaultSettingsCommand() {
-    argParser.addOption('inputKind',
-        help: 'Input kind to get the default settings for');
+    argParser.addOption(
+      'inputKind',
+      help: 'Input kind to get the default settings for',
+    );
   }
 
   @override
@@ -256,10 +265,8 @@ class ObsGetInputDefaultSettingsCommand extends ObsHelperCommand {
 
     final inputKind = argResults!['inputKind'] as String;
 
-    final inputDefaultSettingsResponse =
-        await obs.inputs.getInputDefaultSettings(
-      inputKind: inputKind,
-    );
+    final inputDefaultSettingsResponse = await obs.inputs
+        .getInputDefaultSettings(inputKind: inputKind);
 
     print(inputDefaultSettingsResponse.defaultInputSettings);
 
@@ -277,10 +284,14 @@ class ObsGetInputSettingsCommand extends ObsHelperCommand {
 
   ObsGetInputSettingsCommand() {
     argParser
-      ..addOption('inputName',
-          help: 'Input kind to get the default settings for')
-      ..addOption('inputUuid',
-          help: 'Input kind to get the default settings for');
+      ..addOption(
+        'inputName',
+        help: 'Input kind to get the default settings for',
+      )
+      ..addOption(
+        'inputUuid',
+        help: 'Input kind to get the default settings for',
+      );
   }
 
   @override
@@ -326,9 +337,11 @@ class ObsSetInputSettingsCommand extends ObsHelperCommand {
         help: 'Object of settings to apply',
         mandatory: true,
       )
-      ..addOption('overlay',
-          help:
-              'True == apply the settings on top of existing ones, False == reset the input to its defaults, then apply settings.');
+      ..addOption(
+        'overlay',
+        help:
+            'True == apply the settings on top of existing ones, False == reset the input to its defaults, then apply settings.',
+      );
   }
 
   @override
@@ -363,8 +376,10 @@ class ObsGetInputMuteCommand extends ObsHelperCommand {
   String get name => 'get-input-mute';
 
   ObsGetInputMuteCommand() {
-    argParser.addOption('inputName',
-        help: 'The name of the input to get the mute status of.');
+    argParser.addOption(
+      'inputName',
+      help: 'The name of the input to get the mute status of.',
+    );
   }
 
   @override
@@ -391,10 +406,14 @@ class ObsSetInputMuteCommand extends ObsHelperCommand {
 
   ObsSetInputMuteCommand() {
     argParser
-      ..addOption('inputName',
-          help: 'The name of the input to set the mute status of.')
-      ..addOption('inputUuid',
-          help: 'The name of the input to set the mute status of.')
+      ..addOption(
+        'inputName',
+        help: 'The name of the input to set the mute status of.',
+      )
+      ..addOption(
+        'inputUuid',
+        help: 'The name of the input to set the mute status of.',
+      )
       ..addFlag('mute', help: 'Whether to mute the input.');
   }
 
@@ -435,10 +454,14 @@ class ObsToggleInputMuteCommand extends ObsHelperCommand {
 
   ObsToggleInputMuteCommand() {
     argParser
-      ..addOption('inputName',
-          help: 'Name of the input to toggle the mute state of')
-      ..addOption('inputUuid',
-          help: 'UUID of the input to toggle the mute state of');
+      ..addOption(
+        'inputName',
+        help: 'Name of the input to toggle the mute state of',
+      )
+      ..addOption(
+        'inputUuid',
+        help: 'UUID of the input to toggle the mute state of',
+      );
   }
 
   @override

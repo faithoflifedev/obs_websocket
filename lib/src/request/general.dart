@@ -48,10 +48,9 @@ class General {
   /// - Latest Supported RPC Version: 1
   /// - Added in v5.0.0
   Future<void> broadcastCustomEvent(Map<String, dynamic> arg) async =>
-      await obsWebSocket.sendRequest(Request(
-        'BroadcastCustomEvent',
-        requestData: arg,
-      ));
+      await obsWebSocket.sendRequest(
+        Request('BroadcastCustomEvent', requestData: arg),
+      );
 
   /// Call a request registered to a vendor.
   ///
@@ -60,30 +59,34 @@ class General {
   /// - Complexity Rating: 3/5
   /// - Latest Supported RPC Version: 1
   /// - Added in v5.0.0
-  Future<CallVendorRequestResponse> callVendorRequest(
-      {required String vendorName,
-      required String requestType,
-      RequestData? requestData}) async {
-    final response = await obsWebSocket.sendRequest(Request(
-      'CallVendorRequest',
-      requestData: {
-        'vendorName': vendorName,
-        'requestType': requestType,
-        'requestData': requestData?.toJson(),
-      }..removeWhere((key, value) => value == null),
-    ));
+  Future<CallVendorRequestResponse> callVendorRequest({
+    required String vendorName,
+    required String requestType,
+    RequestData? requestData,
+  }) async {
+    final response = await obsWebSocket.sendRequest(
+      Request(
+        'CallVendorRequest',
+        requestData: {
+          'vendorName': vendorName,
+          'requestType': requestType,
+          'requestData': requestData?.toJson(),
+        },
+      ),
+    );
 
     return CallVendorRequestResponse.fromJson(response!.responseData!);
   }
 
   /// Helper method to send a VendorRequest specifically to the 'obs-browser' plugin.
-  Future<CallVendorRequestResponse> obsBrowserEvent(
-          {required String eventName, dynamic eventData}) async =>
-      await callVendorRequest(
-        vendorName: 'obs-browser',
-        requestType: 'emit_event',
-        requestData: RequestData(eventName: eventName, eventData: eventData),
-      );
+  Future<CallVendorRequestResponse> obsBrowserEvent({
+    required String eventName,
+    dynamic eventData,
+  }) async => await callVendorRequest(
+    vendorName: 'obs-browser',
+    requestType: 'emit_event',
+    requestData: RequestData(eventName: eventName, eventData: eventData),
+  );
 
   /// Gets an array of all hotkey names in OBS
   ///
@@ -104,10 +107,9 @@ class General {
   }
 
   Future<void> triggerHotkeyByName(String hotkeyName) async {
-    await obsWebSocket.sendRequest(Request(
-      'TriggerHotkeyByName',
-      requestData: {'hotkeyName': hotkeyName},
-    ));
+    await obsWebSocket.sendRequest(
+      Request('TriggerHotkeyByName', requestData: {'hotkeyName': hotkeyName}),
+    );
   }
 
   /// Triggers a hotkey using a sequence of keys.
@@ -115,30 +117,26 @@ class General {
   /// - Complexity Rating: 4/5
   /// - Latest Supported RPC Version: 1
   /// - Added in v5.0.0
-  Future<void> triggerHotkeyByKeySequence(
-          {String? keyId, KeyModifiers? keyModifiers}) async =>
-      await obsWebSocket.sendRequest(Request(
-        'TriggerHotkeyByKeySequence',
-        requestData: {
-          'keyId': keyId,
-          'keyModifiers': keyModifiers?.toJson(),
-        }..removeWhere((key, value) => value == null),
-      ));
+  Future<void> triggerHotkeyByKeySequence({
+    String? keyId,
+    KeyModifiers? keyModifiers,
+  }) async => await obsWebSocket.sendRequest(
+    Request(
+      'TriggerHotkeyByKeySequence',
+      requestData: {'keyId': keyId, 'keyModifiers': keyModifiers?.toJson()},
+    ),
+  );
 
   /// Sleeps for a time duration or number of frames. Only available in request batches with types SERIAL_REALTIME or SERIAL_FRAME.
   ///
   /// - Complexity Rating: 2/5
   /// - Latest Supported RPC Version: 1
   /// - Added in v5.0.0
-  Future<void> sleep({
-    int? sleepMillis,
-    int? sleepFrames,
-  }) async =>
-      await obsWebSocket.sendRequest(Request(
-        'Sleep',
-        requestData: {
-          'sleepMillis': sleepMillis,
-          'sleepFrames': sleepFrames,
-        }..removeWhere((key, value) => value == null),
-      ));
+  Future<void> sleep({int? sleepMillis, int? sleepFrames}) async =>
+      await obsWebSocket.sendRequest(
+        Request(
+          'Sleep',
+          requestData: {'sleepMillis': sleepMillis, 'sleepFrames': sleepFrames},
+        ),
+      );
 }

@@ -102,8 +102,12 @@ class ObsSendStreamCaptionCommand extends ObsHelperCommand {
   String get name => 'send-stream-caption';
 
   ObsSendStreamCaptionCommand() {
-    argParser.addOption('caption-Text',
-        mandatory: true, valueHelp: 'string', help: 'Caption text');
+    argParser.addOption(
+      'caption-Text',
+      mandatory: true,
+      valueHelp: 'string',
+      help: 'Caption text',
+    );
   }
 
   @override

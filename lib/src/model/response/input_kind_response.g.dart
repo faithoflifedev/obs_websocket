@@ -14,6 +14,4 @@ InputKindResponse _$InputKindResponseFromJson(Map<String, dynamic> json) =>
     );
 
 Map<String, dynamic> _$InputKindResponseToJson(InputKindResponse instance) =>
-    <String, dynamic>{
-      'inputs': instance.inputs,
-    };
+    <String, dynamic>{'inputs': instance.inputs};

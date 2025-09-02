@@ -7,13 +7,9 @@ part of 'source_screenshot_response.dart';
 // **************************************************************************
 
 SourceScreenshotResponse _$SourceScreenshotResponseFromJson(
-        Map<String, dynamic> json) =>
-    SourceScreenshotResponse(
-      imageData: json['imageData'] as String,
-    );
+  Map<String, dynamic> json,
+) => SourceScreenshotResponse(imageData: json['imageData'] as String);
 
 Map<String, dynamic> _$SourceScreenshotResponseToJson(
-        SourceScreenshotResponse instance) =>
-    <String, dynamic>{
-      'imageData': instance.imageData,
-    };
+  SourceScreenshotResponse instance,
+) => <String, dynamic>{'imageData': instance.imageData};

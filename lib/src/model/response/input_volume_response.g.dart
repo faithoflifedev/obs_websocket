@@ -13,8 +13,8 @@ InputVolumeResponse _$InputVolumeResponseFromJson(Map<String, dynamic> json) =>
     );
 
 Map<String, dynamic> _$InputVolumeResponseToJson(
-        InputVolumeResponse instance) =>
-    <String, dynamic>{
-      'inputVolumeMul': instance.inputVolumeMul,
-      'inputVolumeDb': instance.inputVolumeDb,
-    };
+  InputVolumeResponse instance,
+) => <String, dynamic>{
+  'inputVolumeMul': instance.inputVolumeMul,
+  'inputVolumeDb': instance.inputVolumeDb,
+};

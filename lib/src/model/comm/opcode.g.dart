@@ -7,11 +7,11 @@ part of 'opcode.dart';
 // **************************************************************************
 
 Opcode _$OpcodeFromJson(Map<String, dynamic> json) => Opcode(
-      op: (json['op'] as num).toInt(),
-      d: json['d'] as Map<String, dynamic>,
-    );
+  op: (json['op'] as num).toInt(),
+  d: json['d'] as Map<String, dynamic>,
+);
 
 Map<String, dynamic> _$OpcodeToJson(Opcode instance) => <String, dynamic>{
-      'op': instance.op,
-      'd': instance.d,
-    };
+  'op': instance.op,
+  'd': instance.d,
+};

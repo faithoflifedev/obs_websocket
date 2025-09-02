@@ -19,13 +19,13 @@ class VideoSettingsResponse extends VideoSettings {
     required int outputWidth,
     required int outputHeight,
   }) : super(
-          fpsNumerator: fpsNumerator,
-          fpsDenominator: fpsDenominator,
-          baseWidth: baseWidth,
-          baseHeight: baseHeight,
-          outputWidth: outputWidth,
-          outputHeight: outputHeight,
-        );
+         fpsNumerator: fpsNumerator,
+         fpsDenominator: fpsDenominator,
+         baseWidth: baseWidth,
+         baseHeight: baseHeight,
+         outputWidth: outputWidth,
+         outputHeight: outputHeight,
+       );
 
   factory VideoSettingsResponse.fromJson(Map<String, dynamic> json) =>
       _$VideoSettingsResponseFromJson(json);

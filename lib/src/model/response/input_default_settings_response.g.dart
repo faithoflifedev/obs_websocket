@@ -7,14 +7,11 @@ part of 'input_default_settings_response.dart';
 // **************************************************************************
 
 InputDefaultSettingsResponse _$InputDefaultSettingsResponseFromJson(
-        Map<String, dynamic> json) =>
-    InputDefaultSettingsResponse(
-      defaultInputSettings:
-          json['defaultInputSettings'] as Map<String, dynamic>,
-    );
+  Map<String, dynamic> json,
+) => InputDefaultSettingsResponse(
+  defaultInputSettings: json['defaultInputSettings'] as Map<String, dynamic>,
+);
 
 Map<String, dynamic> _$InputDefaultSettingsResponseToJson(
-        InputDefaultSettingsResponse instance) =>
-    <String, dynamic>{
-      'defaultInputSettings': instance.defaultInputSettings,
-    };
+  InputDefaultSettingsResponse instance,
+) => <String, dynamic>{'defaultInputSettings': instance.defaultInputSettings};

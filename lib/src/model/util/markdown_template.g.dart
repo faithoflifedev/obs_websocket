@@ -13,7 +13,4 @@ MarkdownTemplate _$MarkdownTemplateFromJson(Map<String, dynamic> json) =>
     );
 
 Map<String, dynamic> _$MarkdownTemplateToJson(MarkdownTemplate instance) =>
-    <String, dynamic>{
-      'name': instance.name,
-      'type': instance.type,
-    };
+    <String, dynamic>{'name': instance.name, 'type': instance.type};

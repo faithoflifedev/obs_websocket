@@ -7,10 +7,10 @@ part of 'vendor_event.dart';
 // **************************************************************************
 
 VendorEvent _$VendorEventFromJson(Map<String, dynamic> json) => VendorEvent(
-      vendorName: json['vendorName'] as String,
-      eventType: json['eventType'] as String,
-      eventData: json['eventData'] as Map<String, dynamic>,
-    );
+  vendorName: json['vendorName'] as String,
+  eventType: json['eventType'] as String,
+  eventData: json['eventData'] as Map<String, dynamic>,
+);
 
 Map<String, dynamic> _$VendorEventToJson(VendorEvent instance) =>
     <String, dynamic>{

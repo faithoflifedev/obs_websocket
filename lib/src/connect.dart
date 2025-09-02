@@ -5,8 +5,10 @@ import 'connect_api.dart'
     if (dart.library.html) 'connect_html.dart';
 
 abstract class Connect {
-  Future<WebSocketChannel> connect(
-      {required String connectUrl, required Duration timeout});
+  Future<WebSocketChannel> connect({
+    required String connectUrl,
+    required Duration timeout,
+  });
 
   factory Connect() => getConnect();
 }

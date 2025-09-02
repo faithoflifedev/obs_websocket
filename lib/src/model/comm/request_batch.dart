@@ -28,11 +28,11 @@ class RequestBatch {
   Opcode toOpcode() => RequestBatchOpcode(this);
 
   Map<String, dynamic> toJson() => {
-        'requestId': requestId,
-        'haltOnFailure': haltOnFailure,
-        'executionType': executionType.code,
-        'requests': requests.map((request) => request.toJson()).toList(),
-      };
+    'requestId': requestId,
+    'haltOnFailure': haltOnFailure,
+    'executionType': executionType.code,
+    'requests': requests.map((request) => request.toJson()).toList(),
+  };
 
   @override
   String toString() => json.encode(toJson());
