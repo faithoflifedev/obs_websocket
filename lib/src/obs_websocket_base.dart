@@ -278,8 +278,18 @@ class ObsWebSocket with UiLoggy {
       });
 
   /// subscribe to all events based on the [eventSubscription] mask.
-  Future<void> subscribe(EventSubscription eventSubscription) async =>
+  /// Can accept either an EventSubscription enum value or an int from combining subscriptions.
+  Future<void> subscribe(dynamic eventSubscription) async {
+    if (eventSubscription is EventSubscription) {
       await listenForMask(eventSubscription.code);
+    } else if (eventSubscription is int) {
+      await listenForMask(eventSubscription);
+    } else {
+      throw ArgumentError(
+        'eventSubscription must be either EventSubscription or int, got ${eventSubscription.runtimeType}',
+      );
+    }
+  }
 
   /// Look at the raw [event] data and run the appropriate event handler
   void _handleEvent(Event event) {

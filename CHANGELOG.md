@@ -1,5 +1,23 @@
 # Changelog
 
+## 5.2.3+2
+
+* Events
+  * Inputs
+    - InputActiveStateChanged
+    - InputAudioBalanceChanged
+    - InputAudioMonitorTypeChanged
+    - InputAudioSyncOffsetChanged
+    - InputAudioTracksChanged
+    - InputCreated
+    - InputMuteStateChanged
+    - InputNameChanged
+    - InputRemoved
+    - InputSettingsChanged
+    - InputShowStateChanged
+    - InputVolumeChanged
+    - InputVolumeMeters
+
 ## 5.2.3+1
 
 * dependency bump

@@ -26,6 +26,13 @@ void main(List<String> args) async {
     print('scene list changed: \n$sceneListChanged');
   });
 
+  obs.addHandler<InputVolumeChanged>((inputVolumeChanged) async {
+    print('''input volume changed: \n
+    inputVolumeMul - ${inputVolumeChanged.inputVolumeMul}
+    inputVolumeDb - ${inputVolumeChanged.inputVolumeDb} 
+    ''');
+  });
+
   obs.addHandler<ExitStarted>((exitStarted) async {
     print('exit started: \n$exitStarted');
 

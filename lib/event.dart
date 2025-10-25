@@ -11,6 +11,20 @@ export 'src/model/event/general/custom_event.dart';
 export 'src/model/event/general/exit_started.dart';
 export 'src/model/event/general/vendor_event.dart';
 
+export 'src/model/event/inputs/input_active_state_changed.dart';
+export 'src/model/event/inputs/input_audio_balance_changed.dart';
+export 'src/model/event/inputs/input_audio_monitor_type_changed.dart';
+export 'src/model/event/inputs/input_audio_sync_offset_changed.dart';
+export 'src/model/event/inputs/input_audio_tracks_changed.dart';
+export 'src/model/event/inputs/input_created.dart';
+export 'src/model/event/inputs/input_mute_state_changed.dart';
+export 'src/model/event/inputs/input_name_changed.dart';
+export 'src/model/event/inputs/input_removed.dart';
+export 'src/model/event/inputs/input_settings_changed.dart';
+export 'src/model/event/inputs/input_show_state_changed.dart';
+export 'src/model/event/inputs/input_volume_changed.dart';
+export 'src/model/event/inputs/input_volume_meters.dart';
+
 export 'src/model/event/outputs/record_state_changed.dart';
 export 'src/model/event/outputs/replay_buffer_saved.dart';
 export 'src/model/event/outputs/replay_buffer_state_changed.dart';

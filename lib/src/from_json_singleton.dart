@@ -17,10 +17,38 @@ class FromJsonSingleton {
         ProfileListChanged.fromJson(json),
     'SceneCollectionListChanged': (Map<String, dynamic> json) =>
         SceneCollectionListChanged.fromJson(json),
+
     // general
     'CustomEvent': (Map<String, dynamic> json) => CustomEvent.fromJson(json),
     'ExitStarted': (Map<String, dynamic> json) => ExitStarted.fromJson(json),
     'VendorEvent': (Map<String, dynamic> json) => VendorEvent.fromJson(json),
+
+    // inputs
+    'InputActiveStateChanged': (Map<String, dynamic> json) =>
+        InputActiveStateChanged.fromJson(json),
+    'InputAudioBalanceChanged': (Map<String, dynamic> json) =>
+        InputAudioBalanceChanged.fromJson(json),
+    'InputAudioMonitorTypeChanged': (Map<String, dynamic> json) =>
+        InputAudioMonitorTypeChanged.fromJson(json),
+    'InputAudioSyncOffsetChanged': (Map<String, dynamic> json) =>
+        InputAudioSyncOffsetChanged.fromJson(json),
+    'InputAudioTracksChanged': (Map<String, dynamic> json) =>
+        InputAudioTracksChanged.fromJson(json),
+    'InputCreated': (Map<String, dynamic> json) => InputCreated.fromJson(json),
+    'InputMuteStateChanged': (Map<String, dynamic> json) =>
+        InputMuteStateChanged.fromJson(json),
+    'InputNameChanged': (Map<String, dynamic> json) =>
+        InputNameChanged.fromJson(json),
+    'InputRemoved': (Map<String, dynamic> json) => InputRemoved.fromJson(json),
+    'InputSettingsChanged': (Map<String, dynamic> json) =>
+        InputSettingsChanged.fromJson(json),
+    'InputShowStateChanged': (Map<String, dynamic> json) =>
+        InputShowStateChanged.fromJson(json),
+    'InputVolumeChanged': (Map<String, dynamic> json) =>
+        InputVolumeChanged.fromJson(json),
+    'InputVolumeMeters': (Map<String, dynamic> json) =>
+        InputVolumeMeters.fromJson(json),
+
     // outputs
     'RecordStateChanged': (Map<String, dynamic> json) =>
         RecordStateChanged.fromJson(json),
@@ -32,6 +60,7 @@ class FromJsonSingleton {
         StreamStateChanged.fromJson(json),
     'VirtualcamStateChanged': (Map<String, dynamic> json) =>
         VirtualcamStateChanged.fromJson(json),
+
     // scenes
     'CurrentPreviewSceneChanged': (Map<String, dynamic> json) =>
         CurrentPreviewSceneChanged.fromJson(json),
@@ -51,7 +80,6 @@ class FromJsonSingleton {
         SceneItemRemoved.fromJson(json),
     'SceneItemSelected': (Map<String, dynamic> json) =>
         SceneItemSelected.fromJson(json),
-    // scenes
 
     // ui
     'ScreenshotSaved': (Map<String, dynamic> json) =>

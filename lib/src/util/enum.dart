@@ -79,5 +79,9 @@ enum EventSubscription {
   sceneItemTransformChanged(524288);
 
   final int code;
+
   const EventSubscription(this.code);
+
+  /// Combines two event subscriptions using bitwise OR
+  int operator |(EventSubscription other) => code | other.code;
 }
