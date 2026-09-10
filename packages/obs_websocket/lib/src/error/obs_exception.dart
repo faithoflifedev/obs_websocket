@@ -56,11 +56,10 @@ final class ObsRequestException extends ObsException {
     required this.requestType,
     required this.code,
     this.comment,
-    StackTrace? stackTrace,
+    super.stackTrace,
   }) : super(
          'Request $requestType failed (code $code)'
          '${comment != null ? ': $comment' : ''}',
-         stackTrace: stackTrace,
        );
 }
 
