@@ -12,7 +12,7 @@ workspace:
   - packages/obs_mcp_js
 
 dev_dependencies:
-  melos: ^7.8.2
+  melos: ^8.7.0
 
 melos:
   name: obs_websocket_workspace
@@ -29,20 +29,20 @@ melos:
     lint:all:
       run: melos run analyze && melos run format-check
     dep:
-      run: dart pub get
       exec:
+        command: dart pub get
         concurrency: 1
     build:
       run: dart run build_runner build --delete-conflicting-outputs
       packageFilters:
         fileExists: build.yaml
     analyze:
-      run: dart analyze --fatal-infos
       exec:
+        command: dart analyze --fatal-infos
         concurrency: 1
     format:
-      run: dart format .
       exec:
+        command: dart format .
         concurrency: 1
     format-check:
       run: dart format --output=none --set-exit-if-changed .
@@ -52,8 +52,8 @@ melos:
           - obs_websocket_js
           - obs_mcp_js
     test:
-      run: melos run _test_internal --no-select
       exec:
+        command: melos run _test_internal --no-select
         concurrency: 1
     dartdoc:
       run: dart doc
