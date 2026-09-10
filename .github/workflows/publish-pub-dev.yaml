@@ -31,7 +31,7 @@ jobs:
       working-dir: ${{ steps.match.outputs.working-dir }}
       package-name: ${{ steps.match.outputs.package-name }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       - name: Match tag to package
         id: match

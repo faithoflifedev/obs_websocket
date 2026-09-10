@@ -16,7 +16,7 @@ jobs:
     
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
       
       - name: Setup Dart SDK
         uses: dart-lang/setup-dart@v1
@@ -61,7 +61,7 @@ jobs:
       
       - name: Upload Windows binary to release
         if: github.event_name == 'release'
-        uses: softprops/action-gh-release@v1
+        uses: softprops/action-gh-release@v3
         with:
           files: obs-cli-windows.zip
         env:
@@ -119,7 +119,7 @@ jobs:
           CHOCO_API_KEY: ${{ secrets.CHOCO_API_KEY }}
       
       - name: Upload Chocolatey package as artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: chocolatey-package
           path: chocolatey-package/*.nupkg

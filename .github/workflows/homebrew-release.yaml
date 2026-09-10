@@ -47,7 +47,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           ref: ${{ github.event.inputs.tag || github.ref }}
 
@@ -66,13 +66,13 @@ jobs:
         run: dart compile exe packages/obs_mcp/bin/obs_mcp_server.dart -o obs-mcp-${{ matrix.target }}${{ matrix.binary-ext }}
 
       - name: Upload obs-cli artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: obs-cli-${{ matrix.target }}
           path: obs-cli-${{ matrix.target }}${{ matrix.binary-ext }}
 
       - name: Upload obs-mcp artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: obs-mcp-${{ matrix.target }}
           path: obs-mcp-${{ matrix.target }}${{ matrix.binary-ext }}
@@ -85,7 +85,7 @@ jobs:
       contents: write
     steps:
       - name: Download all artifacts
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v5
         with:
           path: artifacts
 
@@ -117,7 +117,7 @@ jobs:
           cat checksums.txt
 
       - name: Create/Update Release
-        uses: softprops/action-gh-release@v2
+        uses: softprops/action-gh-release@v3
         with:
           tag_name: ${{ github.event.inputs.tag || github.ref_name }}
           files: |
